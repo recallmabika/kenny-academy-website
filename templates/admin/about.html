@@ -1,0 +1,74 @@
+{% extends "admin/base.html" %}
+{% set active_admin = 'about' %}
+{% block title %}About{% endblock %}
+{% block heading %}About page{% endblock %}
+{% block admin_content %}
+{% set c = content.about %}
+
+<section class="mb-10">
+  <h2 class="text-lg mb-1">Hero</h2>
+  <form method="POST" action="{{ url_for('admin_section_save', page='about', section='hero') }}" class="card p-4 space-y-3">
+    <div><label class="field-label">Kicker</label><input class="field-input" name="kicker" value="{{ c.hero.kicker }}"></div>
+    <div><label class="field-label">Headline</label><input class="field-input" name="title" value="{{ c.hero.title }}"></div>
+    <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="3">{{ c.hero.body }}</textarea></div>
+    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save hero</button>
+  </form>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-lg mb-1">Story blocks</h2>
+  <p class="text-[12px] opacity-60 mb-3">Two side-by-side columns of narrative text. Use a blank line to start a new paragraph.</p>
+  <div class="space-y-3 mb-4">
+    {% for block in c.story %}
+    <form method="POST" action="{{ url_for('admin_section_edit', page='about', section='story', idx=loop.index0) }}" class="card p-4 space-y-2">
+      <div><label class="field-label">Heading</label><input class="field-input" name="heading" value="{{ block.heading }}"></div>
+      <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="5">{{ block.body }}</textarea></div>
+      <div class="flex gap-2 pt-1">
+        <button class="btn primary" style="padding:7px 14px; font-size:10.5px;">Save</button>
+        <button formaction="{{ url_for('admin_section_delete', page='about', section='story', idx=loop.index0) }}"
+                onclick="return confirm('Remove this block?');" class="btn" style="padding:7px 14px; font-size:10.5px;">Remove</button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+  <form method="POST" action="{{ url_for('admin_section_add', page='about', section='story') }}" class="card p-4 space-y-2">
+    <strong class="text-[12px]">Add a story block</strong>
+    <input class="field-input" name="heading" placeholder="Heading" required>
+    <textarea class="field-input" name="body" rows="4" placeholder="Body text" required></textarea>
+    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add block</button>
+  </form>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-lg mb-1">Director quote</h2>
+  <form method="POST" action="{{ url_for('admin_section_save', page='about', section='quote') }}" class="card p-4 space-y-3">
+    <div><label class="field-label">Quote</label><textarea class="field-input" name="quote" rows="3">{{ c.quote.quote }}</textarea></div>
+    <div><label class="field-label">Attribution</label><input class="field-input" name="attrib" value="{{ c.quote.attrib }}"></div>
+    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save quote</button>
+  </form>
+</section>
+
+<section>
+  <h2 class="text-lg mb-1">Values</h2>
+  <p class="text-[12px] opacity-60 mb-3">The "What we hold to" cards.</p>
+  <div class="space-y-3 mb-4">
+    {% for v in c['values'] %}
+    <form method="POST" action="{{ url_for('admin_section_edit', page='about', section='values', idx=loop.index0) }}" class="card p-4 space-y-2">
+      <div><label class="field-label">Title</label><input class="field-input" name="title" value="{{ v.title }}"></div>
+      <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="2">{{ v.body }}</textarea></div>
+      <div class="flex gap-2 pt-1">
+        <button class="btn primary" style="padding:7px 14px; font-size:10.5px;">Save</button>
+        <button formaction="{{ url_for('admin_section_delete', page='about', section='values', idx=loop.index0) }}"
+                onclick="return confirm('Remove this value?');" class="btn" style="padding:7px 14px; font-size:10.5px;">Remove</button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+  <form method="POST" action="{{ url_for('admin_section_add', page='about', section='values') }}" class="card p-4 space-y-2">
+    <strong class="text-[12px]">Add a value</strong>
+    <input class="field-input" name="title" placeholder="Title" required>
+    <textarea class="field-input" name="body" rows="2" placeholder="Body text" required></textarea>
+    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add value</button>
+  </form>
+</section>
+{% endblock %}

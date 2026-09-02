@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% set active_admin = 'subscribers' %}
+{% block title %}Subscribers{% endblock %}
+{% block heading %}Newsletter subscribers ({{ subscribers|length }}){% endblock %}
+{% block admin_content %}
+
+<table class="w-full text-left text-[12.5px] border-collapse">
+  <tr class="border-b border-[#e5e0dd] dark:border-[#2c2622]"><th class="py-2">Email</th><th>Subscribed</th><th></th></tr>
+  {% for s in subscribers %}
+  <tr class="border-b border-[#e5e0dd] dark:border-[#2c2622]">
+    <td class="py-2">{{ s.email }}</td>
+    <td>{{ s.when }}</td>
+    <td>
+      <form method="POST" action="{{ url_for('admin_delete_subscriber', idx=loop.index0) }}" onsubmit="return confirm('Remove this subscriber?');">
+        <button class="btn" style="padding:6px 10px; font-size:10.5px;">Remove</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="3" class="py-4 opacity-60">No subscribers yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

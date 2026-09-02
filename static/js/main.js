@@ -39,6 +39,76 @@
     }, 5500);
   }
 
+  // scroll-to-top button
+  var scrollTopBtn = document.getElementById('scrollTop');
+  if(scrollTopBtn){
+    window.addEventListener('scroll', function(){
+      if(window.scrollY > 480){ scrollTopBtn.classList.add('show'); }
+      else{ scrollTopBtn.classList.remove('show'); }
+    }, {passive:true});
+    scrollTopBtn.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  }
+
+  // inner-page hero image — 3D entrance on scroll into view
+  var tilts = document.querySelectorAll('.page-hero .ph-image');
+  if(tilts.length && 'IntersectionObserver' in window){
+    var tiltIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); tiltIO.unobserve(e.target); }
+      });
+    }, {threshold:.15});
+    tilts.forEach(function(el){ tiltIO.observe(el); });
+  } else {
+    tilts.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // FLIP-animated random shuffle for gallery grids
+  function flipShuffle(container, selector){
+    var items = Array.from(container.querySelectorAll(selector));
+    if(items.length < 2) return;
+    var firstRects = new Map();
+    items.forEach(function(el){ firstRects.set(el, el.getBoundingClientRect()); });
+
+    for(var i = items.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = items[i]; items[i] = items[j]; items[j] = tmp;
+    }
+    items.forEach(function(el){ container.appendChild(el); });
+
+    items.forEach(function(el){
+      var first = firstRects.get(el);
+      var last = el.getBoundingClientRect();
+      var dx = first.left - last.left;
+      var dy = first.top - last.top;
+      if(dx || dy){
+        el.style.transition = 'none';
+        el.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        el.style.zIndex = '2';
+        requestAnimationFrame(function(){
+          el.style.transition = 'transform 1s cubic-bezier(.16,1,.3,1)';
+          el.style.transform = '';
+        });
+        el.addEventListener('transitionend', function handler(ev){
+          if(ev.propertyName !== 'transform') return;
+          el.style.zIndex = '';
+          el.style.transition = '';
+          el.removeEventListener('transitionend', handler);
+        });
+      }
+    });
+  }
+
+  var homeGrid = document.querySelector('.g-grid');
+  var fullGrid = document.querySelector('.g-columns');
+  if(homeGrid || fullGrid){
+    setInterval(function(){
+      if(homeGrid) flipShuffle(homeGrid, '.g-item');
+      if(fullGrid) flipShuffle(fullGrid, '.g-item:not([style*="display: none"])');
+    }, 4200);
+  }
+
   // duplicate ticker content once for seamless loop
   document.querySelectorAll('.ticker .track').forEach(function(track){
     track.innerHTML += track.innerHTML;
@@ -98,5 +168,45 @@
       var btn = form.querySelector('.submit-btn');
       if(btn){ btn.textContent = 'Sending…'; btn.disabled = true; }
     });
+  }
+
+  // dark / light mode toggle (persisted, and pre-set in <head> to avoid flashing)
+  var themeToggle = document.getElementById('themeToggle');
+  var iconSun = document.getElementById('iconSun');
+  var iconMoon = document.getElementById('iconMoon');
+  function syncThemeIcon(){
+    var isDark = document.documentElement.classList.contains('dark');
+    if(iconSun) iconSun.classList.toggle('hidden', isDark);
+    if(iconMoon) iconMoon.classList.toggle('hidden', !isDark);
+  }
+  syncThemeIcon();
+  if(themeToggle){
+    themeToggle.addEventListener('click', function(){
+      var root = document.documentElement;
+      var nowDark = root.classList.toggle('dark');
+      localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+      syncThemeIcon();
+    });
+  }
+
+  // top-of-page scroll progress line
+  var progressBar = document.getElementById('scrollProgress');
+  if(progressBar){
+    var ticking = false;
+    function updateProgress(){
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if(!ticking){
+        window.requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    }, {passive:true});
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
   }
 })();

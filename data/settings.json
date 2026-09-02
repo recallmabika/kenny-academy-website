@@ -1,0 +1,13 @@
+{
+  "school_name": "Kenny Academy",
+  "group_name": "Kenny Technologies Group of Colleges",
+  "tagline": "Form 1 to 6, Computer Science & HEXCO courses, across the Rimbi and Rimai campuses in Chipinge.",
+  "logo": "favicon.svg",
+  "phone": "+263 78 393 8489",
+  "email": "info@kennyacademy.co.zw",
+  "whatsapp": "+263 78 393 8489",
+  "address": "Chipinge, Manicaland, Zimbabwe",
+  "facebook": "https://www.facebook.com/ndauambassadorzw",
+  "instagram": "",
+  "campuses": ["Kenny Academy Rimbi", "Kenny Academy Rimai"]
+}

@@ -3,22 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Kenny Academy{% endblock %} — Chipinge, Zimbabwe</title>
-<meta name="description" content="Kenny Academy — Form 1 to 6, Computer Science &amp; HEXCO courses, full-time, extra, holiday and adult lessons. Rimbi &amp; Rimai campuses, Chipinge.">
-<link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
+<title>{% block title %}{{ settings.school_name }}{% endblock %} — Chipinge, Zimbabwe</title>
+<meta name="description" content="{{ settings.school_name }} — Form 1 to 6, Computer Science &amp; HEXCO courses, full-time, extra, holiday and adult lessons. {{ settings.campuses|join(' &amp; ') }} campuses, Chipinge.">
+<link rel="icon" href="{{ url_for('static', filename='img/' ~ settings.logo) }}">
+<!-- Theme is applied before first paint to avoid a light/dark flash -->
+<script>
+  (function () {
+    var saved = localStorage.getItem('theme');
+    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) document.documentElement.classList.add('dark');
+  })();
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+</script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="dark:bg-[#141110] dark:text-[#f5f0ee]">
+
+<!-- scroll progress line, top of viewport, above the nav -->
+<div id="scrollProgress" class="fixed top-0 left-0 h-[3px] bg-[--red,#e10600] z-[9999]" style="width:0%; background:var(--red);"></div>
 
 <header>
   <div class="bar">
     <a class="brand" href="{{ url_for('home') }}">
-      <svg class="mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="0.5" y="0.5" width="39" height="39" fill="none" stroke="#1b1512" stroke-width="1"/>
-        <path d="M8 8 V32 M8 20 L24 8 M13.5 20 L24 32" fill="none" stroke="#9c1a24" stroke-width="2.4" stroke-linecap="square"/>
-        <path d="M29 8 V32" stroke="#1b1512" stroke-width="2.4"/>
-      </svg>
-      <span class="name"><b>Kenny</b> Academy<span>KENNY TECHNOLOGIES GROUP OF COLLEGES</span></span>
+      <img class="mark" src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="{{ settings.school_name }} logo" width="40" height="40" onerror="this.style.display='none'">
+      <span class="name"><b>{{ settings.school_name.split(' ')[0] }}</b> {{ settings.school_name.split(' ', 1)[1] if ' ' in settings.school_name else '' }}<span>{{ settings.group_name|upper }}</span></span>
     </a>
     <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav">Menu</button>
     <nav class="mainnav" id="siteNav">
@@ -28,6 +39,11 @@
       <a href="{{ url_for('gallery') }}" class="{{ 'active' if active=='gallery' else '' }}"><span class="fill"></span><span class="t">Gallery</span></a>
       <a href="{{ url_for('contact') }}" class="{{ 'active' if active=='contact' else '' }}"><span class="fill"></span><span class="t">Contact</span></a>
     </nav>
+    <button id="themeToggle" type="button" aria-label="Toggle dark mode"
+      class="ml-3 inline-flex h-9 w-9 shrink-0 items-center justify-center border border-[--line] text-current hover:opacity-70 transition">
+      <svg id="iconSun" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.5v2M10 16.5v2M3.5 3.5l1.4 1.4M15.1 15.1l1.4 1.4M1.5 10h2M16.5 10h2M3.5 16.5l1.4-1.4M15.1 4.9l1.4-1.4"/></svg>
+      <svg id="iconMoon" viewBox="0 0 20 20" width="16" height="16" fill="currentColor" class="hidden"><path d="M16.5 12.3A7 7 0 0 1 7.7 3.5a7 7 0 1 0 8.8 8.8Z"/></svg>
+    </button>
   </div>
 </header>
 
@@ -37,8 +53,23 @@
   <div class="wrap">
     <div class="cols">
       <div class="brand-col">
-        <span class="name"><b>Kenny</b> Academy</span>
-        <p>Kenny Technologies Group of Colleges — Form 1 to 6, Computer Science &amp; HEXCO courses, across the Rimbi and Rimai campuses in Chipinge.</p>
+        <span class="name"><b>{{ settings.school_name.split(' ')[0] }}</b> {{ settings.school_name.split(' ', 1)[1] if ' ' in settings.school_name else '' }}</span>
+        <p>{{ settings.group_name }}{% if settings.tagline %} — {{ settings.tagline }}{% endif %}</p>
+
+        <form action="{{ url_for('subscribe') }}" method="POST" class="mt-4 flex max-w-xs gap-2">
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <label for="subEmail" class="sr-only">Email address</label>
+          <input id="subEmail" type="email" name="email" required placeholder="Your email"
+                 class="w-full min-w-0 border border-[--line] bg-transparent px-3 py-2 text-[12.5px] font-mono placeholder:text-current placeholder:opacity-50 focus:outline-none focus:border-[--red]">
+          <button type="submit" class="btn primary shrink-0" style="padding:9px 14px; font-size:11px;">Subscribe</button>
+        </form>
+        {% if request.args.get('sub') == 'ok' %}
+          <p class="mt-2 text-[11.5px]" style="color:var(--red)">Subscribed — check your inbox.</p>
+        {% elif request.args.get('sub') == 'exists' %}
+          <p class="mt-2 text-[11.5px] opacity-70">That email is already subscribed.</p>
+        {% elif request.args.get('sub') == 'invalid' %}
+          <p class="mt-2 text-[11.5px]" style="color:var(--red)">Please enter a valid email.</p>
+        {% endif %}
       </div>
       <div>
         <h5>SITE</h5>
@@ -50,23 +81,28 @@
       </div>
       <div>
         <h5>CAMPUSES</h5>
-        <a href="{{ url_for('about') }}">Kenny Academy — Rimbi</a>
-        <a href="{{ url_for('about') }}">Kenny Academy — Rimai</a>
+        {% for c in settings.campuses %}
+        <a href="{{ url_for('about') }}">{{ c }}</a>
+        {% endfor %}
       </div>
       <div>
         <h5>REACH US</h5>
-        <a href="tel:+263783938489">+263 78 393 8489</a>
-        <a href="https://www.facebook.com/ndauambassadorzw" target="_blank" rel="noopener">Facebook</a>
+        {% if settings.phone %}<a href="tel:{{ settings.phone|replace(' ', '') }}">{{ settings.phone }}</a>{% endif %}
+        {% if settings.email %}<a href="mailto:{{ settings.email }}">{{ settings.email }}</a>{% endif %}
+        {% if settings.facebook %}<a href="{{ settings.facebook }}" target="_blank" rel="noopener">Facebook</a>{% endif %}
         <a href="{{ url_for('contact') }}">Send an inquiry</a>
       </div>
     </div>
     <div class="legal">
-      <span>Chipinge, Manicaland, Zimbabwe</span>
-      <span>Kenny Technologies Group of Colleges, {{ current_year }}</span>
+      <span>{{ settings.address }}</span>
+      <span>{{ settings.group_name }}, {{ current_year }}</span>
     </div>
   </div>
 </footer>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<button id="scrollTop" class="scroll-top" aria-label="Scroll to top" type="button">
+  <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M10 3 L17 12 L13.2 12 L13.2 17 L6.8 17 L6.8 12 L3 12 Z" fill="currentColor"/></svg>
+</button>
 </body>
 </html>

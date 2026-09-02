@@ -1,0 +1,87 @@
+{
+  "home": {
+    "hero": {
+      "eyebrow": "Form 1–6",
+      "stamp": "Form 1–6",
+      "title": "Expand your horizon.",
+      "subtitle": "Full-time, extra, holiday and adult lessons in every subject, plus Computer Science and HEXCO courses — taught by a college that shows up on the register and on the scoreboard."
+    },
+    "programmes": [
+      {
+        "tag": "Academics",
+        "title": "Form 1 to Form 6",
+        "body": "A full academic programme across the ordinary and advanced level, covering every subject on the timetable.",
+        "bullets": ["All O-Level & A-Level subjects", "Continuous assessment & mock exams"]
+      },
+      {
+        "tag": "Technology",
+        "title": "Computer Science & HEXCO",
+        "body": "Dedicated computer science teaching alongside HEXCO computer courses, for students building toward a technical career.",
+        "bullets": ["All HEXCO Computer courses", "Practical, lab-based teaching"]
+      },
+      {
+        "tag": "Flexibility",
+        "title": "Lessons on your schedule",
+        "body": "Full-time enrolment, extra lessons for a subject you're behind on, holiday lessons, and a dedicated adult school.",
+        "bullets": ["Full-time, extra & holiday classes", "Adult school for returning learners"]
+      }
+    ],
+    "quote": {
+      "quote": "Our sports organisers, coaches and players have worked for every trophy on this shelf — and we're aiming for more, starting with defending our Under 15 netball title next term.",
+      "attrib": "Prof Caleb Simango, Director, Kenny Technologies Group of Colleges"
+    }
+  },
+  "about": {
+    "hero": {
+      "kicker": "About the college",
+      "title": "An icon for Chipinge and Manicaland, built on results.",
+      "body": "Kenny Technologies Group of Colleges runs two campuses — Kenny Academy Rimbi and Kenny Academy Rimai — teaching Form 1 to 6 alongside Computer Science and HEXCO courses. The same discipline shows up on the exam register and on the sports field."
+    },
+    "story": [
+      {
+        "heading": "Two campuses, one standard",
+        "body": "Kenny Academy Rimbi and Kenny Academy Rimai operate under Kenny Technologies Group of Colleges, sharing a curriculum, a coaching structure and a director. Students move between full-time academics and competitive sport without either one being treated as the lesser priority.\n\nThat balance produced back-to-back results at the National Games: trophies in 2024, a Certificate of Excellence in 2025, and individual honours for three students recognised as best in their category."
+      },
+      {
+        "heading": "Financial honesty, undiminished ambition",
+        "body": "Not every season has gone to plan. Financial constraints kept the college from travelling to a tournament in Uganda — a setback the director has spoken about openly rather than around. It hasn't slowed the ambition: Kenny Technologies Group of Colleges is defending its Under 15 netball title next term and continuing to compete at the ASSFA Festival Tournament, where it first represented the region in 2023.\n\nThe college welcomes sponsorships and partnerships from anyone who wants to back that ambition — sports kit, travel costs, or academic equipment all move the same goal forward."
+      }
+    ],
+    "quote": {
+      "quote": "Kenny Technologies Group of Colleges has emerged as an icon for Chipinge and Manicaland — in sport and in academics. Every organiser, coach and player behind these results has our appreciation, and our next target is already set.",
+      "attrib": "Prof Caleb Simango, on the college's 2024–2025 season"
+    },
+    "values": [
+      {"title": "Full subject coverage", "body": "Every subject on the Form 1–6 timetable is taught on-site, not outsourced or dropped when enrolment is small."},
+      {"title": "Sport treated as serious", "body": "Netball and volleyball are coached with the same rigour as an exam subject — which is where the trophies come from."},
+      {"title": "A technical track for those who want it", "body": "Computer Science and HEXCO courses give students a route into technical careers alongside the academic curriculum."}
+    ]
+  },
+  "curriculum": {
+    "hero": {
+      "kicker": "Curriculum",
+      "title": "Every form, every subject, and a technical track besides.",
+      "body": "Kenny Academy teaches the complete Form 1 to 6 syllabus, with a dedicated Computer Science and HEXCO programme for students heading into technical careers — offered full-time, as extra lessons, over the holidays, or through the adult school."
+    },
+    "subjects": [
+      "English Language", "Mathematics", "Combined Science", "Physics",
+      "Chemistry", "Biology", "Geography", "History", "Shona", "Ndau",
+      "Agriculture", "Accounts", "Business Studies", "Commerce",
+      "Economics", "Computer Science", "Food & Nutrition",
+      "Fashion & Fabrics", "Building Studies", "Woodwork",
+      "Metalwork Technology", "Physical Education", "Divinity",
+      "Heritage Studies"
+    ],
+    "cs_hexco": {
+      "heading": "Computer Science & HEXCO",
+      "body": "Every HEXCO Computer course is offered on campus, taught practically and backed by hands-on lab time — for students who want a qualification that leads directly into work, not only into the next exam.",
+      "chips": ["Computer Operations", "Information Communication Technology", "Computer Applications", "Programming Fundamentals", "Networking Essentials"]
+    },
+    "lesson_types": [
+      {"name": "Full-time", "desc": "Complete Form 1–6 enrolment, term-time, across every subject on the timetable.", "when": "Term-time"},
+      {"name": "Extra lessons", "desc": "Focused, subject-specific lessons for students catching up or pushing ahead of their class.", "when": "After hours"},
+      {"name": "Holiday lessons", "desc": "Intensive revision and coursework during the school holidays, for exam classes especially.", "when": "School holidays"},
+      {"name": "Adult school", "desc": "A full academic and HEXCO programme for adult learners returning to complete their education.", "when": "Evenings & weekends"}
+    ]
+  }
+}

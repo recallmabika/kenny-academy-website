@@ -21,9 +21,9 @@
       <h2>Get in touch</h2>
       <p class="dek">Whether it's a Form 1 enrolment, a question about HEXCO courses, or a sponsorship for the next National Games trip — this reaches the college directly.</p>
       <div class="reach">
-        <div class="row"><span class="k">Phone / WhatsApp</span><a href="tel:+263783938489">+263 78 393 8489</a></div>
-        <div class="row"><span class="k">Facebook</span><a href="https://www.facebook.com/ndauambassadorzw" target="_blank" rel="noopener">Kenny Technologies Group of Colleges</a></div>
-        <div class="row"><span class="k">Location</span><span class="k" style="color:var(--ink)">Chipinge, Manicaland, Zimbabwe</span></div>
+        <div class="row"><span class="k">Phone / WhatsApp</span><a href="tel:{{ settings.phone|replace(' ', '') }}">{{ settings.phone }}</a></div>
+        {% if settings.facebook %}<div class="row"><span class="k">Facebook</span><a href="{{ settings.facebook }}" target="_blank" rel="noopener">{{ settings.group_name }}</a></div>{% endif %}
+        <div class="row"><span class="k">Location</span><span class="k" style="color:var(--ink)">{{ settings.address }}</span></div>
       </div>
 
       {% if submitted %}
@@ -64,18 +64,15 @@
 
 <section class="campus-map">
   <div class="wrap">
-    <div class="head"><span class="num">01</span><h2>Campuses</h2><span class="sub">both in Chipinge</span></div>
+    <div class="head"><h2>Campuses</h2><span class="sub">both in {{ settings.address.split(',')[0] }}</span></div>
     <div class="campus-cards">
+      {% for campus in settings.campuses %}
       <div class="campus-card">
-        <div class="tag">CAMPUS ONE</div>
-        <h4>Kenny Academy — Rimbi</h4>
-        <p>Full-time Form 1–6 academics, extra and holiday lessons.</p>
+        <div class="tag">CAMPUS {{ loop.index }}</div>
+        <h4>{{ campus }}</h4>
+        <p>{% if loop.first %}Full-time Form 1–6 academics, extra and holiday lessons.{% else %}Form 1–6 academics alongside Computer Science and HEXCO courses.{% endif %}</p>
       </div>
-      <div class="campus-card">
-        <div class="tag">CAMPUS TWO</div>
-        <h4>Kenny Academy — Rimai</h4>
-        <p>Form 1–6 academics alongside Computer Science and HEXCO courses.</p>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </section>

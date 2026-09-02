@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% set active_admin = 'gallery' %}
+{% block title %}Gallery{% endblock %}
+{% block heading %}Gallery{% endblock %}
+{% block admin_content %}
+
+<section class="mb-8">
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+    {% for g in gallery %}
+    <div class="card p-2">
+      <img src="{{ url_for('static', filename='img/' ~ g.file) }}" alt="{{ g.caption }}" class="w-full h-28 object-cover mb-2">
+      <div class="text-[11.5px] leading-snug mb-1">{{ g.caption }}</div>
+      <div class="text-[10px] uppercase tracking-wide opacity-50 mb-2">{{ g.cat }}</div>
+      <form method="POST" action="{{ url_for('admin_delete_gallery', idx=loop.index0) }}" onsubmit="return confirm('Remove this photo?');">
+        <button class="btn w-full" style="padding:6px 10px; font-size:10.5px;">Remove</button>
+      </form>
+    </div>
+    {% else %}
+    <p class="text-[13px] opacity-60 col-span-full">No photos yet.</p>
+    {% endfor %}
+  </div>
+
+  <form method="POST" action="{{ url_for('admin_add_gallery') }}" enctype="multipart/form-data" class="card p-4 space-y-2 max-w-md">
+    <strong class="text-[12px]">Upload a photo</strong>
+    <input type="file" name="photo" accept="image/*" required class="field-input">
+    <input class="field-input" name="caption" placeholder="Caption" required>
+    <select name="cat" class="field-input">
+      <option value="sports">Sports &amp; Games</option>
+      <option value="academic">Academics</option>
+      <option value="campus">Campus life</option>
+    </select>
+    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Upload photo</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+{% set active_admin = 'settings' %}
+{% block title %}Settings{% endblock %}
+{% block heading %}Settings{% endblock %}
+{% block admin_content %}
+
+<form method="POST" action="{{ url_for('admin_settings') }}" enctype="multipart/form-data" class="space-y-8 max-w-xl">
+
+  <section class="card p-4 space-y-3">
+    <h2 class="text-[13px] font-semibold">Identity</h2>
+    <div>
+      <label class="field-label">School name (shown in the header)</label>
+      <input class="field-input" name="school_name" value="{{ settings.school_name }}" required>
+    </div>
+    <div>
+      <label class="field-label">Full group / institution name</label>
+      <input class="field-input" name="group_name" value="{{ settings.group_name }}">
+    </div>
+    <div>
+      <label class="field-label">Tagline</label>
+      <input class="field-input" name="tagline" value="{{ settings.tagline }}">
+    </div>
+    <div>
+      <label class="field-label">Logo</label>
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="Current logo" class="h-10 w-10 object-contain border border-[#e5e0dd] dark:border-[#2c2622]">
+        <input type="file" name="logo" accept="image/*,.svg" class="field-input">
+      </div>
+    </div>
+  </section>
+
+  <section class="card p-4 space-y-3">
+    <h2 class="text-[13px] font-semibold">Contact details</h2>
+    <div class="grid grid-cols-2 gap-3">
+      <div><label class="field-label">Phone</label><input class="field-input" name="phone" value="{{ settings.phone }}"></div>
+      <div><label class="field-label">WhatsApp</label><input class="field-input" name="whatsapp" value="{{ settings.whatsapp }}"></div>
+    </div>
+    <div><label class="field-label">Email</label><input type="email" class="field-input" name="email" value="{{ settings.email }}"></div>
+    <div><label class="field-label">Address</label><input class="field-input" name="address" value="{{ settings.address }}"></div>
+  </section>
+
+  <section class="card p-4 space-y-3">
+    <h2 class="text-[13px] font-semibold">Social</h2>
+    <div><label class="field-label">Facebook URL</label><input class="field-input" name="facebook" value="{{ settings.facebook }}"></div>
+    <div><label class="field-label">Instagram URL</label><input class="field-input" name="instagram" value="{{ settings.instagram }}"></div>
+  </section>
+
+  <section class="card p-4 space-y-3">
+    <h2 class="text-[13px] font-semibold">Campuses</h2>
+    <label class="field-label">One per line</label>
+    <textarea class="field-input" name="campuses" rows="3">{{ settings.campuses|join('\n') }}</textarea>
+  </section>
+
+  <button class="btn primary" style="padding:10px 20px; font-size:12px;">Save settings</button>
+</form>
+
+<div class="mt-10 card p-4 max-w-xl text-[12px] opacity-70 leading-relaxed">
+  <strong class="opacity-100">Email &amp; admin password</strong> are configured via environment
+  variables in <code>.env</code> (SMTP_HOST, SMTP_USER, SMTP_PASSWORD, MAIL_TO, ADMIN_PASSWORD,
+  SECRET_KEY) rather than here, so credentials never sit in the content files. See
+  <code>.env.example</code> for the full list.
+</div>
+{% endblock %}

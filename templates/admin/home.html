@@ -1,0 +1,98 @@
+{% extends "admin/base.html" %}
+{% set active_admin = 'home' %}
+{% block title %}Home{% endblock %}
+{% block heading %}Home page{% endblock %}
+{% block admin_content %}
+{% set c = content.home %}
+
+<section class="mb-10">
+  <h2 class="text-lg mb-1">Hero</h2>
+  <p class="text-[12px] opacity-60 mb-3">The full-bleed banner text at the top of the homepage.</p>
+  <form method="POST" action="{{ url_for('admin_section_save', page='home', section='hero') }}" class="card p-4 space-y-3">
+    <div><label class="field-label">Stamp / eyebrow tag</label><input class="field-input" name="stamp" value="{{ c.hero.stamp }}"></div>
+    <div><label class="field-label">Headline</label><input class="field-input" name="title" value="{{ c.hero.title }}"></div>
+    <div><label class="field-label">Subheading</label><textarea class="field-input" name="subtitle" rows="3">{{ c.hero.subtitle }}</textarea></div>
+    <input type="hidden" name="eyebrow" value="{{ c.hero.eyebrow }}">
+    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save hero</button>
+  </form>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-lg mb-1">Programme cards</h2>
+  <p class="text-[12px] opacity-60 mb-3">The three "What's on offer" cards.</p>
+
+  <div class="space-y-3 mb-4">
+    {% for p in c.programmes %}
+    <form method="POST" action="{{ url_for('admin_section_edit', page='home', section='programmes', idx=loop.index0) }}" class="card p-4 space-y-2">
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="field-label">Tag</label><input class="field-input" name="tag" value="{{ p.tag }}"></div>
+        <div><label class="field-label">Title</label><input class="field-input" name="title" value="{{ p.title }}"></div>
+      </div>
+      <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="2">{{ p.body }}</textarea></div>
+      <div><label class="field-label">Bullets (one per line)</label><textarea class="field-input" name="bullets" rows="2">{{ p.bullets|join('\n') }}</textarea></div>
+      <div class="flex gap-2 pt-1">
+        <button class="btn primary" style="padding:7px 14px; font-size:10.5px;">Save</button>
+        <button formaction="{{ url_for('admin_section_delete', page='home', section='programmes', idx=loop.index0) }}"
+                onclick="return confirm('Remove this card?');" class="btn" style="padding:7px 14px; font-size:10.5px;">Remove</button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+
+  <form method="POST" action="{{ url_for('admin_section_add', page='home', section='programmes') }}" class="card p-4 space-y-2">
+    <strong class="text-[12px]">Add a programme card</strong>
+    <div class="grid grid-cols-2 gap-2">
+      <div><label class="field-label">Tag</label><input class="field-input" name="tag" required></div>
+      <div><label class="field-label">Title</label><input class="field-input" name="title" required></div>
+    </div>
+    <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="2" required></textarea></div>
+    <div><label class="field-label">Bullets (one per line)</label><textarea class="field-input" name="bullets" rows="2"></textarea></div>
+    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add card</button>
+  </form>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-lg mb-1">Director quote</h2>
+  <form method="POST" action="{{ url_for('admin_section_save', page='home', section='quote') }}" class="card p-4 space-y-3">
+    <div><label class="field-label">Quote</label><textarea class="field-input" name="quote" rows="3">{{ c.quote.quote }}</textarea></div>
+    <div><label class="field-label">Attribution</label><input class="field-input" name="attrib" value="{{ c.quote.attrib }}"></div>
+    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save quote</button>
+  </form>
+</section>
+
+<section>
+  <h2 class="text-lg mb-1">Roll of honour — achievements</h2>
+  <p class="text-[12px] opacity-60 mb-3">Shown on Home (latest 5) and in full on About.</p>
+
+  <div class="overflow-x-auto mb-4">
+    <table class="w-full text-left text-[12.5px] border-collapse">
+      <tr class="border-b border-[#e5e0dd] dark:border-[#2c2622]"><th class="py-2">Year</th><th>Title</th><th>Badge</th><th>Win</th><th></th></tr>
+      {% for a in achievements %}
+      <tr class="border-b border-[#e5e0dd] dark:border-[#2c2622]">
+        <td class="py-2">{{ a.year }}</td>
+        <td>{{ a.title }}</td>
+        <td>{{ a.badge }}</td>
+        <td>{{ 'Yes' if a.win else 'No' }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('admin_delete_achievement', idx=loop.index0) }}" onsubmit="return confirm('Remove this achievement?');">
+            <button class="btn" style="padding:6px 10px; font-size:10.5px;">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <form method="POST" action="{{ url_for('admin_add_achievement') }}" class="card p-4 space-y-2">
+    <strong class="text-[12px]">Add an achievement</strong>
+    <div class="grid grid-cols-2 gap-2">
+      <input class="field-input" name="year" placeholder="Year, e.g. 2026" required>
+      <input class="field-input" name="badge" placeholder="Badge, e.g. Trophy" required>
+    </div>
+    <input class="field-input" name="title" placeholder="Title, e.g. Netball U17 — Champions" required>
+    <textarea class="field-input" name="detail" placeholder="Detail / description" rows="2" required></textarea>
+    <select name="win" class="field-input"><option value="true">Win</option><option value="false">Participation</option></select>
+    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add achievement</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% set active_admin = 'inquiries' %}
+{% block title %}Inquiries{% endblock %}
+{% block heading %}Contact inquiries ({{ inquiries|length }}){% endblock %}
+{% block admin_content %}
+
+<div class="space-y-3">
+  {% for i in inquiries %}
+  <div class="card p-4 text-[12.5px]">
+    <div class="flex justify-between opacity-60 mb-2 text-[11px]"><span>{{ i.when }}</span><span>{{ i.reason }}</span></div>
+    <div class="mb-1"><b>{{ i.name }}</b> — {{ i.phone }}</div>
+    <p>{{ i.message }}</p>
+  </div>
+  {% else %}
+  <p class="opacity-60">No inquiries yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}
