@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Kenny Academy</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="admin-wrap" style="max-width:1000px;">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h1 style="font-size:24px;">Kenny Academy — CMS</h1>
+    <a href="{{ url_for('admin_logout') }}" class="btn" style="padding:9px 16px; font-size:11px;">Log out</a>
+  </div>
+
+  {% if message %}<div class="flash ok" style="margin-top:20px;">{{ message }}</div>{% endif %}
+
+  <h2 style="margin-top:40px; font-size:18px;">Roll of honour — achievements</h2>
+  <table>
+    <tr><th>Year</th><th>Title</th><th>Badge</th><th>Win</th><th></th></tr>
+    {% for a in achievements %}
+    <tr>
+      <td>{{ a.year }}</td>
+      <td>{{ a.title }}</td>
+      <td>{{ a.badge }}</td>
+      <td>{{ 'Yes' if a.win else 'No' }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin_delete_achievement', idx=loop.index0) }}" onsubmit="return confirm('Remove this achievement?');">
+          <button type="submit" class="btn" style="padding:6px 10px; font-size:10.5px;">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form method="POST" action="{{ url_for('admin_add_achievement') }}">
+    <strong style="font-size:12.5px;">Add an achievement</strong>
+    <input name="year" placeholder="Year, e.g. 2026" required>
+    <input name="title" placeholder="Title, e.g. Netball U17 — Champions" required>
+    <textarea name="detail" placeholder="Detail / description" required></textarea>
+    <input name="badge" placeholder="Badge label, e.g. Trophy" required>
+    <select name="win"><option value="true">Win</option><option value="false">Participation</option></select>
+    <button type="submit" class="btn primary">Add achievement</button>
+  </form>
+
+  <h2 style="margin-top:48px; font-size:18px;">Gallery photos</h2>
+  <table>
+    <tr><th>File</th><th>Caption</th><th>Category</th><th></th></tr>
+    {% for g in gallery %}
+    <tr>
+      <td>{{ g.file }}</td>
+      <td>{{ g.caption }}</td>
+      <td>{{ g.cat }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin_delete_gallery', idx=loop.index0) }}" onsubmit="return confirm('Remove this photo?');">
+          <button type="submit" class="btn" style="padding:6px 10px; font-size:10.5px;">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form method="POST" action="{{ url_for('admin_add_gallery') }}" enctype="multipart/form-data">
+    <strong style="font-size:12.5px;">Add a gallery photo</strong>
+    <input type="file" name="photo" accept="image/*" required>
+    <input name="caption" placeholder="Caption" required>
+    <select name="cat">
+      <option value="sports">Sports &amp; Games</option>
+      <option value="academic">Academics</option>
+      <option value="campus">Campus life</option>
+    </select>
+    <button type="submit" class="btn primary">Upload photo</button>
+  </form>
+
+  <h2 style="margin-top:48px; font-size:18px;">Contact inquiries</h2>
+  <table>
+    <tr><th>When</th><th>Name</th><th>Reach</th><th>Reason</th><th>Message</th></tr>
+    {% for i in inquiries %}
+    <tr>
+      <td>{{ i.when }}</td><td>{{ i.name }}</td><td>{{ i.phone }}</td><td>{{ i.reason }}</td><td>{{ i.message }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No inquiries yet.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+</body>
+</html>

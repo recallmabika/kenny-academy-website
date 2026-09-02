@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Curriculum{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="split">
+    <div class="ph-text">
+      <div class="kicker"><span class="ln"></span>Curriculum</div>
+      <h1>Every form, every subject, and a technical track besides.</h1>
+      <p>Kenny Academy teaches the complete Form 1 to 6 syllabus, with a dedicated Computer Science and HEXCO programme for students heading into technical careers — offered full-time, as extra lessons, over the holidays, or through the adult school.</p>
+    </div>
+    <div class="ph-image">
+      <img src="{{ url_for('static', filename='img/gallery-4.jpg') }}" alt="Students in a Kenny Academy lesson">
+    </div>
+  </div>
+</section>
+
+<section class="forms-band reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">01</span><h2>Levels taught</h2><span class="sub">Form 1 – 6</span></div>
+    <div class="forms-strip">
+      <div class="form-cell"><div class="f">1</div><div class="t">ZJC</div></div>
+      <div class="form-cell"><div class="f">2</div><div class="t">ZJC EXAM</div></div>
+      <div class="form-cell"><div class="f">3</div><div class="t">O-LEVEL</div></div>
+      <div class="form-cell"><div class="f">4</div><div class="t">O-LEVEL EXAM</div></div>
+      <div class="form-cell"><div class="f">5</div><div class="t">A-LEVEL</div></div>
+      <div class="form-cell"><div class="f">6</div><div class="t">A-LEVEL EXAM</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="subjects reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">02</span><h2>All subjects offered</h2><span class="sub">O-Level &amp; A-Level</span></div>
+    <div class="subject-grid">
+      {% for s in subjects %}
+      <div class="subject"><span class="sq"></span>{{ s }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cs-band reveal">
+  <div class="wrap grid">
+    <div>
+      <h2>Computer Science &amp; HEXCO</h2>
+      <p>Every HEXCO Computer course is offered on campus, taught practically and backed by hands-on lab time — for students who want a qualification that leads directly into work, not only into the next exam.</p>
+      <div class="chips">
+        <span class="chip">Computer Operations</span>
+        <span class="chip">Information Communication Technology</span>
+        <span class="chip">Computer Applications</span>
+        <span class="chip">Programming Fundamentals</span>
+        <span class="chip">Networking Essentials</span>
+      </div>
+    </div>
+    <div class="hexco-card">
+      <div class="top"><span>PROGRAMME</span><span>HEXCO CERTIFIED</span></div>
+      <h4>All HEXCO Computer Courses</h4>
+      <ul>
+        <li>Nationally recognised HEXCO certification</li>
+        <li>Open to Form 1–6 students and adult learners</li>
+        <li>Practical, lab-based instruction</li>
+        <li>Runs alongside full-time academics or standalone</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-types reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">03</span><h2>Lesson types &amp; timing</h2><span class="sub">choose what fits</span></div>
+    <div class="lt-table">
+      <div class="lt-row">
+        <div class="name">Full-time</div>
+        <div class="desc">Complete Form 1–6 enrolment, term-time, across every subject on the timetable.</div>
+        <div class="when">Term-time</div>
+      </div>
+      <div class="lt-row">
+        <div class="name">Extra lessons</div>
+        <div class="desc">Focused, subject-specific lessons for students catching up or pushing ahead of their class.</div>
+        <div class="when">After hours</div>
+      </div>
+      <div class="lt-row">
+        <div class="name">Holiday lessons</div>
+        <div class="desc">Intensive revision and coursework during the school holidays, for exam classes especially.</div>
+        <div class="when">School holidays</div>
+      </div>
+      <div class="lt-row">
+        <div class="name">Adult school</div>
+        <div class="desc">A full academic and HEXCO programme for adult learners returning to complete their education.</div>
+        <div class="when">Evenings &amp; weekends</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta reveal band-red">
+  <div class="wrap">
+    <div class="box">
+      <h3>Find the right lesson type for your child, or for yourself.</h3>
+      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Ask about enrolment</a></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

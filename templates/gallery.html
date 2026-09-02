@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Gallery{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="split">
+    <div class="ph-text">
+      <div class="kicker"><span class="ln"></span>Gallery</div>
+      <h1>From the classroom to the National Games.</h1>
+      <p>A record of the college in motion — physics practicals, the trip to Kadoma, and the students who carried Kenny Academy's colours.</p>
+    </div>
+    <div class="ph-image">
+      <img src="{{ url_for('static', filename='img/gallery-1.jpg') }}" alt="Kenny Academy students and athletes">
+    </div>
+  </div>
+</section>
+
+<section class="gallery-full">
+  <div class="wrap">
+    <div class="g-filter">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="sports">Sports &amp; Games</button>
+      <button data-filter="academic">Academics</button>
+      <button data-filter="campus">Campus life</button>
+    </div>
+    <div class="g-columns">
+      {% for g in gallery %}
+      <div class="g-item" data-cat="{{ g.cat }}">
+        <img src="{{ url_for('static', filename='img/' ~ g.file) }}" alt="{{ g.caption }}" loading="lazy">
+        <div class="cap">{{ g.caption }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta reveal band-red">
+  <div class="wrap">
+    <div class="box">
+      <h3>Have photos from a Kenny Academy event? We'd like to add them.</h3>
+      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Send them over</a></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

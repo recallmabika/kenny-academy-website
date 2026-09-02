@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="split">
+    <div class="ph-text">
+      <div class="kicker"><span class="ln"></span>About the college</div>
+      <h1>An icon for Chipinge and Manicaland, built on results.</h1>
+      <p>Kenny Technologies Group of Colleges runs two campuses — Kenny Academy Rimbi and Kenny Academy Rimai — teaching Form 1 to 6 alongside Computer Science and HEXCO courses. The same discipline shows up on the exam register and on the sports field.</p>
+    </div>
+    <div class="ph-image">
+      <img src="{{ url_for('static', filename='img/gallery-2.jpg') }}" alt="Kenny Academy students on campus">
+    </div>
+  </div>
+</section>
+
+<section class="story reveal">
+  <div class="wrap grid">
+    <div>
+      <h2>Two campuses, one standard</h2>
+      <p>Kenny Academy Rimbi and Kenny Academy Rimai operate under Kenny Technologies Group of Colleges, sharing a curriculum, a coaching structure and a director. Students move between full-time academics and competitive sport without either one being treated as the lesser priority.</p>
+      <p>That balance produced back-to-back results at the National Games: trophies in 2024, a Certificate of Excellence in 2025, and individual honours for three students recognised as best in their category.</p>
+      <ul class="campus-list">
+        <li><span><b>Kenny Academy Rimbi</b><br>Form 1–6, full-time &amp; extra lessons</span><span>Chipinge</span></li>
+        <li><span><b>Kenny Academy Rimai</b><br>Form 1–6, Computer Science &amp; HEXCO</span><span>Chipinge</span></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Financial honesty, undiminished ambition</h2>
+      <p>Not every season has gone to plan. Financial constraints kept the college from travelling to a tournament in Uganda — a setback the director has spoken about openly rather than around. It hasn't slowed the ambition: Kenny Technologies Group of Colleges is defending its Under 15 netball title next term and continuing to compete at the ASSFA Festival Tournament, where it first represented the region in 2023.</p>
+      <p>The college welcomes sponsorships and partnerships from anyone who wants to back that ambition — sports kit, travel costs, or academic equipment all move the same goal forward.</p>
+    </div>
+  </div>
+</section>
+
+<section class="director">
+  <div class="wrap grid">
+    <figure>
+      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Prof Caleb Simango, Director">
+      <figcaption>Director<b>Prof Caleb Simango</b></figcaption>
+    </figure>
+    <div>
+      <blockquote>"Kenny Technologies Group of Colleges has emerged as an icon for Chipinge and Manicaland — in sport and in academics. Every organiser, coach and player behind these results has our appreciation, and our next target is already set."</blockquote>
+      <div class="attrib">— Prof Caleb Simango, on the college's 2024–2025 season</div>
+    </div>
+  </div>
+</section>
+
+<section class="values reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">01</span><h2>What we hold to</h2><span class="sub">across both campuses</span></div>
+    <div class="values-grid">
+      <div class="value">
+        <div class="idx">i</div>
+        <h4>Full subject coverage</h4>
+        <p>Every subject on the Form 1–6 timetable is taught on-site, not outsourced or dropped when enrolment is small.</p>
+      </div>
+      <div class="value">
+        <div class="idx">ii</div>
+        <h4>Sport treated as serious</h4>
+        <p>Netball and volleyball are coached with the same rigour as an exam subject — which is where the trophies come from.</p>
+      </div>
+      <div class="value">
+        <div class="idx">iii</div>
+        <h4>A technical track for those who want it</h4>
+        <p>Computer Science and HEXCO courses give students a route into technical careers alongside the academic curriculum.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="honour reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">02</span><h2>Full roll of honour</h2><span class="sub">2023 – 2025</span></div>
+    <div class="honour-table">
+      {% for a in achievements %}
+      <div class="h-row">
+        <div class="yr">{{ a.year }}</div>
+        <div class="desc"><h4>{{ a.title }}</h4><p>{{ a.detail }}</p></div>
+        <div class="badge {{ 'win' if a.win }}">{{ a.badge }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta reveal band-red">
+  <div class="wrap">
+    <div class="box">
+      <h3>Sponsorships and partnerships welcome.</h3>
+      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Talk to the director's office</a></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+[
+  {
+    "file": "gallery-1.jpg",
+    "caption": "Kenny Academy Queens at Buffalo Range Airport, departing for the National Games in Kadoma.",
+    "cat": "sports"
+  },
+  {
+    "file": "gallery-4.jpg",
+    "caption": "Team Kenny — student delegation travelling to the National Games, credentials on.",
+    "cat": "sports"
+  },
+  {
+    "file": "gallery-5.jpg",
+    "caption": "Kenny Academy Rimai students representing the college off campus.",
+    "cat": "campus"
+  },
+  {
+    "file": "gallery-2.jpg",
+    "caption": "Physics practical — building and calibrating a catapult to study projectile motion, trophies from the National Games on the bench.",
+    "cat": "academic"
+  },
+  {
+    "file": "gallery-3.jpg",
+    "caption": "Measuring launch angle during a mechanics demonstration in the Physics lab.",
+    "cat": "academic"
+  },
+  {
+    "file": "director.jpg",
+    "caption": "Prof Caleb Simango, Director, Kenny Technologies Group of Colleges.",
+    "cat": "campus"
+  }
+]

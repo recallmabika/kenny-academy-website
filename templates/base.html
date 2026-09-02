@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Kenny Academy{% endblock %} — Chipinge, Zimbabwe</title>
+<meta name="description" content="Kenny Academy — Form 1 to 6, Computer Science &amp; HEXCO courses, full-time, extra, holiday and adult lessons. Rimbi &amp; Rimai campuses, Chipinge.">
+<link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="brand" href="{{ url_for('home') }}">
+      <svg class="mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="39" height="39" fill="none" stroke="#1b1512" stroke-width="1"/>
+        <path d="M8 8 V32 M8 20 L24 8 M13.5 20 L24 32" fill="none" stroke="#9c1a24" stroke-width="2.4" stroke-linecap="square"/>
+        <path d="M29 8 V32" stroke="#1b1512" stroke-width="2.4"/>
+      </svg>
+      <span class="name"><b>Kenny</b> Academy<span>KENNY TECHNOLOGIES GROUP OF COLLEGES</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="mainnav" id="siteNav">
+      <a href="{{ url_for('home') }}" class="{{ 'active' if active=='home' else '' }}"><span class="fill"></span><span class="t">Home</span></a>
+      <a href="{{ url_for('about') }}" class="{{ 'active' if active=='about' else '' }}"><span class="fill"></span><span class="t">About</span></a>
+      <a href="{{ url_for('curriculum') }}" class="{{ 'active' if active=='curriculum' else '' }}"><span class="fill"></span><span class="t">Curriculum</span></a>
+      <a href="{{ url_for('gallery') }}" class="{{ 'active' if active=='gallery' else '' }}"><span class="fill"></span><span class="t">Gallery</span></a>
+      <a href="{{ url_for('contact') }}" class="{{ 'active' if active=='contact' else '' }}"><span class="fill"></span><span class="t">Contact</span></a>
+    </nav>
+  </div>
+</header>
+
+{% block content %}{% endblock %}
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div class="brand-col">
+        <span class="name"><b>Kenny</b> Academy</span>
+        <p>Kenny Technologies Group of Colleges — Form 1 to 6, Computer Science &amp; HEXCO courses, across the Rimbi and Rimai campuses in Chipinge.</p>
+      </div>
+      <div>
+        <h5>SITE</h5>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('curriculum') }}">Curriculum</a>
+        <a href="{{ url_for('gallery') }}">Gallery</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+      </div>
+      <div>
+        <h5>CAMPUSES</h5>
+        <a href="{{ url_for('about') }}">Kenny Academy — Rimbi</a>
+        <a href="{{ url_for('about') }}">Kenny Academy — Rimai</a>
+      </div>
+      <div>
+        <h5>REACH US</h5>
+        <a href="tel:+263783938489">+263 78 393 8489</a>
+        <a href="https://www.facebook.com/ndauambassadorzw" target="_blank" rel="noopener">Facebook</a>
+        <a href="{{ url_for('contact') }}">Send an inquiry</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>Chipinge, Manicaland, Zimbabwe</span>
+      <span>Kenny Technologies Group of Colleges, {{ current_year }}</span>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

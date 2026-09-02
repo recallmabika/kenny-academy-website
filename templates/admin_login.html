@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Kenny Academy</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="admin-wrap">
+  <h1 style="font-size:24px; margin-bottom:6px;">Kenny Academy — CMS</h1>
+  <p style="color:var(--ink-50); font-size:12.5px;">Sign in to manage achievements and gallery photos.</p>
+  {% if error %}<div class="flash" style="margin-top:20px;">{{ error }}</div>{% endif %}
+  <form method="POST">
+    <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" required autofocus></div>
+    <button type="submit" class="btn primary">Sign in</button>
+  </form>
+</div>
+</body>
+</html>

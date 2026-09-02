@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Kenny Academy{% endblock %}
+{% block content %}
+
+<section class="hero-slideshow">
+  <div class="hero-slides" aria-hidden="true">
+    <div class="slide active" style="background-image:url({{ url_for('static', filename='img/gallery-2.jpg') }})"></div>
+    <div class="slide" style="background-image:url({{ url_for('static', filename='img/gallery-1.jpg') }})"></div>
+    <div class="slide" style="background-image:url({{ url_for('static', filename='img/gallery-3.jpg') }})"></div>
+    <div class="slide" style="background-image:url({{ url_for('static', filename='img/gallery-4.jpg') }})"></div>
+  </div>
+  <div class="hero-scrim"></div>
+  <div class="hero-inner">
+    <div class="grid">
+      <div>
+        <div class="eyebrow"><span class="stamp">Form 1–6</span><span>Rimbi &amp; Rimai campuses, Chipinge</span></div>
+        <h1 class="display"><span class="wave">Expand your horizon.</span></h1>
+        <p class="dek">Full-time, extra, holiday and adult lessons in every subject, plus Computer Science and HEXCO courses — taught by a college that shows up on the register and on the scoreboard.</p>
+        <div class="actions">
+          <a href="{{ url_for('contact') }}" class="btn primary">Enrol a student</a>
+          <a href="{{ url_for('curriculum') }}" class="btn">See the curriculum</a>
+        </div>
+      </div>
+      <div class="admit-card">
+        <div class="head"><span>ADMISSIONS LEDGER</span><span>2026</span></div>
+        <div class="rows">
+          <div class="row"><span class="k">Levels offered</span><span class="v">Form 1 – 6</span></div>
+          <div class="row"><span class="k">Lesson types</span><span class="v">Full-time · Extra · Holiday · Adult</span></div>
+          <div class="row"><span class="k">Specialist track</span><span class="v">Computer Science · HEXCO</span></div>
+          <div class="row"><span class="k">Campuses</span><span class="v">Rimbi &amp; Rimai</span></div>
+          <div class="row"><span class="k">Enquiries</span><span class="v">+263 78 393 8489</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>SCROLL</span><span class="ln"></span></div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="track">
+    <span class="item"><span class="dot"></span>U17 Netball — 2nd place, National Games 2025</span>
+    <span class="item"><span class="dot"></span>Netball U15 — Trophy, National Games 2024</span>
+    <span class="item"><span class="dot"></span>Volleyball U17 — Trophy, National Games 2024</span>
+    <span class="item"><span class="dot"></span>Loreen Chipadza — Volleyball Woman of the Tournament</span>
+    <span class="item"><span class="dot"></span>Eustina Simango — Netball Golden Hand</span>
+    <span class="item"><span class="dot"></span>Eunice Hungwe — Player of the Tournament</span>
+  </div>
+</div>
+
+<section class="scoreboard reveal band-red">
+  <div class="wrap">
+    <div class="head"><span class="num">01</span><h2>The scoreboard</h2><span class="sub">as it stands, 2025</span></div>
+    <div class="board">
+      <div class="tally"><div class="n" data-count="{{ stats.trophies }}">0</div><div class="label">Trophies &amp; certificates since 2023</div></div>
+      <div class="tally"><div class="n" data-count="{{ stats.individual_awards }}">0</div><div class="label">Individual player awards</div></div>
+      <div class="tally"><div class="n" data-count="2">0</div><div class="label">Campuses — Rimbi &amp; Rimai</div></div>
+      <div class="tally"><div class="n" data-count="6">0<small>/6</small></div><div class="label">Forms taught, 1 through 6</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="programmes reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">02</span><h2>What's on offer</h2><span class="sub">academics, technology, timing</span></div>
+    <div class="prog-grid">
+      <div class="prog">
+        <div class="tag"><span class="sq"></span>Academics</div>
+        <h3>Form 1 to Form 6</h3>
+        <p>A full academic programme across the ordinary and advanced level, covering every subject on the timetable.</p>
+        <ul>
+          <li>All O-Level &amp; A-Level subjects</li>
+          <li>Continuous assessment &amp; mock exams</li>
+        </ul>
+      </div>
+      <div class="prog">
+        <div class="tag"><span class="sq"></span>Technology</div>
+        <h3>Computer Science &amp; HEXCO</h3>
+        <p>Dedicated computer science teaching alongside HEXCO computer courses, for students building toward a technical career.</p>
+        <ul>
+          <li>All HEXCO Computer courses</li>
+          <li>Practical, lab-based teaching</li>
+        </ul>
+      </div>
+      <div class="prog">
+        <div class="tag"><span class="sq"></span>Flexibility</div>
+        <h3>Lessons on your schedule</h3>
+        <p>Full-time enrolment, extra lessons for a subject you're behind on, holiday lessons, and a dedicated adult school.</p>
+        <ul>
+          <li>Full-time, extra &amp; holiday classes</li>
+          <li>Adult school for returning learners</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="honour reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">03</span><h2>Roll of honour</h2><span class="sub"><a href="{{ url_for('about') }}" style="border-bottom:1px solid var(--red)">full history →</a></span></div>
+    <div class="honour-table">
+      {% for a in achievements[:5] %}
+      <div class="h-row">
+        <div class="yr">{{ a.year }}</div>
+        <div class="desc"><h4>{{ a.title }}</h4><p>{{ a.detail }}</p></div>
+        <div class="badge {{ 'win' if a.win }}">{{ a.badge }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="director">
+  <div class="wrap grid">
+    <figure>
+      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Prof Caleb Simango, Director">
+      <figcaption>Director<b>Prof Caleb Simango</b></figcaption>
+    </figure>
+    <div>
+      <blockquote>"Our sports organisers, coaches and players have worked for every trophy on this shelf — and we're aiming for more, starting with defending our Under 15 netball title next term."</blockquote>
+      <div class="attrib">— Prof Caleb Simango, Director, Kenny Technologies Group of Colleges</div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-strip reveal">
+  <div class="wrap">
+    <div class="head"><span class="num">04</span><h2>From the campus</h2><span class="sub"><a href="{{ url_for('gallery') }}" style="border-bottom:1px solid var(--red)">full gallery →</a></span></div>
+    <div class="g-grid">
+      {% for g in gallery[:4] %}
+      <div class="g-item">
+        <img src="{{ url_for('static', filename='img/' ~ g.file) }}" alt="{{ g.caption }}" loading="lazy">
+        <div class="cap">{{ g.caption }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta reveal band-red">
+  <div class="wrap">
+    <div class="box">
+      <h3>Ready to enrol, or want to sponsor the next tournament?</h3>
+      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Get in touch</a></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
