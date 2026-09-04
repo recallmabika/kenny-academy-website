@@ -24,8 +24,13 @@
   {% endif %}
   <form method="POST" class="space-y-4">
     <div>
+      <label for="username" class="block text-[11px] uppercase tracking-wide opacity-60 mb-1">Username</label>
+      <input id="username" name="username" type="text" required autofocus autocomplete="username"
+             class="w-full border border-[#e5e0dd] dark:border-[#2c2622] bg-transparent px-3 py-2 text-[13px] focus:outline-none focus:border-[--red]">
+    </div>
+    <div>
       <label for="password" class="block text-[11px] uppercase tracking-wide opacity-60 mb-1">Password</label>
-      <input id="password" name="password" type="password" required autofocus
+      <input id="password" name="password" type="password" required autocomplete="current-password"
              class="w-full border border-[#e5e0dd] dark:border-[#2c2622] bg-transparent px-3 py-2 text-[13px] focus:outline-none focus:border-[--red]" style="">
     </div>
     <button type="submit" class="btn primary w-full" style="padding:10px 16px; font-size:12px;">Sign in</button>

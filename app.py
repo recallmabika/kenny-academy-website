@@ -43,6 +43,7 @@ CONTENT_FILE = os.path.join(DATA_DIR, "content.json")
 SETTINGS_FILE = os.path.join(DATA_DIR, "settings.json")
 SUBSCRIBERS_FILE = os.path.join(DATA_DIR, "subscribers.json")
 
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "kenny2026")
 ALLOWED_EXT = {"png", "jpg", "jpeg", "webp", "svg"}
 
@@ -339,10 +340,11 @@ def admin_login():
         return redirect(url_for("admin_page", page="home"))
     error = None
     if request.method == "POST":
-        if request.form.get("password") == ADMIN_PASSWORD:
+        if (request.form.get("username", "").strip() == ADMIN_USERNAME
+                and request.form.get("password") == ADMIN_PASSWORD):
             session["admin"] = True
             return redirect(url_for("admin_page", page="home"))
-        error = "Incorrect password."
+        error = "Incorrect username or password."
     return render_template("admin_login.html", error=error)
 
 
