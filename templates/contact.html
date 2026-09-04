@@ -2,47 +2,77 @@
 {% block title %}Contact{% endblock %}
 {% block content %}
 
-<section class="page-hero">
-  <div class="split">
-    <div class="ph-text">
-      <div class="kicker"><span class="ln"></span>Contact</div>
-      <h1>Enrolments, sponsorships, and everything between.</h1>
-      <p>Reach the director's office directly, or send an inquiry below and we'll get back to you by phone or email.</p>
+<!-- CONTACT HERO -->
+<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] w-full">
+    <div class="flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-16 sm:py-20">
+      <div class="flex items-center gap-2 text-[11px] font-mono tracking-widest text-brand-red uppercase mb-4">
+        <span class="w-6 h-[1px] bg-brand-red"></span>
+        Contact
+      </div>
+      <h1 class="font-serif text-[32px] sm:text-[42px] md:text-[48px] text-ink dark:text-white leading-[1.1] max-w-[16ch]">
+        Enrolments, sponsorships, and everything between.
+      </h1>
+      <p class="mt-5 max-w-[50ch] text-[13.5px] sm:text-[14px] text-ink-70 dark:text-white/70 font-mono leading-relaxed">
+        Reach the director's office directly, or send an inquiry below and we'll get back to you by phone or email.
+      </p>
     </div>
-    <div class="ph-image">
-      <img src="{{ url_for('static', filename='img/gallery-5.jpg') }}" alt="Kenny Academy campus">
+    <div class="ph-image relative overflow-hidden min-h-[300px] lg:min-h-full perspective-1600 order-first lg:order-last">
+      <img src="{{ url_for('static', filename='img/gallery-5.jpg') }}" alt="Kenny Academy campus"
+           class="w-full h-full object-cover transition-transform duration-1000">
+      <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none"></div>
     </div>
   </div>
 </section>
 
-<section class="contact-band">
-  <div class="wrap contact-grid">
+<!-- CONTACT REACH & FORM -->
+<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
     <div>
-      <h2>Get in touch</h2>
-      <p class="dek">Whether it's a Form 1 enrolment, a question about HEXCO courses, or a sponsorship for the next National Games trip — this reaches the college directly.</p>
-      <div class="reach">
-        <div class="row"><span class="k">Phone / WhatsApp</span><a href="tel:{{ settings.phone|replace(' ', '') }}">{{ settings.phone }}</a></div>
-        {% if settings.facebook %}<div class="row"><span class="k">Facebook</span><a href="{{ settings.facebook }}" target="_blank" rel="noopener">{{ settings.group_name }}</a></div>{% endif %}
-        <div class="row"><span class="k">Location</span><span class="k" style="color:var(--ink)">{{ settings.address }}</span></div>
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white mb-4">Get in touch</h2>
+      <p class="font-mono text-[13px] text-ink-70 dark:text-white/70 leading-relaxed max-w-[44ch]">
+        Whether it's a Form 1 enrolment, a question about HEXCO courses, or a sponsorship for the next National Games trip — this reaches the college directly.
+      </p>
+
+      <div class="mt-8 border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10 font-mono text-[12.5px]">
+        <div class="py-4 flex justify-between items-center">
+          <span class="text-ink-50 dark:text-white/50">Phone / WhatsApp</span>
+          <a href="tel:{{ settings.phone|replace(' ', '') }}" class="text-brand-red font-medium hover:underline">{{ settings.phone }}</a>
+        </div>
+        {% if settings.facebook %}
+        <div class="py-4 flex justify-between items-center">
+          <span class="text-ink-50 dark:text-white/50">Facebook</span>
+          <a href="{{ settings.facebook }}" target="_blank" rel="noopener" class="text-brand-red font-medium hover:underline">{{ settings.group_name }} ↗</a>
+        </div>
+        {% endif %}
+        <div class="py-4 flex justify-between items-center">
+          <span class="text-ink-50 dark:text-white/50">Location</span>
+          <span class="text-ink dark:text-white text-right font-medium">{{ settings.address }}</span>
+        </div>
       </div>
 
-      {% if submitted %}
-      <div class="flash ok" style="margin-top:28px;">Thank you — your inquiry has been received. We'll respond by phone or email shortly.</div>
-      {% endif %}
+      <div id="contactAjaxAlert" class="{{ 'block' if submitted else 'hidden' }} mt-8 p-4 border border-brand-red bg-brand-red/10 text-brand-red font-mono text-[12.5px]">
+        Thank you — your inquiry has been received. We'll respond by phone or email shortly.
+      </div>
     </div>
 
-    <form class="inquiry" id="inquiryForm" method="POST" action="{{ url_for('contact') }}">
-      <div class="field">
-        <label for="name">Full name</label>
-        <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+    <!-- Inquiry Form -->
+    <form class="space-y-5 bg-white dark:bg-[#1c1613] p-6 sm:p-8 border border-black/10 dark:border-white/10 shadow-sm"
+          id="inquiryForm" method="POST" action="{{ url_for('contact') }}">
+      <div>
+        <label for="name" class="block text-[11px] font-mono uppercase tracking-wider text-ink-50 dark:text-white/50 mb-2">Full name</label>
+        <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required
+               class="w-full bg-transparent border border-black/15 dark:border-white/20 px-3.5 py-3 font-mono text-[13px] text-ink dark:text-white focus:outline-none focus:border-brand-red transition-colors">
       </div>
-      <div class="field">
-        <label for="phone">Phone or email</label>
-        <input id="phone" name="phone" type="text" placeholder="How should we reach you?" required>
+      <div>
+        <label for="phone" class="block text-[11px] font-mono uppercase tracking-wider text-ink-50 dark:text-white/50 mb-2">Phone or email</label>
+        <input id="phone" name="phone" type="text" placeholder="How should we reach you?" required
+               class="w-full bg-transparent border border-black/15 dark:border-white/20 px-3.5 py-3 font-mono text-[13px] text-ink dark:text-white focus:outline-none focus:border-brand-red transition-colors">
       </div>
-      <div class="field">
-        <label for="reason">This is about</label>
-        <select id="reason" name="reason">
+      <div>
+        <label for="reason" class="block text-[11px] font-mono uppercase tracking-wider text-ink-50 dark:text-white/50 mb-2">This is about</label>
+        <select id="reason" name="reason"
+                class="w-full bg-white dark:bg-[#1c1613] border border-black/15 dark:border-white/20 px-3.5 py-3 font-mono text-[13px] text-ink dark:text-white focus:outline-none focus:border-brand-red transition-colors">
           <option>Enrolment — Form 1–6</option>
           <option>Computer Science / HEXCO courses</option>
           <option>Extra, holiday or adult lessons</option>
@@ -50,27 +80,36 @@
           <option>Something else</option>
         </select>
       </div>
-      <div class="field">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Tell us what you need..." required></textarea>
+      <div>
+        <label for="message" class="block text-[11px] font-mono uppercase tracking-wider text-ink-50 dark:text-white/50 mb-2">Message</label>
+        <textarea id="message" name="message" rows="4" placeholder="Tell us what you need..." required
+                  class="w-full bg-transparent border border-black/15 dark:border-white/20 px-3.5 py-3 font-mono text-[13px] text-ink dark:text-white focus:outline-none focus:border-brand-red transition-colors resize-y"></textarea>
       </div>
-      <div class="submit-row">
-        <button type="submit" class="btn primary submit-btn">Send inquiry</button>
-        <span class="form-note">We reply within one working day.</span>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
+        <button type="submit" class="submit-btn px-6 py-3.5 bg-brand-red text-white text-[12px] font-bold tracking-widest uppercase hover:bg-ink dark:hover:bg-white dark:hover:text-ink transition-colors shadow-md shrink-0">
+          Send inquiry
+        </button>
+        <span class="text-[11px] font-mono text-ink-50 dark:text-white/50">We reply within one working day.</span>
       </div>
     </form>
   </div>
 </section>
 
-<section class="campus-map">
-  <div class="wrap">
-    <div class="head"><h2>Campuses</h2><span class="sub">both in {{ settings.address.split(',')[0] }}</span></div>
-    <div class="campus-cards">
+<!-- CAMPUSES OVERVIEW -->
+<section class="py-16 sm:py-24 bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Campuses</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">both in {{ settings.address.split(',')[0] }}</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {% for campus in settings.campuses %}
-      <div class="campus-card">
-        <div class="tag">CAMPUS {{ loop.index }}</div>
-        <h4>{{ campus }}</h4>
-        <p>{% if loop.first %}Full-time Form 1–6 academics, extra and holiday lessons.{% else %}Form 1–6 academics alongside Computer Science and HEXCO courses.{% endif %}</p>
+      <div class="bg-[#faf8f6] dark:bg-[#1c1613] p-8 border-t-2 border-ink dark:border-white/40 shadow-sm">
+        <div class="text-[10.5px] font-mono tracking-widest uppercase text-brand-red font-bold mb-2">Campus {{ loop.index }}</div>
+        <h4 class="font-serif text-[20px] text-ink dark:text-white mb-3">{{ campus }}</h4>
+        <p class="font-mono text-[12.5px] text-ink-70 dark:text-white/70 leading-relaxed">
+          {% if loop.first %}Full-time Form 1–6 academics, extra and holiday lessons.{% else %}Form 1–6 academics alongside Computer Science and HEXCO courses.{% endif %}
+        </p>
       </div>
       {% endfor %}
     </div>
@@ -78,3 +117,4 @@
 </section>
 
 {% endblock %}
+

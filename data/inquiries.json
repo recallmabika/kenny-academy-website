@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "when": "2026-09-04 22:48",
+    "name": "Test User",
+    "phone": "0771234567",
+    "reason": "Enrolment — Form 1–6",
+    "message": "Test inquiry"
+  }
+]

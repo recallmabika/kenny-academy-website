@@ -2,90 +2,134 @@
 {% block title %}Curriculum{% endblock %}
 {% block content %}
 
-<section class="page-hero">
-  <div class="split">
-    <div class="ph-text">
-      <div class="kicker"><span class="ln"></span>{{ content.hero.kicker }}</div>
-      <h1>{{ content.hero.title }}</h1>
-      <p>{{ content.hero.body }}</p>
+<!-- CURRICULUM HERO -->
+<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] w-full">
+    <div class="flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-16 sm:py-20">
+      <div class="flex items-center gap-2 text-[11px] font-mono tracking-widest text-brand-red uppercase mb-4">
+        <span class="w-6 h-[1px] bg-brand-red"></span>
+        {{ content.hero.kicker }}
+      </div>
+      <h1 class="font-serif text-[32px] sm:text-[42px] md:text-[48px] text-ink dark:text-white leading-[1.1] max-w-[15ch]">
+        {{ content.hero.title }}
+      </h1>
+      <p class="mt-5 max-w-[50ch] text-[13.5px] sm:text-[14px] text-ink-70 dark:text-white/70 font-mono leading-relaxed">
+        {{ content.hero.body }}
+      </p>
     </div>
-    <div class="ph-image">
-      <img src="{{ url_for('static', filename='img/gallery-4.jpg') }}" alt="Students in a lesson">
-    </div>
-  </div>
-</section>
-
-<section class="forms-band reveal">
-  <div class="wrap">
-    <div class="head"><h2>Levels taught</h2><span class="sub">Form 1 – 6</span></div>
-    <div class="forms-strip">
-      <div class="form-cell"><div class="f">1</div><div class="t">ZJC</div></div>
-      <div class="form-cell"><div class="f">2</div><div class="t">ZJC EXAM</div></div>
-      <div class="form-cell"><div class="f">3</div><div class="t">O-LEVEL</div></div>
-      <div class="form-cell"><div class="f">4</div><div class="t">O-LEVEL EXAM</div></div>
-      <div class="form-cell"><div class="f">5</div><div class="t">A-LEVEL</div></div>
-      <div class="form-cell"><div class="f">6</div><div class="t">A-LEVEL EXAM</div></div>
+    <div class="ph-image relative overflow-hidden min-h-[300px] lg:min-h-full perspective-1600 order-first lg:order-last">
+      <img src="{{ url_for('static', filename='img/gallery-4.jpg') }}" alt="Students in a lesson"
+           class="w-full h-full object-cover transition-transform duration-1000">
+      <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none"></div>
     </div>
   </div>
 </section>
 
-<section class="subjects reveal">
-  <div class="wrap">
-    <div class="head"><h2>All subjects offered</h2><span class="sub">O-Level &amp; A-Level</span></div>
-    <div class="subject-grid">
-      {% for s in subjects %}
-      <div class="subject"><span class="sq"></span>{{ s }}</div>
+<!-- LEVELS TAUGHT STRIP -->
+<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Levels taught</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">Form 1 – 6</span>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+      {% set forms = [
+        ('1', 'ZJC'),
+        ('2', 'ZJC EXAM'),
+        ('3', 'O-LEVEL'),
+        ('4', 'O-LEVEL EXAM'),
+        ('5', 'A-LEVEL'),
+        ('6', 'A-LEVEL EXAM')
+      ] %}
+      {% for f, label in forms %}
+      <div class="bg-ink dark:bg-[#1c1613] text-white p-6 sm:p-7 text-center hover:bg-brand-red transition-colors duration-200 cursor-default group border border-white/5">
+        <div class="font-serif text-[32px] sm:text-[36px] font-semibold leading-none group-hover:scale-105 transition-transform">{{ f }}</div>
+        <div class="font-mono text-[10px] tracking-wider uppercase mt-2.5 text-white/75">{{ label }}</div>
+      </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<section class="cs-band reveal">
-  <div class="wrap grid">
+<!-- SUBJECTS OFFERED -->
+<section class="py-16 sm:py-20 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">All subjects offered</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">O-Level &amp; A-Level</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+      {% for s in subjects %}
+      <div class="group bg-white dark:bg-[#1c1613] p-4 sm:p-5 flex items-center gap-3 border border-black/5 dark:border-white/5 hover:bg-brand-red hover:text-white transition-all duration-150 shadow-sm cursor-default">
+        <span class="w-2 h-2 bg-brand-red group-hover:bg-white shrink-0 transition-colors"></span>
+        <span class="font-mono text-[12.5px] text-ink dark:text-white/90 group-hover:text-white font-medium">{{ s }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CS & HEXCO CERTIFICATION -->
+<section class="py-16 sm:py-20 bg-ink dark:bg-black text-white border-y border-white/10">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
     <div>
-      <h2>{{ content.cs_hexco.heading }}</h2>
-      <p>{{ content.cs_hexco.body }}</p>
-      <div class="chips">
+      <h2 class="font-serif text-[28px] sm:text-[34px] text-white mb-4 leading-tight">{{ content.cs_hexco.heading }}</h2>
+      <p class="font-mono text-[13.5px] text-white/75 leading-relaxed mb-6">{{ content.cs_hexco.body }}</p>
+      <div class="flex flex-wrap gap-2.5">
         {% for chip in content.cs_hexco.chips %}
-        <span class="chip">{{ chip }}</span>
+        <span class="border border-white/25 px-4 py-2 text-[11.5px] font-mono tracking-wide text-white/90 hover:border-brand-red hover:bg-brand-red/15 transition-all">
+          {{ chip }}
+        </span>
         {% endfor %}
       </div>
     </div>
-    <div class="hexco-card">
-      <div class="top"><span>PROGRAMME</span><span>HEXCO CERTIFIED</span></div>
-      <h4>All HEXCO Computer Courses</h4>
-      <ul>
-        <li>Nationally recognised HEXCO certification</li>
-        <li>Open to Form 1–6 students and adult learners</li>
-        <li>Practical, lab-based instruction</li>
-        <li>Runs alongside full-time academics or standalone</li>
+    <div class="border border-white/20 p-6 sm:p-8 bg-white/5">
+      <div class="flex justify-between items-center text-[10.5px] font-mono uppercase tracking-widest text-white/60 mb-4 pb-2 border-b border-white/10">
+        <span>Programme</span>
+        <span class="text-brand-red font-bold">HEXCO Certified</span>
+      </div>
+      <h4 class="font-serif text-[20px] sm:text-[22px] text-white mb-4">All HEXCO Computer Courses</h4>
+      <ul class="space-y-3 font-mono text-[12.5px] text-white/80 divide-y divide-white/10">
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Nationally recognised HEXCO certification</li>
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Open to Form 1–6 students and adult learners</li>
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Practical, hands-on lab instruction</li>
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Runs alongside full-time academics or standalone</li>
       </ul>
     </div>
   </div>
 </section>
 
-<section class="lesson-types reveal">
-  <div class="wrap">
-    <div class="head"><h2>Lesson types &amp; timing</h2><span class="sub">choose what fits</span></div>
-    <div class="lt-table">
+<!-- LESSON TYPES & TIMING -->
+<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Lesson types &amp; timing</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">choose what fits</span>
+    </div>
+    <div class="border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10">
       {% for lt in content.lesson_types %}
-      <div class="lt-row">
-        <div class="name">{{ lt.name }}</div>
-        <div class="desc">{{ lt.desc }}</div>
-        <div class="when">{{ lt.when }}</div>
+      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[180px_1fr_160px] gap-3 sm:gap-6 items-center hover:bg-brand-red/5 transition-colors">
+        <div class="font-serif text-[18px] text-ink dark:text-white font-medium">{{ lt.name }}</div>
+        <div class="font-mono text-[12.5px] text-ink-70 dark:text-white/70">{{ lt.desc }}</div>
+        <div class="sm:text-right font-mono text-[11.5px] font-bold text-brand-red">{{ lt.when }}</div>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<section class="cta reveal band-red">
-  <div class="wrap">
-    <div class="box">
-      <h3>Find the right lesson type for your child, or for yourself.</h3>
-      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Ask about enrolment</a></div>
-    </div>
+<!-- CTA BANNER -->
+<section class="py-16 sm:py-20 bg-brand-red text-white">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+    <h3 class="font-serif text-[26px] sm:text-[32px] max-w-[24ch] leading-snug text-white">
+      Find the right lesson type for your child, or for yourself.
+    </h3>
+    <a href="{{ url_for('contact') }}" data-nav
+       class="px-8 py-4 bg-white text-brand-red hover:bg-ink hover:text-white text-[12px] font-bold tracking-widest uppercase transition-all duration-150 shadow-xl shrink-0">
+      Ask about enrolment
+    </a>
   </div>
 </section>
 
 {% endblock %}
+

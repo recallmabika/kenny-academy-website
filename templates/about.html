@@ -2,31 +2,47 @@
 {% block title %}About{% endblock %}
 {% block content %}
 
-<section class="page-hero">
-  <div class="split">
-    <div class="ph-text">
-      <div class="kicker"><span class="ln"></span>{{ content.hero.kicker }}</div>
-      <h1>{{ content.hero.title }}</h1>
-      <p>{{ content.hero.body }}</p>
+<!-- ABOUT HERO -->
+<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] w-full">
+    <div class="flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-16 sm:py-20">
+      <div class="flex items-center gap-2 text-[11px] font-mono tracking-widest text-brand-red uppercase mb-4">
+        <span class="w-6 h-[1px] bg-brand-red"></span>
+        {{ content.hero.kicker }}
+      </div>
+      <h1 class="font-serif text-[32px] sm:text-[42px] md:text-[48px] text-ink dark:text-white leading-[1.1] max-w-[15ch]">
+        {{ content.hero.title }}
+      </h1>
+      <p class="mt-5 max-w-[50ch] text-[13.5px] sm:text-[14px] text-ink-70 dark:text-white/70 font-mono leading-relaxed">
+        {{ content.hero.body }}
+      </p>
     </div>
-    <div class="ph-image">
-      <img src="{{ url_for('static', filename='img/gallery-2.jpg') }}" alt="{{ settings.school_name }} students on campus">
+    <div class="ph-image relative overflow-hidden min-h-[300px] lg:min-h-full perspective-1600 order-first lg:order-last">
+      <img src="{{ url_for('static', filename='img/gallery-2.jpg') }}" alt="{{ settings.school_name }} students on campus"
+           class="w-full h-full object-cover transition-transform duration-1000">
+      <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none"></div>
     </div>
   </div>
 </section>
 
-<section class="story reveal">
-  <div class="wrap grid">
+<!-- STORY SECTION -->
+<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
     {% for block in content.story %}
     <div>
-      <h2>{{ block.heading }}</h2>
-      {% for para in block.body.split('\n\n') %}
-      <p>{{ para }}</p>
-      {% endfor %}
+      <h2 class="font-serif text-[24px] sm:text-[28px] text-ink dark:text-white mb-5 pb-2 border-b border-black/10 dark:border-white/10">{{ block.heading }}</h2>
+      <div class="space-y-4 font-mono text-[13.5px] text-ink-70 dark:text-white/75 leading-relaxed">
+        {% for para in block.body.split('\n\n') %}
+        <p>{{ para }}</p>
+        {% endfor %}
+      </div>
       {% if loop.first and settings.campuses %}
-      <ul class="campus-list">
+      <ul class="mt-8 border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10 font-mono text-[12.5px]">
         {% for c in settings.campuses %}
-        <li><span><b>{{ c }}</b></span><span>Chipinge</span></li>
+        <li class="py-3.5 flex justify-between items-center text-ink dark:text-white">
+          <span class="font-serif text-[15px] font-medium">{{ c }}</span>
+          <span class="text-ink-50 dark:text-white/50 text-[11px] uppercase tracking-wider">Chipinge</span>
+        </li>
         {% endfor %}
       </ul>
       {% endif %}
@@ -35,56 +51,85 @@
   </div>
 </section>
 
-<section class="director">
-  <div class="wrap grid">
-    <figure>
-      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Director">
-      <figcaption>Director<b>{{ content.quote.attrib.split(',')[0] if content.quote.attrib else '' }}</b></figcaption>
+<!-- DIRECTOR SECTION -->
+<section class="py-16 sm:py-20 bg-ink dark:bg-black text-white border-y border-white/10">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10 md:gap-14 items-center">
+    <figure class="max-w-[220px] md:max-w-none mx-auto md:mx-0">
+      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Director" class="w-full grayscale-[15%] contrast-105 border border-white/20">
+      <figcaption class="pt-3 text-[11px] text-white/60 font-mono">
+        Director <b class="block font-serif text-[14px] text-white font-normal mt-0.5">{{ content.quote.attrib.split(',')[0] if content.quote.attrib else '' }}</b>
+      </figcaption>
     </figure>
     <div>
-      <blockquote>&ldquo;{{ content.quote.quote }}&rdquo;</blockquote>
-      <div class="attrib">— {{ content.quote.attrib }}</div>
+      <blockquote class="font-serif italic text-[22px] sm:text-[26px] lg:text-[28px] leading-relaxed text-white max-w-[36ch]">
+        &ldquo;{{ content.quote.quote }}&rdquo;
+      </blockquote>
+      <div class="mt-6 font-mono text-[11.5px] text-white/60 tracking-wider">
+        — {{ content.quote.attrib }}
+      </div>
     </div>
   </div>
 </section>
 
-<section class="values reveal">
-  <div class="wrap">
-    <div class="head"><h2>What we hold to</h2><span class="sub">across both campuses</span></div>
-    <div class="values-grid">
+<!-- VALUES SECTION -->
+<section class="py-16 sm:py-24 bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">What we hold to</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">across both campuses</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {% for v in content['values'] %}
-      <div class="value">
-        <div class="idx">{{ 'i' * (loop.index) if loop.index <= 3 else loop.index }}</div>
-        <h4>{{ v.title }}</h4>
-        <p>{{ v.body }}</p>
+      <div class="bg-[#faf8f6] dark:bg-[#1c1613] p-8 border-t-2 border-brand-red shadow-sm">
+        <div class="font-serif italic text-brand-red text-[28px] mb-3 leading-none">
+          {{ 'i' * (loop.index) if loop.index <= 3 else loop.index }}
+        </div>
+        <h4 class="font-serif text-[18px] text-ink dark:text-white mb-2">{{ v.title }}</h4>
+        <p class="font-mono text-[12.5px] text-ink-70 dark:text-white/70 leading-relaxed">{{ v.body }}</p>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<section class="honour reveal">
-  <div class="wrap">
-    <div class="head"><h2>Full roll of honour</h2><span class="sub">2023 – {{ current_year }}</span></div>
-    <div class="honour-table">
+<!-- FULL ROLL OF HONOUR -->
+<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Full roll of honour</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">2023 – {{ current_year }}</span>
+    </div>
+    <div class="border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10">
       {% for a in achievements %}
-      <div class="h-row">
-        <div class="yr">{{ a.year }}</div>
-        <div class="desc"><h4>{{ a.title }}</h4><p>{{ a.detail }}</p></div>
-        <div class="badge {{ 'win' if a.win }}">{{ a.badge }}</div>
+      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[100px_1fr_auto] gap-4 sm:gap-6 items-center hover:bg-brand-red/5 transition-colors duration-150">
+        <div class="font-serif text-[22px] text-brand-red font-semibold">{{ a.year }}</div>
+        <div>
+          <h4 class="font-serif text-[16px] sm:text-[17px] text-ink dark:text-white mb-1">{{ a.title }}</h4>
+          <p class="font-mono text-[12px] text-ink-70 dark:text-white/70">{{ a.detail }}</p>
+        </div>
+        <div class="sm:justify-self-end">
+          <span class="inline-block font-mono text-[10.5px] tracking-wide px-3 py-1 border {{ 'border-brand-red text-brand-red bg-brand-red/10' if a.win else 'border-ink/40 dark:border-white/40 text-ink dark:text-white' }}">
+            {{ a.badge }}
+          </span>
+        </div>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<section class="cta reveal band-red">
-  <div class="wrap">
-    <div class="box">
-      <h3>Sponsorships and partnerships welcome.</h3>
-      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Talk to the director's office</a></div>
-    </div>
+<!-- CTA -->
+<section class="py-16 sm:py-20 bg-brand-red text-white">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+    <h3 class="font-serif text-[26px] sm:text-[32px] max-w-[22ch] leading-snug text-white">
+      Sponsorships and partnerships welcome.
+    </h3>
+    <a href="{{ url_for('contact') }}" data-nav
+       class="px-8 py-4 bg-white text-brand-red hover:bg-ink hover:text-white text-[12px] font-bold tracking-widest uppercase transition-all duration-150 shadow-xl shrink-0">
+      Talk to the director's office
+    </a>
   </div>
 </section>
 
 {% endblock %}
+

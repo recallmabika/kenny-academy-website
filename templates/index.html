@@ -2,73 +2,148 @@
 {% block title %}{{ settings.school_name }}{% endblock %}
 {% block content %}
 
-<section class="hero-slideshow">
-  <div class="hero-slides" aria-hidden="true">
-    <div class="slide active" style="background-image:url({{ url_for('static', filename='img/gallery-2.jpg') }})"></div>
-    <div class="slide" style="background-image:url({{ url_for('static', filename='img/gallery-1.jpg') }})"></div>
-    <div class="slide" style="background-image:url({{ url_for('static', filename='img/gallery-3.jpg') }})"></div>
-    <div class="slide" style="background-image:url({{ url_for('static', filename='img/gallery-4.jpg') }})"></div>
+<!-- HERO SLIDESHOW SECTION -->
+<section class="relative min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-end overflow-hidden bg-ink">
+  <div class="hero-slides absolute inset-0 z-0 bg-ink" aria-hidden="true">
+    <div class="slide active absolute inset-0 bg-cover bg-center opacity-100 transition-opacity duration-1000" style="background-image:url({{ url_for('static', filename='img/gallery-2.jpg') }})"></div>
+    <div class="slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000" style="background-image:url({{ url_for('static', filename='img/gallery-1.jpg') }})"></div>
+    <div class="slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000" style="background-image:url({{ url_for('static', filename='img/gallery-3.jpg') }})"></div>
+    <div class="slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000" style="background-image:url({{ url_for('static', filename='img/gallery-4.jpg') }})"></div>
   </div>
-  <div class="hero-scrim"></div>
-  <div class="hero-inner">
-    <div class="grid">
+  <!-- Scrim overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/75 to-ink/40 z-[1]"></div>
+
+  <div class="relative z-10 w-full px-5 sm:px-10 pb-16 pt-24 max-w-[1180px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-10 sm:gap-14 items-end">
       <div>
-        <div class="eyebrow"><span class="stamp">{{ content.hero.stamp }}</span><span>{{ settings.campuses|join(' & ') }} campuses, Chipinge</span></div>
-        <h1 class="display"><span class="wave">{{ content.hero.title }}</span></h1>
-        <p class="dek">{{ content.hero.subtitle }}</p>
-        <div class="actions">
-          <a href="{{ url_for('contact') }}" class="btn primary">Enrol a student</a>
-          <a href="{{ url_for('curriculum') }}" class="btn">See the curriculum</a>
+        <div class="flex items-center gap-2.5 text-[11px] tracking-widest uppercase text-white mb-5 font-mono">
+          <span class="bg-brand-red text-white px-2 py-0.5 font-bold border border-brand-red">{{ content.hero.stamp }}</span>
+          <span class="opacity-90">{{ settings.campuses|join(' & ') }} campuses, Chipinge</span>
+        </div>
+        <h1 class="font-serif text-[34px] sm:text-[46px] md:text-[56px] lg:text-[60px] leading-[1.05] tracking-tight text-white max-w-[15ch]">
+          <span class="wave inline-block cursor-default">{{ content.hero.title }}</span>
+        </h1>
+        <p class="mt-5 max-w-[52ch] text-[13.5px] sm:text-[14.5px] text-white/80 leading-relaxed font-mono">
+          {{ content.hero.subtitle }}
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3.5">
+          <a href="{{ url_for('contact') }}" data-nav
+             class="px-6 py-3.5 bg-brand-red border border-brand-red text-white text-[12px] font-bold tracking-wide uppercase hover:bg-white hover:text-brand-red hover:border-white transition-all duration-150 shadow-lg">
+            Enrol a student
+          </a>
+          <a href="{{ url_for('curriculum') }}" data-nav
+             class="px-6 py-3.5 bg-transparent border border-white text-white text-[12px] font-bold tracking-wide uppercase hover:bg-white hover:text-ink transition-all duration-150">
+            See the curriculum
+          </a>
         </div>
       </div>
-      <div class="admit-card">
-        <div class="head"><span>ADMISSIONS LEDGER</span><span>{{ current_year }}</span></div>
-        <div class="rows">
-          <div class="row"><span class="k">Levels offered</span><span class="v">Form 1 – 6</span></div>
-          <div class="row"><span class="k">Lesson types</span><span class="v">Full-time · Extra · Holiday · Adult</span></div>
-          <div class="row"><span class="k">Specialist track</span><span class="v">Computer Science · HEXCO</span></div>
-          <div class="row"><span class="k">Campuses</span><span class="v">{{ settings.campuses|join(' & ') }}</span></div>
-          <div class="row"><span class="k">Enquiries</span><span class="v">{{ settings.phone }}</span></div>
+
+      <!-- Admissions Ledger Card -->
+      <div class="bg-white dark:bg-[#1c1613] text-ink dark:text-[#f5f0ee] border border-black/10 dark:border-white/10 shadow-2xl transition-colors duration-150">
+        <div class="bg-brand-red text-white px-4 sm:px-5 py-3 text-[11px] tracking-widest font-mono uppercase flex justify-between items-center font-bold">
+          <span>Admissions Ledger</span>
+          <span>{{ current_year }}</span>
+        </div>
+        <div class="px-5 py-4 space-y-3 font-mono text-[12px]">
+          <div class="flex justify-between items-center gap-3 py-1 border-b border-black/10 dark:border-white/10">
+            <span class="text-ink-50 dark:text-white/50">Levels offered</span>
+            <span class="font-bold text-right">Form 1 – 6</span>
+          </div>
+          <div class="flex justify-between items-center gap-3 py-1 border-b border-black/10 dark:border-white/10">
+            <span class="text-ink-50 dark:text-white/50">Lesson types</span>
+            <span class="font-bold text-right">Full-time · Extra · Holiday · Adult</span>
+          </div>
+          <div class="flex justify-between items-center gap-3 py-1 border-b border-black/10 dark:border-white/10">
+            <span class="text-ink-50 dark:text-white/50">Specialist track</span>
+            <span class="font-bold text-right text-brand-red">Computer Science · HEXCO</span>
+          </div>
+          <div class="flex justify-between items-center gap-3 py-1 border-b border-black/10 dark:border-white/10">
+            <span class="text-ink-50 dark:text-white/50">Campuses</span>
+            <span class="font-bold text-right">{{ settings.campuses|join(' & ') }}</span>
+          </div>
+          <div class="flex justify-between items-center gap-3 py-1">
+            <span class="text-ink-50 dark:text-white/50">Enquiries</span>
+            <span class="font-bold text-right text-brand-red">{{ settings.phone }}</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="ticker" aria-hidden="true">
-  <div class="track">
-    <span class="item"><span class="dot"></span>U17 Netball — 2nd place, National Games 2025</span>
-    <span class="item"><span class="dot"></span>Netball U15 — Trophy, National Games 2024</span>
-    <span class="item"><span class="dot"></span>Volleyball U17 — Trophy, National Games 2024</span>
-    <span class="item"><span class="dot"></span>Loreen Chipadza — Volleyball Woman of the Tournament</span>
-    <span class="item"><span class="dot"></span>Eustina Simango — Netball Golden Hand</span>
-    <span class="item"><span class="dot"></span>Eunice Hungwe — Player of the Tournament</span>
+<!-- TICKER / MARQUEE -->
+<div class="bg-ink dark:bg-black text-white py-3.5 overflow-hidden border-y border-white/10 select-none" aria-hidden="true">
+  <div class="ticker animate-ticker">
+    <div class="track flex items-center gap-10 pr-10 text-[11.5px] font-mono tracking-wider whitespace-nowrap">
+      <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-brand-red shrink-0"></span>U17 Netball — 2nd place, National Games 2025</span>
+      <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-brand-red shrink-0"></span>Netball U15 — Trophy, National Games 2024</span>
+      <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-brand-red shrink-0"></span>Volleyball U17 — Trophy, National Games 2024</span>
+      <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-brand-red shrink-0"></span>Loreen Chipadza — Volleyball Woman of the Tournament</span>
+      <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-brand-red shrink-0"></span>Eustina Simango — Netball Golden Hand</span>
+      <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-brand-red shrink-0"></span>Eunice Hungwe — Player of the Tournament</span>
+    </div>
   </div>
 </div>
 
-<section class="scoreboard reveal band-red">
-  <div class="wrap">
-    <div class="head"><h2>The scoreboard</h2><span class="sub">as it stands, {{ current_year - 1 }}</span></div>
-    <div class="board">
-      <div class="tally"><div class="n" data-count="{{ stats.trophies }}">0</div><div class="label">Trophies &amp; certificates since 2023</div></div>
-      <div class="tally"><div class="n" data-count="{{ stats.individual_awards }}">0</div><div class="label">Individual player awards</div></div>
-      <div class="tally"><div class="n" data-count="{{ settings.campuses|length }}">0</div><div class="label">Campuses — {{ settings.campuses|join(' & ') }}</div></div>
-      <div class="tally"><div class="n" data-count="6">0<small>/6</small></div><div class="label">Forms taught, 1 through 6</div></div>
+<!-- SCOREBOARD (Stats in Brand Red) -->
+<section class="py-16 sm:py-20 bg-brand-red text-white">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-white/20">
+      <h2 class="font-serif text-[28px] sm:text-[34px] text-white">The scoreboard</h2>
+      <span class="font-mono text-[11px] text-white/80 uppercase tracking-wider">as it stands, {{ current_year - 1 }}</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/25 border border-white/25">
+      <div class="tally bg-brand-red p-6 sm:p-7">
+        <div class="font-serif text-[42px] sm:text-[48px] font-semibold text-white leading-none flex items-baseline gap-1.5">
+          <span class="n" data-count="{{ stats.trophies }}">0</span>
+        </div>
+        <div class="mt-2.5 font-mono text-[11px] text-white/85 tracking-wide">Trophies &amp; certificates since 2023</div>
+      </div>
+      <div class="tally bg-brand-red p-6 sm:p-7">
+        <div class="font-serif text-[42px] sm:text-[48px] font-semibold text-white leading-none flex items-baseline gap-1.5">
+          <span class="n" data-count="{{ stats.individual_awards }}">0</span>
+        </div>
+        <div class="mt-2.5 font-mono text-[11px] text-white/85 tracking-wide">Individual player awards</div>
+      </div>
+      <div class="tally bg-brand-red p-6 sm:p-7">
+        <div class="font-serif text-[42px] sm:text-[48px] font-semibold text-white leading-none flex items-baseline gap-1.5">
+          <span class="n" data-count="{{ settings.campuses|length }}">0</span>
+        </div>
+        <div class="mt-2.5 font-mono text-[11px] text-white/85 tracking-wide">Campuses — {{ settings.campuses|join(' & ') }}</div>
+      </div>
+      <div class="tally bg-brand-red p-6 sm:p-7">
+        <div class="font-serif text-[42px] sm:text-[48px] font-semibold text-white leading-none flex items-baseline gap-1.5">
+          <span class="n" data-count="6">0</span><small class="font-mono text-[13px] text-white/80 font-normal">/6</small>
+        </div>
+        <div class="mt-2.5 font-mono text-[11px] text-white/85 tracking-wide">Forms taught, 1 through 6</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="programmes reveal">
-  <div class="wrap">
-    <div class="head"><h2>What's on offer</h2><span class="sub">academics, technology, timing</span></div>
-    <div class="prog-grid">
+<!-- PROGRAMMES SECTION -->
+<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">What's on offer</h2>
+      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">academics, technology, timing</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       {% for p in content.programmes %}
-      <div class="prog">
-        <div class="tag"><span class="sq"></span>{{ p.tag }}</div>
-        <h3>{{ p.title }}</h3>
-        <p>{{ p.body }}</p>
-        <ul>
-          {% for b in p.bullets %}<li>{{ b }}</li>{% endfor %}
+      <div class="group bg-white dark:bg-[#1c1613] p-6 sm:p-8 border-t-2 border-ink dark:border-white/30 hover:border-brand-red dark:hover:border-brand-red transition-all duration-200 shadow-sm">
+        <div class="flex items-center gap-2 text-[11px] font-mono tracking-widest text-brand-red uppercase mb-4">
+          <span class="w-2 h-2 bg-brand-red shrink-0"></span>
+          {{ p.tag }}
+        </div>
+        <h3 class="font-serif text-[22px] sm:text-[24px] text-ink dark:text-white mb-3">{{ p.title }}</h3>
+        <p class="font-mono text-[12.5px] text-ink-70 dark:text-white/70 leading-relaxed mb-6">{{ p.body }}</p>
+        <ul class="space-y-2 border-t border-black/10 dark:border-white/10 pt-4 font-mono text-[12px] text-ink-70 dark:text-white/70">
+          {% for b in p.bullets %}
+          <li class="flex items-start gap-2">
+            <span class="text-brand-red select-none">—</span>
+            <span>{{ b }}</span>
+          </li>
+          {% endfor %}
         </ul>
       </div>
       {% endfor %}
@@ -76,55 +151,85 @@
   </div>
 </section>
 
-<section class="honour reveal">
-  <div class="wrap">
-    <div class="head"><h2>Roll of honour</h2><span class="sub"><a href="{{ url_for('about') }}" style="border-bottom:1px solid var(--red)">full history →</a></span></div>
-    <div class="honour-table">
+<!-- ROLL OF HONOUR PREVIEW -->
+<section class="py-16 sm:py-20 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Roll of honour</h2>
+      <a href="{{ url_for('about') }}" data-nav class="font-mono text-[12px] text-brand-red hover:underline underline-offset-4">full history →</a>
+    </div>
+    <div class="border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10">
       {% for a in achievements[:5] %}
-      <div class="h-row">
-        <div class="yr">{{ a.year }}</div>
-        <div class="desc"><h4>{{ a.title }}</h4><p>{{ a.detail }}</p></div>
-        <div class="badge {{ 'win' if a.win }}">{{ a.badge }}</div>
+      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[100px_1fr_auto] gap-4 sm:gap-6 items-center hover:bg-brand-red/5 transition-colors duration-150">
+        <div class="font-serif text-[22px] text-brand-red font-semibold">{{ a.year }}</div>
+        <div>
+          <h4 class="font-serif text-[16px] sm:text-[17px] text-ink dark:text-white mb-1">{{ a.title }}</h4>
+          <p class="font-mono text-[12px] text-ink-70 dark:text-white/70">{{ a.detail }}</p>
+        </div>
+        <div class="sm:justify-self-end">
+          <span class="inline-block font-mono text-[10.5px] tracking-wide px-3 py-1 border {{ 'border-brand-red text-brand-red bg-brand-red/10' if a.win else 'border-ink/40 dark:border-white/40 text-ink dark:text-white' }}">
+            {{ a.badge }}
+          </span>
+        </div>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<section class="director">
-  <div class="wrap grid">
-    <figure>
-      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Director">
-      <figcaption>Director<b>{{ content.quote.attrib.split(',')[0] if content.quote.attrib else '' }}</b></figcaption>
+<!-- DIRECTOR / QUOTE BAND -->
+<section class="py-16 sm:py-20 bg-ink dark:bg-black text-white border-y border-white/10">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10 md:gap-14 items-center">
+    <figure class="max-w-[220px] md:max-w-none mx-auto md:mx-0">
+      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Director" class="w-full grayscale-[15%] contrast-105 border border-white/20">
+      <figcaption class="pt-3 text-[11px] text-white/60 font-mono">
+        Director <b class="block font-serif text-[14px] text-white font-normal mt-0.5">{{ content.quote.attrib.split(',')[0] if content.quote.attrib else '' }}</b>
+      </figcaption>
     </figure>
     <div>
-      <blockquote>&ldquo;{{ content.quote.quote }}&rdquo;</blockquote>
-      <div class="attrib">— {{ content.quote.attrib }}</div>
+      <blockquote class="font-serif italic text-[22px] sm:text-[26px] lg:text-[28px] leading-relaxed text-white max-w-[36ch]">
+        &ldquo;{{ content.quote.quote }}&rdquo;
+      </blockquote>
+      <div class="mt-6 font-mono text-[11.5px] text-white/60 tracking-wider">
+        — {{ content.quote.attrib }}
+      </div>
     </div>
   </div>
 </section>
 
-<section class="gallery-strip reveal">
-  <div class="wrap">
-    <div class="head"><h2>From the campus</h2><span class="sub"><a href="{{ url_for('gallery') }}" style="border-bottom:1px solid var(--red)">full gallery →</a></span></div>
-    <div class="g-grid">
+<!-- CAMPUS GALLERY PREVIEW -->
+<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-150">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
+      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">From the campus</h2>
+      <a href="{{ url_for('gallery') }}" data-nav class="font-mono text-[12px] text-brand-red hover:underline underline-offset-4">full gallery →</a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
       {% for g in gallery[:4] %}
-      <div class="g-item">
-        <img src="{{ url_for('static', filename='img/' ~ g.file) }}" alt="{{ g.caption }}" loading="lazy">
-        <div class="cap">{{ g.caption }}</div>
+      <div class="g-item group relative aspect-[4/5] overflow-hidden bg-ink">
+        <img src="{{ url_for('static', filename='img/' ~ g.file) }}" alt="{{ g.caption }}" loading="lazy"
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="cap absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-black/85 text-white font-mono text-[11px] tracking-wide translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-200">
+          {{ g.caption }}
+        </div>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<section class="cta reveal band-red">
-  <div class="wrap">
-    <div class="box">
-      <h3>Ready to enrol, or want to sponsor the next tournament?</h3>
-      <div class="actions"><a href="{{ url_for('contact') }}" class="btn primary">Get in touch</a></div>
-    </div>
+<!-- CALL TO ACTION BANNER -->
+<section class="py-16 sm:py-20 bg-brand-red text-white">
+  <div class="max-w-[1180px] mx-auto px-5 sm:px-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+    <h3 class="font-serif text-[26px] sm:text-[32px] max-w-[22ch] leading-snug text-white">
+      Ready to enrol, or want to sponsor the next tournament?
+    </h3>
+    <a href="{{ url_for('contact') }}" data-nav
+       class="px-8 py-4 bg-white text-brand-red hover:bg-ink hover:text-white text-[12px] font-bold tracking-widest uppercase transition-all duration-150 shadow-xl shrink-0">
+      Get in touch
+    </a>
   </div>
 </section>
 
 {% endblock %}
+
