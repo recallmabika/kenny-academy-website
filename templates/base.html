@@ -125,7 +125,7 @@
         </div>
         <p class="mt-3 text-[12px] text-white/70 leading-relaxed max-w-[32ch]">{{ settings.group_name }}{% if settings.tagline %} — {{ settings.tagline }}{% endif %}</p>
 
-        <form id="footerSubscribeForm" action="{{ url_for('subscribe') }}" method="POST" class="mt-5 flex max-w-xs gap-2">
+        <form id="footerSubscribeForm" action="{{ url_for('subscribe') }}" method="POST" class="mt-8 flex max-w-lg gap-2">
           <input type="hidden" name="next" value="{{ request.path }}">
           <label for="subEmail" class="sr-only">Email address</label>
           <input id="subEmail" type="email" name="email" required placeholder="Your email"

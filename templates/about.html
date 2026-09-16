@@ -82,7 +82,7 @@
       {% for v in content['values'] %}
       <div class="bg-[#faf8f6] dark:bg-[#1c1613] p-8 border-t-2 border-brand-red shadow-sm">
         <div class="font-serif italic text-brand-red text-[28px] mb-3 leading-none">
-          {{ 'i' * (loop.index) if loop.index <= 3 else loop.index }}
+          {{ loop.index }}
         </div>
         <h4 class="font-serif text-[18px] text-ink dark:text-white mb-2">{{ v.title }}</h4>
         <p class="font-mono text-[12.5px] text-ink-70 dark:text-white/70 leading-relaxed">{{ v.body }}</p>
