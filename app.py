@@ -46,6 +46,7 @@ SUBSCRIBERS_FILE = os.path.join(DATA_DIR, "subscribers.json")
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "kenny2026")
 ALLOWED_EXT = {"png", "jpg", "jpeg", "webp", "svg"}
+DEBUG = os.environ.get("FLASK_DEBUG", os.environ.get("DEBUG", "true")).strip().lower() in ("true", "1", "yes")
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "kenny-academy-dev-secret-change-me")
@@ -200,7 +201,7 @@ def send_email(to_addr, subject, body):
     port = int(os.environ.get("SMTP_PORT", "587") or 587)
     user = os.environ.get("SMTP_USER", "").strip()
     password = os.environ.get("SMTP_PASSWORD", "")
-    sender = os.environ.get("SMTP_FROM", "info@kennyacademy.co.zw").strip() or user or "info@kennyacademy.co.zw"
+    sender = os.environ.get("SMTP_FROM", "info@kennyacademy.edunow.co.zw").strip() or user or "info@kennyacademy.edunow.co.zw"
     use_tls = os.environ.get("SMTP_USE_TLS", "true").strip().lower() != "false"
 
     msg = EmailMessage()
@@ -580,4 +581,4 @@ def admin_inquiries():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=DEBUG)
