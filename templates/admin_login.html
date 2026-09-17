@@ -4,32 +4,8 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin — {{ settings.school_name }}</title>
 <link rel="icon" href="{{ url_for('static', filename='img/' ~ settings.logo) }}">
-<script>
-  (function () {
-    var saved = localStorage.getItem('theme');
-    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (dark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  })();
-</script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          brand: { red: '#e10600', deep: '#a30500' },
-          ink: { DEFAULT: '#141110' }
-        },
-        fontFamily: {
-          serif: ['Fraunces', 'Georgia', 'serif'],
-          mono: ['Space Mono', 'ui-monospace', 'monospace']
-        }
-      }
-    }
-  };
-</script>
+<!-- Dedicated theme script loaded before paint to prevent FOUT -->
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 bg-[#faf8f6] text-[#141110] dark:bg-[#141110] dark:text-[#f5f0ee] font-mono">

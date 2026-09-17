@@ -92,30 +92,24 @@ locally without a real mailbox configured.
 
 ```
 app.py                  Flask routes, CMS data helpers, SMTP email sending
-.env.example             Documented environment variables (copy to .env)
-data/                    JSON content store (see table above)
-templates/               Jinja templates — base.html + one per public page
-templates/admin/         Sidebar CMS templates (Tailwind-based)
+.env.example            Documented environment variables (copy to .env)
+data/                   JSON content store (see table above)
+templates/              Jinja templates — base.html + one per public page
+templates/admin/        Sidebar CMS templates
 templates/admin_login.html
-static/css/style.css     Design system (vanilla CSS) + dark-mode variable overrides
-static/js/main.js        Nav toggle, theme toggle, scroll progress bar, reveals, ticker, tally count-up
-static/img/              Photos, logo mark, favicon
+static/css/input.css    Tailwind source CSS with custom component layers
+static/css/style.css    Compiled & minified production stylesheet (Tailwind + fonts)
+static/js/theme.js      Pre-paint dark/light theme initializer (FOUT prevention)
+static/js/main.js       SPA router, nav toggle, modals, tickers, counters, smooth forms
+static/js/admin.js      Admin drawer & theme toggle controller
+static/img/             Photos, logo mark, favicon
+tailwind.config.js      Tailwind configuration (custom palette, dark mode, typography)
+package.json            Tailwind scripts (`npm run build:css`, `npm run watch:css`)
 ```
 
-## Design
+## CSS & Assets
 
-The visual identity ("Roll of Honour") borrows the red margin rule
-printed down every Zimbabwean exercise book and turns it into the
-page's structural spine, paired with ledger-row achievement listings
-and a scoreboard-style stats section — grounded in the fact that this
-is a school that keeps both an exam register and a trophy shelf.
-Colours are the brief's red and white, set in Fraunces (serif display)
-and Space Mono (labels/body), with no gradients, rounded corners or
-emoji, per the brief.
-
-The public site's bespoke layout stays as hand-written CSS (custom
-properties drive both the light and dark themes); Tailwind (via CDN,
-`darkMode: 'class'`) is used for the newer additions — the dark/light
-toggle, the scroll-progress bar, the subscribe form, and the entire
-admin CMS sidebar — anywhere a utility-first approach was a better
-fit than extending the bespoke stylesheet.
+Tailwind CSS is compiled locally:
+- `npm run build:css`: Compiles and minifies `static/css/input.css` into `static/css/style.css`.
+- `npm run watch:css`: Watches template and style changes in development.
+- No runtime CDN scripts or inline CSS/JS tags are used. Dedicated external scripts handle themes (`theme.js`), the main site SPA experience (`main.js`), and CMS operations (`admin.js`).
