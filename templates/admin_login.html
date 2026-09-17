@@ -22,7 +22,7 @@
     </div>
     <p class="text-[12.5px] text-ink/70 dark:text-white/70 mb-6">Sign in to manage site content.</p>
     {% if error %}
-    <div class="border border-brand-red bg-brand-red/10 text-brand-red px-3 py-2 text-[12px] mb-4">{{ error }}</div>
+    <div class="admin-error border border-brand-red bg-brand-red/10 text-brand-red px-3 py-2 text-[12px] mb-4 transition-opacity duration-300">{{ error }}</div>
     {% endif %}
     <form method="POST" class="space-y-4">
       <div>
@@ -41,6 +41,7 @@
       </button>
     </form>
   </div>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 </body>
 </html>
 

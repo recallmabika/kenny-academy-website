@@ -17,6 +17,17 @@
 
   syncThemeIcons();
 
+  // Auto-dismiss alert/error/flash messages after 5 seconds
+  var alerts = document.querySelectorAll('.admin-flash, .admin-error');
+  alerts.forEach(function (el) {
+    setTimeout(function () {
+      el.classList.add('opacity-0');
+      setTimeout(function () {
+        el.classList.add('hidden');
+      }, 300);
+    }, 5000);
+  });
+
   if (themeToggle) {
     themeToggle.addEventListener('click', function () {
       var isDark = document.documentElement.classList.toggle('dark');

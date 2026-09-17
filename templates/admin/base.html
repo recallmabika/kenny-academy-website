@@ -87,7 +87,7 @@
 
     <div class="px-5 sm:px-8 py-6 max-w-4xl pt-24 sm:pt-28">
       {% if message %}
-      <div class="mb-6 border border-[#e10600] text-[#e10600] px-4 py-3 text-[13px]">{{ message }}</div>
+      <div class="admin-flash mb-6 border border-[#e10600] bg-[#e10600]/10 text-[#e10600] px-4 py-3 text-[13px] transition-opacity duration-300">{{ message }}</div>
       {% endif %}
       {% block admin_content %}{% endblock %}
     </div>
