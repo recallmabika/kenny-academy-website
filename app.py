@@ -27,7 +27,7 @@ from functools import wraps
 
 from dotenv import load_dotenv
 from flask import (
-    Flask, render_template, request, redirect, url_for, session
+    Flask, render_template, request, redirect, url_for, session, Response
 )
 from werkzeug.utils import secure_filename
 
@@ -272,6 +272,43 @@ def gallery():
     return render_template(
         "gallery.html", active="gallery", gallery=get_gallery()
     )
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /admin/\n\n"
+        f"Sitemap: {request.url_root.rstrip('/')}/sitemap.xml\n"
+    )
+    return Response(content, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    pages = [
+        {"loc": url_for("home", _external=True), "priority": "1.0", "changefreq": "weekly"},
+        {"loc": url_for("about", _external=True), "priority": "0.9", "changefreq": "monthly"},
+        {"loc": url_for("curriculum", _external=True), "priority": "0.9", "changefreq": "monthly"},
+        {"loc": url_for("gallery", _external=True), "priority": "0.8", "changefreq": "weekly"},
+        {"loc": url_for("contact", _external=True), "priority": "0.9", "changefreq": "monthly"},
+    ]
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    today = datetime.now().strftime("%Y-%m-%d")
+    for p in pages:
+        xml_lines.append("  <url>")
+        xml_lines.append(f"    <loc>{p['loc']}</loc>")
+        xml_lines.append(f"    <lastmod>{today}</lastmod>")
+        xml_lines.append(f"    <changefreq>{p['changefreq']}</changefreq>")
+        xml_lines.append(f"    <priority>{p['priority']}</priority>")
+        xml_lines.append("  </url>")
+    xml_lines.append("</urlset>")
+    return Response("\n".join(xml_lines), mimetype="application/xml")
 
 
 @app.route("/contact", methods=["GET", "POST"])

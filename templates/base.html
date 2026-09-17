@@ -4,8 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{{ settings.school_name }}{% endblock %} — Chipinge, Zimbabwe</title>
-<meta name="description" content="{{ settings.school_name }} — Form 1 to 6, Computer Science &amp; HEXCO courses, full-time, extra, holiday and adult lessons. {{ settings.campuses|join(' &amp; ') }} campuses, Chipinge.">
+<meta name="description" content="{% block meta_description %}{{ settings.school_name }} ({{ settings.group_name }}) — Form 1 to 6, Computer Science &amp; HEXCO courses, extra, holiday and adult lessons across the {{ settings.campuses|join(' and ') }} campuses in Chipinge, Zimbabwe.{% endblock %}">
+<meta name="keywords" content="Kenny Academy, Kenny Technologies Group of Colleges, Chipinge high school, Chipinge college, Form 1 to 6 Chipinge, HEXCO computer science Chipinge, Rimbi, Rimai, Zimbabwe schools">
+<meta name="author" content="{{ settings.school_name }}">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="{{ request.base_url }}">
+
+<!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.base_url }}">
+<meta property="og:title" content="{% block og_title %}{{ settings.school_name }} — Academic Excellence &amp; Technology{% endblock %}">
+<meta property="og:description" content="{% block og_description %}Form 1 to 6, Computer Science &amp; HEXCO courses across {{ settings.campuses|join(' and ') }} in Chipinge.{% endblock %}">
+<meta property="og:image" content="{{ url_for('static', filename='img/gallery-1.jpg', _external=True) }}">
+<meta property="og:site_name" content="{{ settings.school_name }}">
+<meta property="og:locale" content="en_ZW">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ request.base_url }}">
+<meta name="twitter:title" content="{% block twitter_title %}{{ settings.school_name }} — Chipinge, Zimbabwe{% endblock %}">
+<meta name="twitter:description" content="{% block twitter_description %}Form 1 to 6, Computer Science &amp; HEXCO courses across {{ settings.campuses|join(' and ') }} in Chipinge.{% endblock %}">
+<meta name="twitter:image" content="{{ url_for('static', filename='img/gallery-1.jpg', _external=True) }}">
+
 <link rel="icon" href="{{ url_for('static', filename='img/' ~ settings.logo) }}">
+
+<!-- Structured Data (JSON-LD) for Search Engines -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "{{ settings.school_name }}",
+  "alternateName": "{{ settings.group_name }}",
+  "description": "{{ settings.tagline }}",
+  "url": "{{ request.url_root }}",
+  "logo": "{{ url_for('static', filename='img/' ~ settings.logo, _external=True) }}",
+  "telephone": "{{ settings.phone }}",
+  "email": "{{ settings.email }}",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chipinge",
+    "addressRegion": "Manicaland",
+    "addressCountry": "ZW"
+  },
+  "sameAs": [
+    "{{ settings.facebook }}"
+  ]
+}
+</script>
+
 <!-- Dedicated theme script loaded before paint to prevent FOUT -->
 <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
