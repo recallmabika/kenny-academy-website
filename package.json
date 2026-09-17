@@ -1,0 +1,27 @@
+{
+  "name": "kenny",
+  "version": "1.0.0",
+  "description": "Flask site for Kenny Technologies Group of Colleges (Kenny Academy Rimbi & Rimai), with a full sidebar CMS for page content, site settings, a newsletter, and contact inquiries.",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --minify",
+    "watch:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recallmabika/kenny-academy-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/recallmabika/kenny-academy-website/issues"
+  },
+  "homepage": "https://github.com/recallmabika/kenny-academy-website#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.19"
+  }
+}

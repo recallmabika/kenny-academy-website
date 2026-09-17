@@ -200,7 +200,7 @@ def send_email(to_addr, subject, body):
     port = int(os.environ.get("SMTP_PORT", "587") or 587)
     user = os.environ.get("SMTP_USER", "").strip()
     password = os.environ.get("SMTP_PASSWORD", "")
-    sender = os.environ.get("SMTP_FROM", "").strip() or user or "no-reply@kennyacademy.co.zw"
+    sender = os.environ.get("SMTP_FROM", "info@kennyacademy.co.zw").strip() or user or "info@kennyacademy.co.zw"
     use_tls = os.environ.get("SMTP_USE_TLS", "true").strip().lower() != "false"
 
     msg = EmailMessage()
