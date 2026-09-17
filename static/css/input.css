@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,450;9..144,600;9..144,700&family=Fraunces:ital,opsz,wght@1,9..144,450&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Admin reusable utilities */
+  .field-label {
+    @apply block text-[11px] tracking-wider uppercase opacity-60 mb-1 font-mono;
+  }
+  .field-input {
+    @apply w-full border border-[#d8d3d0] dark:border-[#3a332f] bg-transparent px-3 py-2 text-[13px] font-mono text-ink dark:text-white transition-colors;
+  }
+  .field-input:focus {
+    @apply outline-none border-brand-red ring-1 ring-brand-red;
+  }
+  .card {
+    @apply border border-[#e5e0dd] dark:border-[#2c2622] bg-white dark:bg-[#1c1613];
+  }
+  .btn {
+    @apply inline-flex items-center justify-center font-mono font-bold uppercase tracking-wider transition-all border border-black/15 dark:border-white/20 hover:border-ink dark:hover:border-white;
+  }
+  .btn.primary {
+    @apply bg-brand-red text-white border-transparent hover:bg-ink dark:hover:bg-white dark:hover:text-ink;
+  }
+}
+
+/* Marquee / ticker animation */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 32s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* Perspective container for 3D hero image */
+.perspective-1600 {
+  perspective: 1600px;
+}

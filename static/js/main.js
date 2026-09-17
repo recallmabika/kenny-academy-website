@@ -181,18 +181,27 @@
       });
     }
 
-    // 5. Contact Form submission (AJAX with fallback)
+    // 5. Contact Form submission (Seamless AJAX with spinner animation)
     var contactForm = document.getElementById('inquiryForm');
-    if (contactForm) {
+    if (contactForm && !contactForm._bound) {
+      contactForm._bound = true;
       contactForm.addEventListener('submit', function (ev) {
         ev.preventDefault();
         var submitBtn = contactForm.querySelector('.submit-btn');
-        var originalText = submitBtn ? submitBtn.textContent : 'Send inquiry';
+        var spinner = submitBtn ? submitBtn.querySelector('.spinner') : null;
+        var label = submitBtn ? submitBtn.querySelector('.btn-label') : null;
+        var formAlert = document.getElementById('contactFormAlert');
+
         if (submitBtn) {
-          submitBtn.textContent = 'Sending…';
           submitBtn.disabled = true;
+          if (spinner) spinner.classList.remove('hidden');
+          if (label) label.textContent = 'Sending…';
+        }
+        if (formAlert) {
+          formAlert.classList.add('hidden');
         }
 
+        var alertTimeout = null;
         var formData = new FormData(contactForm);
         fetch(contactForm.action, {
           method: 'POST',
@@ -200,33 +209,115 @@
           headers: { 'X-Requested-With': 'XMLHttpRequest' }
         }).then(function (res) {
           return res.text();
-        }).then(function (html) {
-          var parser = new DOMParser();
-          var doc = parser.parseFromString(html, 'text/html');
-          var newContent = doc.getElementById('spa-content');
-          if (newContent) {
-            var container = document.getElementById('spa-content');
-            if (container) {
-              container.innerHTML = newContent.innerHTML;
-              initComponents();
-              var alertBox = document.getElementById('contactAjaxAlert');
-              if (alertBox) {
-                alertBox.classList.remove('hidden');
-                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }
-          } else {
-            contactForm.reset();
-            var alertBox = document.getElementById('contactAjaxAlert');
-            if (alertBox) alertBox.classList.remove('hidden');
+        }).then(function () {
+          contactForm.reset();
+          if (formAlert) {
+            formAlert.classList.remove('hidden', 'opacity-0');
+            formAlert.classList.add('opacity-100');
+            formAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            if (alertTimeout) clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(function () {
+              formAlert.classList.remove('opacity-100');
+              formAlert.classList.add('opacity-0');
+              setTimeout(function () {
+                formAlert.classList.add('hidden');
+              }, 300);
+            }, 5000);
           }
         }).catch(function (err) {
           console.error('Contact submission error:', err);
-          contactForm.submit(); // fallback to standard submit if fetch fails
+          if (formAlert) {
+            formAlert.textContent = '⚠ Could not submit inquiry. Please try again or reach us by phone.';
+            formAlert.classList.remove('hidden', 'opacity-0', 'border-emerald-500', 'bg-emerald-500/10', 'text-emerald-700', 'dark:text-emerald-400');
+            formAlert.classList.add('opacity-100', 'border-brand-red', 'bg-brand-red/10', 'text-brand-red');
+            if (alertTimeout) clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(function () {
+              formAlert.classList.remove('opacity-100');
+              formAlert.classList.add('opacity-0');
+              setTimeout(function () {
+                formAlert.classList.add('hidden');
+              }, 300);
+            }, 5000);
+          }
         }).finally(function () {
           if (submitBtn) {
-            submitBtn.textContent = originalText;
             submitBtn.disabled = false;
+            if (spinner) spinner.classList.add('hidden');
+            if (label) label.textContent = 'Send inquiry';
+          }
+        });
+    // 6. Footer Newsletter Subscribe (Auto-dismiss and AJAX handling)
+    var subFeedback = document.getElementById('subscribeFeedback');
+    if (subFeedback && subFeedback.querySelector('p')) {
+      setTimeout(function () {
+        subFeedback.classList.add('opacity-0');
+        setTimeout(function () {
+          subFeedback.innerHTML = '';
+          subFeedback.classList.remove('opacity-0');
+          // Clean up URL parameter (?sub=...) seamlessly without reload
+          if (window.location.search.includes('sub=')) {
+            var cleanUrl = window.location.pathname + window.location.search.replace(/[?&]sub=[^&]+/, '').replace(/^&/, '?');
+            if (cleanUrl.endsWith('?')) cleanUrl = cleanUrl.slice(0, -1);
+            window.history.replaceState({}, '', cleanUrl || window.location.pathname);
+          }
+        }, 300);
+      }, 5000);
+    }
+
+    var subscribeForm = document.getElementById('footerSubscribeForm');
+    if (subscribeForm && !subscribeForm._bound) {
+      subscribeForm._bound = true;
+      subscribeForm.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var subInput = subscribeForm.querySelector('#subEmail');
+        var subBtn = subscribeForm.querySelector('button[type="submit"]');
+        var email = subInput ? subInput.value.trim() : '';
+        if (!email) return;
+
+        var origBtnText = subBtn ? subBtn.textContent : 'Subscribe';
+        if (subBtn) {
+          subBtn.textContent = '...';
+          subBtn.disabled = true;
+        }
+
+        var formData = new FormData(subscribeForm);
+        fetch(subscribeForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        }).then(function (res) {
+          var redirectUrl = res.url || '';
+          var message = 'Subscribed — check your inbox.';
+          var colorClass = 'text-brand-red';
+
+          if (redirectUrl.includes('sub=exists')) {
+            message = 'That email is already subscribed.';
+            colorClass = 'text-white/70';
+          } else if (redirectUrl.includes('sub=invalid')) {
+            message = 'Please enter a valid email.';
+            colorClass = 'text-brand-red';
+          }
+
+          if (subFeedback) {
+            subFeedback.innerHTML = '<p class="mt-2 text-[11.5px] ' + colorClass + '">' + message + '</p>';
+            subFeedback.classList.remove('opacity-0');
+            setTimeout(function () {
+              subFeedback.classList.add('opacity-0');
+              setTimeout(function () {
+                subFeedback.innerHTML = '';
+                subFeedback.classList.remove('opacity-0');
+              }, 300);
+            }, 5000);
+          }
+          subscribeForm.reset();
+        }).catch(function (err) {
+          console.error('Subscription error:', err);
+          subscribeForm.submit();
+        }).finally(function () {
+          if (subBtn) {
+            subBtn.textContent = origBtnText;
+            subBtn.disabled = false;
           }
         });
       });
@@ -246,7 +337,7 @@
       if (link.classList.contains('nav-link')) {
         if (isCurrent) {
           link.classList.add('text-white', 'font-bold', 'bg-brand-red');
-          link.classList.remove('text-ink-70', 'dark:text-white/70');
+          link.classList.remove('text-ink-70', 'dark:text-white/70', 'hover:text-white');
           var fill = link.querySelector('.fill');
           if (fill) fill.classList.add('hidden');
         } else {
@@ -254,6 +345,16 @@
           link.classList.add('text-ink-70', 'dark:text-white/70');
           var fill = link.querySelector('.fill');
           if (fill) fill.classList.remove('hidden');
+        }
+      }
+      // Mobile drawer links
+      if (link.closest('#mobileDrawer')) {
+        if (isCurrent) {
+          link.classList.add('font-bold', 'text-brand-red', 'bg-brand-red/5');
+          link.classList.remove('text-ink-70', 'dark:text-white/80');
+        } else {
+          link.classList.remove('font-bold', 'text-brand-red', 'bg-brand-red/5');
+          link.classList.add('text-ink-70', 'dark:text-white/80');
         }
       }
     });
