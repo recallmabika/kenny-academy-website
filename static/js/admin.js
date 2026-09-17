@@ -47,4 +47,52 @@
       }
     });
   }
+
+  // Gallery Image Upload Live Preview & Drag-and-Drop Handler
+  var photoInput = document.getElementById('photoInput');
+  var dropZone = document.getElementById('dropZone');
+  var dropPrompt = document.getElementById('dropPrompt');
+  var dropPreview = document.getElementById('dropPreview');
+  var previewImg = document.getElementById('previewImg');
+  var previewName = document.getElementById('previewName');
+
+  if (photoInput && dropZone) {
+    // Visual drag states
+    ['dragenter', 'dragover'].forEach(function (eventName) {
+      dropZone.addEventListener(eventName, function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('border-brand-red', 'bg-brand-red/5');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(function (eventName) {
+      dropZone.addEventListener(eventName, function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('border-brand-red', 'bg-brand-red/5');
+      });
+    });
+
+    // File selected via browsing or drop
+    photoInput.addEventListener('change', function () {
+      if (this.files && this.files[0]) {
+        var file = this.files[0];
+        if (!file.type.startsWith('image/')) {
+          alert('Please select an image file (PNG, JPG, WebP, GIF).');
+          this.value = '';
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          if (previewImg) previewImg.src = e.target.result;
+          if (previewName) previewName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+          if (dropPrompt) dropPrompt.classList.add('hidden');
+          if (dropPreview) dropPreview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
 })();
