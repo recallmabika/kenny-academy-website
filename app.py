@@ -206,7 +206,7 @@ def build_item(fields, form):
 
 
 # ---------------------------------------------------------------- email
-def send_email(to_addr, subject, body):
+def send_email(to_addr, subject, body, reply_to=None):
     """Send a real email over SMTP using credentials from the environment.
 
     Returns True on success. If SMTP_HOST is unset, sending is skipped
@@ -227,6 +227,8 @@ def send_email(to_addr, subject, body):
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = to_addr
+    if reply_to:
+        msg["Reply-To"] = reply_to
     msg.set_content(body)
 
     try:
@@ -250,11 +252,16 @@ def send_email(to_addr, subject, body):
         return False
 
 
-def notify_admin(subject, body):
+def notify_admin(subject, body, reply_to=None):
     settings = get_settings()
-    to_addr = os.environ.get("MAIL_TO", "").strip() or settings.get("email", "")
-    if to_addr:
-        send_email(to_addr, subject, body)
+    mail_to_raw = os.environ.get("MAIL_TO", "").strip() or settings.get("email", "")
+    if not mail_to_raw:
+        return
+
+    # Split comma or semicolon separated recipient emails
+    recipients = [r.strip() for r in mail_to_raw.replace(";", ",").split(",") if r.strip()]
+    for recipient in recipients:
+        send_email(recipient, subject, body, reply_to=reply_to)
 
 
 # ------------------------------------------------------------- public
@@ -347,10 +354,35 @@ def contact():
             "name": name, "phone": phone, "reason": reason, "message": message,
         })
         _save(INQUIRIES_FILE, inquiries)
+
+        # If phone field contains an email, use it for Reply-To and send visitor confirmation
+        reply_to = phone if ("@" in phone and "." in phone) else None
+
         notify_admin(
-            f"New enquiry from {name or 'website visitor'}",
-            f"Name: {name}\nPhone: {phone}\nReason: {reason}\n\n{message}",
+            f"New enquiry from {name or 'website visitor'}: {reason}",
+            f"A new inquiry was submitted on the Kenny Academy website:\n\n"
+            f"Name: {name}\n"
+            f"Phone/Email: {phone}\n"
+            f"Reason: {reason}\n\n"
+            f"Message:\n{message}\n\n"
+            f"---\nSubmitted at: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+            reply_to=reply_to
         )
+
+        # If visitor provided a valid email address, send them an instant receipt confirmation
+        if reply_to:
+            settings = get_settings()
+            school = settings.get("school_name", "Kenny Academy")
+            send_email(
+                reply_to,
+                f"Thank you for contacting {school}",
+                f"Dear {name or 'Visitor'},\n\n"
+                f"Thank you for getting in touch with {school}.\n"
+                f"We have received your message regarding '{reason}' and our team will get back to you shortly.\n\n"
+                f"Your message:\n{message}\n\n"
+                f"Kind regards,\n{school} Admissions & Administration",
+            )
+
         submitted = True
     return render_template("contact.html", active="contact", submitted=submitted)
 
