@@ -43,8 +43,8 @@ CONTENT_FILE = os.path.join(DATA_DIR, "content.json")
 SETTINGS_FILE = os.path.join(DATA_DIR, "settings.json")
 SUBSCRIBERS_FILE = os.path.join(DATA_DIR, "subscribers.json")
 
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "kenny2026")
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 ALLOWED_EXT = {"png", "jpg", "jpeg", "webp", "svg"}
 DEBUG = os.environ.get("FLASK_DEBUG", os.environ.get("DEBUG", "true")).strip().lower() in ("true", "1", "yes")
 
