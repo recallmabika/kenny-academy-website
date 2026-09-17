@@ -106,4 +106,51 @@
       }
     });
   }
+
+  // Profile Dropdown & Quick Avatar Upload Handler
+  var profileBtn = document.getElementById('profileDropdownBtn');
+  var profileMenu = document.getElementById('profileDropdownMenu');
+  var quickAvatarInput = document.getElementById('quickAvatarInput');
+  var quickAvatarLabel = document.getElementById('quickAvatarLabel');
+  var quickAvatarBtn = document.getElementById('quickAvatarBtn');
+  var dropdownAvatarImg = document.getElementById('dropdownAvatarImg');
+  var topbarAvatarImg = document.getElementById('topbarAvatarImg');
+
+  if (profileBtn && profileMenu) {
+    profileBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      profileMenu.classList.toggle('hidden');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!profileMenu.classList.contains('hidden')) {
+        var wrapper = document.getElementById('profileDropdownWrapper');
+        if (wrapper && !wrapper.contains(e.target)) {
+          profileMenu.classList.add('hidden');
+        }
+      }
+    });
+  }
+
+  if (quickAvatarInput) {
+    quickAvatarInput.addEventListener('change', function () {
+      if (this.files && this.files[0]) {
+        var file = this.files[0];
+        if (quickAvatarLabel) {
+          quickAvatarLabel.textContent = file.name;
+        }
+        if (quickAvatarBtn) {
+          quickAvatarBtn.classList.remove('hidden');
+        }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          if (dropdownAvatarImg) dropdownAvatarImg.src = e.target.result;
+          if (topbarAvatarImg) topbarAvatarImg.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
 })();

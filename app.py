@@ -81,6 +81,7 @@ DEFAULT_SETTINGS = {
     "group_name": "Kenny Technologies Group of Colleges",
     "tagline": "",
     "logo": "favicon.svg",
+    "admin_avatar": "favicon.svg",
     "phone": "",
     "email": "",
     "whatsapp": "",
@@ -182,7 +183,11 @@ def stats_from(achievements):
 
 @app.context_processor
 def inject_globals():
-    return {"current_year": datetime.now().year, "settings": get_settings()}
+    return {
+        "current_year": datetime.now().year,
+        "settings": get_settings(),
+        "admin_user": session.get("admin_user") or os.environ.get("ADMIN_USERNAME", "Administrator") or "Admin",
+    }
 
 
 def allowed_file(filename):
@@ -239,6 +244,8 @@ def send_email(to_addr, subject, body):
                 server.send_message(msg)
         return True
     except Exception as exc:  # noqa: BLE001 — best-effort, never break the request
+        import sys
+        print(f"[SMTP ERROR] Failed sending to {to_addr}: {type(exc).__name__}: {exc}", file=sys.stderr, flush=True)
         app.logger.warning("Email send to %s failed: %s", to_addr, exc)
         return False
 
@@ -392,9 +399,11 @@ def admin_login():
         return redirect(url_for("admin_page", page="home"))
     error = None
     if request.method == "POST":
-        if (request.form.get("username", "").strip() == ADMIN_USERNAME
+        uname = request.form.get("username", "").strip()
+        if (uname == ADMIN_USERNAME
                 and request.form.get("password") == ADMIN_PASSWORD):
             session["admin"] = True
+            session["admin_user"] = uname
             return redirect(url_for("admin_page", page="home"))
         error = "Incorrect username or password."
     return render_template("admin_login.html", error=error)
@@ -403,6 +412,7 @@ def admin_login():
 @app.route("/admin/logout")
 def admin_logout():
     session.pop("admin", None)
+    session.pop("admin_user", None)
     return redirect(url_for("admin_login"))
 
 
@@ -560,9 +570,32 @@ def admin_settings():
             filename = secure_filename(logo.filename)
             logo.save(os.path.join(IMG_DIR, filename))
             settings["logo"] = filename
+
+        avatar = request.files.get("admin_avatar")
+        if avatar and avatar.filename and allowed_file(avatar.filename):
+            filename = secure_filename(avatar.filename)
+            avatar.save(os.path.join(IMG_DIR, filename))
+            settings["admin_avatar"] = filename
+
         _save(SETTINGS_FILE, settings)
         return redirect(url_for("admin_settings", message="Settings saved."))
     return render_template("admin/settings.html", settings=settings, message=request.args.get("message"))
+
+
+@app.route("/admin/update-avatar", methods=["POST"])
+@login_required
+def admin_update_avatar():
+    settings = get_settings()
+    avatar = request.files.get("avatar")
+    next_url = request.form.get("next") or request.referrer or url_for("admin_page", page="home")
+    if avatar and avatar.filename and allowed_file(avatar.filename):
+        filename = secure_filename(avatar.filename)
+        avatar.save(os.path.join(IMG_DIR, filename))
+        settings["admin_avatar"] = filename
+        _save(SETTINGS_FILE, settings)
+        separator = "&" if "?" in next_url else "?"
+        return redirect(f"{next_url}{separator}message=Profile+image+updated.")
+    return redirect(next_url)
 
 
 # ---- subscribers ----

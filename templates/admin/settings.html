@@ -21,10 +21,17 @@
       <input class="field-input" name="tagline" value="{{ settings.tagline }}">
     </div>
     <div>
-      <label class="field-label">Logo</label>
+      <label class="field-label">School Logo</label>
       <div class="flex items-center gap-3">
-        <img src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="Current logo" class="h-10 w-10 object-contain border border-[#e5e0dd] dark:border-[#2c2622]">
+        <img src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="Current logo" class="h-10 w-10 object-contain border border-[#e5e0dd] dark:border-[#2c2622] p-1 bg-white dark:bg-black/30 shrink-0">
         <input type="file" name="logo" accept="image/*,.svg" class="field-input">
+      </div>
+    </div>
+    <div>
+      <label class="field-label">Admin Profile Image / Avatar</label>
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='img/' ~ (settings.admin_avatar or settings.logo)) }}" alt="Current avatar" class="h-10 w-10 rounded-full object-cover border border-[#e5e0dd] dark:border-[#2c2622] shrink-0">
+        <input type="file" name="admin_avatar" accept="image/*" class="field-input">
       </div>
     </div>
   </section>
