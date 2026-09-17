@@ -5,43 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}CMS{% endblock %} — {{ settings.school_name }} admin</title>
 <link rel="icon" href="{{ url_for('static', filename='img/' ~ settings.logo) }}">
-<script>
-  (function () {
-    var saved = localStorage.getItem('theme');
-    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (dark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  })();
-</script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          brand: { red: '#e10600', deep: '#a30500' },
-          ink: { DEFAULT: '#141110' }
-        },
-        fontFamily: {
-          serif: ['Fraunces', 'Georgia', 'serif'],
-          mono: ['Space Mono', 'ui-monospace', 'monospace']
-        }
-      }
-    }
-  };
-</script>
+<!-- Dedicated theme script loaded before paint to prevent FOUT -->
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<style>
-  body{font-family:'Space Mono', ui-monospace, monospace;}
-  h1,h2,h3{font-family:'Fraunces', Georgia, serif;}
-  .field-label{display:block; font-size:11px; letter-spacing:.06em; text-transform:uppercase; opacity:.6; margin-bottom:4px;}
-  .field-input{width:100%; border:1px solid #d8d3d0; background:transparent; padding:9px 11px; font-size:13px; font-family:inherit;}
-  .dark .field-input{border-color:#3a332f;}
-  .field-input:focus{outline:2px solid #e10600; outline-offset:1px;}
-  .card{border:1px solid #e5e0dd;}
-  .dark .card{border-color:#2c2622;}
-</style>
 </head>
 <body class="bg-[#faf8f6] text-[#141110] dark:bg-[#141110] dark:text-[#f5f0ee] min-h-screen">
 <div class="min-h-screen">
@@ -128,27 +94,7 @@
   </div>
 </div>
 
-<script>
-  var t = document.getElementById('themeToggle'), s = document.getElementById('iconSun'), m = document.getElementById('iconMoon');
-  function sync(){ var d = document.documentElement.classList.contains('dark'); s.classList.toggle('hidden', d); m.classList.toggle('hidden', !d); }
-  sync();
-  if(t){
-    t.addEventListener('click', function(){
-      var d = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', d ? 'dark' : 'light');
-      sync();
-    });
-  }
-
-  var adminToggle = document.getElementById('adminMobileToggle');
-  var adminDrawer = document.getElementById('adminMobileDrawer');
-  var adminClose = document.getElementById('adminCloseDrawer');
-  if(adminToggle && adminDrawer){
-    adminToggle.addEventListener('click', function(){ adminDrawer.classList.remove('hidden'); });
-    if(adminClose){ adminClose.addEventListener('click', function(){ adminDrawer.classList.add('hidden'); }); }
-    adminDrawer.addEventListener('click', function(e){ if(e.target === adminDrawer) adminDrawer.classList.add('hidden'); });
-  }
-</script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 </body>
 </html>
 

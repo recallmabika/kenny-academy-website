@@ -6,49 +6,8 @@
 <title>{% block title %}{{ settings.school_name }}{% endblock %} — Chipinge, Zimbabwe</title>
 <meta name="description" content="{{ settings.school_name }} — Form 1 to 6, Computer Science &amp; HEXCO courses, full-time, extra, holiday and adult lessons. {{ settings.campuses|join(' &amp; ') }} campuses, Chipinge.">
 <link rel="icon" href="{{ url_for('static', filename='img/' ~ settings.logo) }}">
-<!-- Theme script before paint to prevent FOUT -->
-<script>
-  (function () {
-    var saved = localStorage.getItem('theme');
-    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (dark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  })();
-</script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          brand: {
-            red: '#e10600',
-            deep: '#a30500',
-            tint: '#e1060012'
-          },
-          ink: {
-            DEFAULT: '#141110',
-            90: '#141110e6',
-            70: '#141110b3',
-            50: '#14111080',
-            30: '#1411104d',
-            10: '#1411101a'
-          },
-          paper: {
-            DEFAULT: '#ffffff',
-            dark: '#141110',
-            cardDark: '#1c1613'
-          }
-        },
-        fontFamily: {
-          serif: ['Fraunces', 'Georgia', 'serif'],
-          mono: ['Space Mono', 'ui-monospace', 'monospace']
-        }
-      }
-    }
-  };
-</script>
+<!-- Dedicated theme script loaded before paint to prevent FOUT -->
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="bg-white text-ink dark:bg-[#141110] dark:text-[#f5f0ee] font-mono text-[14.5px] leading-[1.7] min-h-screen flex flex-col selection:bg-brand-red selection:text-white transition-colors duration-150">
@@ -132,7 +91,7 @@
                  class="w-full min-w-0 border border-white/20 bg-white/5 px-3 py-2 text-[12.5px] font-mono text-white placeholder:text-white/50 focus:outline-none focus:border-brand-red transition-colors">
           <button type="submit" class="shrink-0 bg-brand-red hover:bg-white hover:text-brand-red text-white px-3.5 py-2 text-[11px] font-bold tracking-wide uppercase transition-all duration-150">Subscribe</button>
         </form>
-        <div id="subscribeFeedback">
+        <div id="subscribeFeedback" class="transition-opacity duration-300">
           {% if request.args.get('sub') == 'ok' %}
             <p class="mt-2 text-[11.5px] text-brand-red">Subscribed — check your inbox.</p>
           {% elif request.args.get('sub') == 'exists' %}
