@@ -90,7 +90,7 @@
       if (this.files && this.files[0]) {
         var file = this.files[0];
         if (!file.type.startsWith('image/')) {
-          alert('Please select an image file (PNG, JPG, WebP, GIF).');
+          showAdminToast('Please select an image file (PNG, JPG, WebP, GIF).');
           this.value = '';
           return;
         }
@@ -106,6 +106,143 @@
       }
     });
   }
+
+  // -------------------------------------------------------------
+  // Custom Toast Message System (Replaces browser alert())
+  // -------------------------------------------------------------
+  var toastTimer = null;
+  function showAdminToast(message) {
+    var toast = document.getElementById('customToast');
+    var toastText = document.getElementById('customToastText');
+    if (!toast || !toastText) {
+      return;
+    }
+    toastText.textContent = message;
+    toast.classList.remove('hidden', 'opacity-0', 'translate-y-4');
+    toast.classList.add('opacity-100', 'translate-y-0');
+
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('opacity-100', 'translate-y-0');
+      toast.classList.add('opacity-0', 'translate-y-4');
+      setTimeout(function () {
+        toast.classList.add('hidden');
+      }, 300);
+    }, 4500);
+  }
+
+  var toastCloseBtn = document.getElementById('customToastClose');
+  if (toastCloseBtn) {
+    toastCloseBtn.addEventListener('click', function () {
+      var toast = document.getElementById('customToast');
+      if (toast) {
+        toast.classList.add('hidden');
+      }
+    });
+  }
+
+  // Expose toast on window
+  window.adminToast = showAdminToast;
+
+  // -------------------------------------------------------------
+  // Custom Branded Modal Dialog System (Replaces browser confirm())
+  // -------------------------------------------------------------
+  var confirmModal = document.getElementById('customConfirmModal');
+  var confirmTitle = document.getElementById('confirmModalTitle');
+  var confirmText = document.getElementById('confirmModalText');
+  var confirmCancel = document.getElementById('confirmModalCancel');
+  var confirmOk = document.getElementById('confirmModalOk');
+  var pendingAction = null;
+
+  function openConfirmModal(message, onOk, actionLabel) {
+    if (!confirmModal) {
+      if (onOk) onOk();
+      return;
+    }
+    if (confirmText) confirmText.textContent = message || 'Are you sure you want to proceed?';
+    if (confirmOk) confirmOk.textContent = actionLabel || 'Remove';
+    pendingAction = onOk;
+    confirmModal.classList.remove('hidden');
+  }
+
+  function closeConfirmModal() {
+    if (confirmModal) confirmModal.classList.add('hidden');
+    pendingAction = null;
+  }
+
+  if (confirmCancel) {
+    confirmCancel.addEventListener('click', closeConfirmModal);
+  }
+
+  if (confirmOk) {
+    confirmOk.addEventListener('click', function () {
+      if (typeof pendingAction === 'function') {
+        var action = pendingAction;
+        closeConfirmModal();
+        action();
+      } else {
+        closeConfirmModal();
+      }
+    });
+  }
+
+  if (confirmModal) {
+    confirmModal.addEventListener('click', function (e) {
+      if (e.target === confirmModal) {
+        closeConfirmModal();
+      }
+    });
+  }
+
+  // Intercept all submit and click handlers that used inline confirm()
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || form._confirmed) return;
+
+    var onsubmitAttr = form.getAttribute('onsubmit') || '';
+    if (onsubmitAttr.includes('confirm(')) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Extract message from confirm('...') or confirm("...")
+      var match = onsubmitAttr.match(/confirm\((['"])(.*?)\1\)/);
+      var msg = match ? match[2].replace(/&quot;/g, '"') : 'Are you sure you want to remove this?';
+
+      openConfirmModal(msg, function () {
+        form._confirmed = true;
+        form.removeAttribute('onsubmit');
+        form.submit();
+      }, 'Remove');
+    }
+  }, true);
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[onclick*="confirm("], input[type="submit"][onclick*="confirm("]');
+    if (!btn || btn._confirmed) return;
+
+    var onclickAttr = btn.getAttribute('onclick') || '';
+    if (onclickAttr.includes('confirm(')) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var match = onclickAttr.match(/confirm\((['"])(.*?)\1\)/);
+      var msg = match ? match[2].replace(/&quot;/g, '"') : 'Are you sure you want to remove this?';
+
+      openConfirmModal(msg, function () {
+        btn._confirmed = true;
+        btn.removeAttribute('onclick');
+        if (btn.getAttribute('formaction')) {
+          var form = btn.closest('form');
+          if (form) {
+            form.action = btn.getAttribute('formaction');
+            form.submit();
+            return;
+          }
+        }
+        btn.click();
+      }, 'Remove');
+    }
+  }, true);
 
   // Profile Dropdown & Quick Avatar Upload Handler
   var profileBtn = document.getElementById('profileDropdownBtn');

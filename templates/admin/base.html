@@ -157,7 +157,37 @@
   </div>
 </div>
 
-<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<!-- Custom Branded Confirm Modal (replaces browser confirm() dialogs) -->
+<div id="customConfirmModal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-200">
+  <div class="w-full max-w-sm card p-6 shadow-2xl space-y-4 border border-[#e5e0dd] dark:border-[#2c2622] bg-white dark:bg-[#181412] transform transition-transform duration-200 scale-100 font-mono">
+    <div class="flex items-start gap-3">
+      <div class="w-9 h-9 rounded-full bg-brand-red/10 text-brand-red flex items-center justify-center shrink-0 text-base font-bold">
+        ⚠
+      </div>
+      <div class="min-w-0">
+        <h3 class="text-[14px] font-bold text-ink dark:text-white" id="confirmModalTitle">Confirm Action</h3>
+        <p class="text-[12px] opacity-75 mt-1 leading-relaxed text-ink/80 dark:text-white/80" id="confirmModalText">Are you sure you want to proceed?</p>
+      </div>
+    </div>
+    <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-[#e5e0dd] dark:border-[#2c2622]">
+      <button type="button" id="confirmModalCancel" class="px-4 py-2 border border-[#e5e0dd] dark:border-[#2c2622] hover:bg-black/5 dark:hover:bg-white/5 text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer">
+        Cancel
+      </button>
+      <button type="button" id="confirmModalOk" class="px-4 py-2 bg-brand-red hover:bg-ink dark:hover:bg-white hover:text-white dark:hover:text-ink text-white text-[11px] font-bold uppercase tracking-wider transition-colors shadow-sm cursor-pointer">
+        Remove
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Toast Message Container (replaces browser alert() dialogs) -->
+<div id="customToast" class="hidden fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 border border-brand-red bg-brand-red text-white shadow-xl max-w-md font-mono text-[12px] transition-all duration-300 transform translate-y-0 opacity-100">
+  <span class="text-sm">⚠</span>
+  <span id="customToastText" class="flex-1"></span>
+  <button type="button" id="customToastClose" class="text-white/80 hover:text-white ml-2 text-sm">✕</button>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}?v=1.3"></script>
 </body>
 </html>
 
