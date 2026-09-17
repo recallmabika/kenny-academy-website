@@ -39,23 +39,47 @@
   // -------------------------------------------------------------
   // Mobile Navigation Drawer Toggle
   // -------------------------------------------------------------
-  function initMobileNav() {
+  function toggleMobileNav(force) {
     var navToggle = document.getElementById('navToggle');
     var mobileDrawer = document.getElementById('mobileDrawer');
-    if (navToggle && mobileDrawer && !navToggle._bound) {
-      navToggle._bound = true;
-      navToggle.addEventListener('click', function () {
-        var isHidden = mobileDrawer.classList.toggle('hidden');
-        navToggle.setAttribute('aria-expanded', !isHidden);
-      });
+    if (!mobileDrawer) return;
+
+    var willOpen = (typeof force === 'boolean') ? force : mobileDrawer.classList.contains('hidden');
+    if (willOpen) {
+      mobileDrawer.classList.remove('hidden');
+    } else {
+      mobileDrawer.classList.add('hidden');
+    }
+    if (navToggle) {
+      navToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
     }
   }
 
   function closeMobileNav() {
+    toggleMobileNav(false);
+  }
+
+  function initMobileNav() {
     var navToggle = document.getElementById('navToggle');
-    var mobileDrawer = document.getElementById('mobileDrawer');
-    if (mobileDrawer) mobileDrawer.classList.add('hidden');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    if (navToggle && !navToggle._bound) {
+      navToggle._bound = true;
+      navToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMobileNav();
+      });
+    }
+
+    // Close mobile drawer when clicking outside the header
+    if (!document._mobileNavOutsideBound) {
+      document._mobileNavOutsideBound = true;
+      document.addEventListener('click', function (e) {
+        var header = document.querySelector('header');
+        if (header && !header.contains(e.target)) {
+          closeMobileNav();
+        }
+      });
+    }
   }
 
   // -------------------------------------------------------------
@@ -247,6 +271,9 @@
             if (label) label.textContent = 'Send inquiry';
           }
         });
+      });
+    }
+
     // 6. Footer Newsletter Subscribe (Auto-dismiss and AJAX handling)
     var subFeedback = document.getElementById('subscribeFeedback');
     if (subFeedback && subFeedback.querySelector('p')) {
@@ -350,11 +377,9 @@
       // Mobile drawer links
       if (link.closest('#mobileDrawer')) {
         if (isCurrent) {
-          link.classList.add('font-bold', 'text-brand-red', 'bg-brand-red/5');
-          link.classList.remove('text-ink-70', 'dark:text-white/80');
+          link.className = 'nav-drawer-link block py-3 px-4 border-l-4 text-[15px] font-mono tracking-wide transition-colors font-bold text-white bg-brand-red border-ink dark:border-white shadow-sm';
         } else {
-          link.classList.remove('font-bold', 'text-brand-red', 'bg-brand-red/5');
-          link.classList.add('text-ink-70', 'dark:text-white/80');
+          link.className = 'nav-drawer-link block py-3 px-4 border-l-4 text-[15px] font-mono tracking-wide transition-colors text-ink dark:text-white border-transparent hover:bg-black/5 dark:hover:bg-white/10 hover:text-brand-red';
         }
       }
     });
