@@ -59,7 +59,6 @@ SUBSCRIBERS_FILE = os.path.join(DATA_DIR, "subscribers.json")
 
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
-ADMIN_NAME = os.environ.get("ADMIN_NAME", "").strip()
 ALLOWED_EXT = {"png", "jpg", "jpeg", "webp", "svg"}
 DEBUG = os.environ.get("FLASK_DEBUG", os.environ.get("DEBUG", "true")).strip().lower() in ("true", "1", "yes")
 
@@ -186,7 +185,22 @@ def stats_from(achievements):
 @app.context_processor
 def inject_globals():
     st = get_settings()
-    name = ADMIN_NAME or st.get("admin_name") or session.get("admin_user") or ADMIN_USERNAME or "Administrator"
+    # Read env var dynamically or from .env file if updated
+    env_admin_name = os.environ.get("ADMIN_NAME", "").strip()
+    if not env_admin_name:
+        _env_path = os.path.join(BASE_DIR, ".env")
+        if os.path.exists(_env_path):
+            try:
+                with open(_env_path, "r", encoding="utf-8") as _f:
+                    for _line in _f:
+                        _line = _line.strip()
+                        if _line.startswith("ADMIN_NAME="):
+                            env_admin_name = _line.split("=", 1)[1].strip().strip('"').strip("'")
+                            break
+            except Exception:
+                pass
+
+    name = env_admin_name or st.get("admin_name") or session.get("admin_user") or ADMIN_USERNAME or "Administrator"
     return {
         "current_year": datetime.now().year,
         "settings": st,
