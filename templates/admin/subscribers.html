@@ -1,23 +1,97 @@
 {% extends "admin/base.html" %}
 {% set active_admin = 'subscribers' %}
 {% block title %}Subscribers{% endblock %}
-{% block heading %}Newsletter subscribers ({{ subscribers|length }}){% endblock %}
+{% block heading %}Newsletter Subscribers ({{ subscribers|length }}){% endblock %}
 {% block admin_content %}
 
-<table class="w-full text-left text-[12.5px] border-collapse">
-  <tr class="border-b border-[#e5e0dd] dark:border-[#2c2622]"><th class="py-2">Email</th><th>Subscribed</th><th></th></tr>
-  {% for s in subscribers %}
-  <tr class="border-b border-[#e5e0dd] dark:border-[#2c2622]">
-    <td class="py-2">{{ s.email }}</td>
-    <td>{{ s.when }}</td>
-    <td>
-      <form method="POST" action="{{ url_for('admin_delete_subscriber', idx=loop.index0) }}" onsubmit="return confirm('Remove this subscriber?');">
-        <button class="btn" style="padding:6px 10px; font-size:10.5px;">Remove</button>
-      </form>
-    </td>
-  </tr>
-  {% else %}
-  <tr><td colspan="3" class="py-4 opacity-60">No subscribers yet.</td></tr>
-  {% endfor %}
-</table>
+<div class="space-y-6">
+
+  <!-- Simple Stats Cards for Subscribers -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+    <div class="card p-4 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">Total Subscribers</span>
+        <div class="text-brand-red">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="text-xl sm:text-2xl font-bold font-heading text-ink dark:text-white">{{ subscribers|length }}</div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">Active recipients</div>
+      </div>
+    </div>
+
+    <div class="card p-4 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">Mail Status</span>
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="text-xl sm:text-2xl font-bold font-heading text-emerald-600 dark:text-emerald-400">Active</div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">Automated updates enabled</div>
+      </div>
+    </div>
+
+    <div class="card p-4 flex flex-col justify-between col-span-2 sm:col-span-1">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">Latest Signup</span>
+        <div class="text-blue-600 dark:text-blue-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="text-sm font-bold font-mono text-ink dark:text-white truncate">
+          {% if subscribers %}{{ subscribers[0].when }}{% else %}None yet{% endif %}
+        </div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">
+          {% if subscribers %}{{ subscribers[0].email|truncate(22) }}{% else %}Waiting for subscriptions{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscribers Table Card -->
+  <div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-[13px] border-collapse">
+        <thead>
+          <tr class="border-b border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02]">
+            <th class="py-3.5 px-4 font-semibold text-ink/70 dark:text-white/70">Subscriber Email</th>
+            <th class="py-3.5 px-4 font-semibold text-ink/70 dark:text-white/70">Joined Date</th>
+            <th class="py-3.5 px-4 font-semibold text-ink/70 dark:text-white/70 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
+          {% for s in subscribers %}
+          <tr class="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors">
+            <td class="py-3.5 px-4 font-medium text-ink dark:text-white flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-red opacity-70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <span>{{ s.email }}</span>
+            </td>
+            <td class="py-3.5 px-4 font-mono text-[12px] text-ink/60 dark:text-white/60">{{ s.when }}</td>
+            <td class="py-3.5 px-4 text-right">
+              <form method="POST" action="{{ url_for('admin_delete_subscriber', idx=loop.index0) }}" onsubmit="return confirm('Remove this subscriber from the mailing list?');">
+                <button class="btn px-3 py-1.5 text-[11.5px] text-brand-red hover:bg-brand-red/10 border-brand-red/30 rounded-full">
+                  Remove
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3" class="py-12 text-center text-ink/50 dark:text-white/50">
+              <svg class="w-10 h-10 mx-auto mb-2 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <p class="text-[13.5px] font-medium">No subscribers yet.</p>
+              <p class="text-[12px] opacity-70 mt-1">Visitors who subscribe to email announcements will appear here.</p>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
 {% endblock %}

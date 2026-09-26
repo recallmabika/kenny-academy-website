@@ -1,70 +1,137 @@
 {% extends "admin/base.html" %}
 {% set active_admin = 'settings' %}
 {% block title %}Settings{% endblock %}
-{% block heading %}Settings{% endblock %}
+{% block heading %}Institution &amp; Profile Settings{% endblock %}
 {% block admin_content %}
 
-<form method="POST" action="{{ url_for('admin_settings') }}" enctype="multipart/form-data" class="space-y-8 max-w-xl">
+<form method="POST" action="{{ url_for('admin_settings') }}" enctype="multipart/form-data" class="space-y-6">
 
-  <section class="card p-4 space-y-3">
-    <h2 class="text-[13px] font-semibold">Identity</h2>
-    <div>
-      <label class="field-label">School name (shown in the header)</label>
-      <input class="field-input" name="school_name" value="{{ settings.school_name }}" required>
+  <!-- 2-Column Side-by-Side Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+    <!-- Column 1: Identity & Social -->
+    <div class="space-y-6">
+      <!-- Institution Identity Card -->
+      <section class="card p-5 sm:p-6 space-y-4">
+        <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+          <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Institution Identity</h2>
+          <p class="text-[11.5px] text-ink/60 dark:text-white/60">Core branding displayed on the website and certificates</p>
+        </div>
+        
+        <fieldset class="field-group">
+          <legend class="field-legend">School Name</legend>
+          <input class="field-input-clean" name="school_name" value="{{ settings.school_name }}" required>
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Group / Organization Name</legend>
+          <input class="field-input-clean" name="group_name" value="{{ settings.group_name }}">
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Tagline</legend>
+          <input class="field-input-clean" name="tagline" value="{{ settings.tagline }}">
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Administrator Name (Display Name)</legend>
+          <input class="field-input-clean" name="admin_name" value="{{ settings.admin_name or admin_user }}" placeholder="e.g. Mr. K. Mabika">
+        </fieldset>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <fieldset class="field-group">
+            <legend class="field-legend">School Logo</legend>
+            <div class="flex items-center gap-2.5 pt-1">
+              <img src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="Current logo" class="h-9 w-9 object-contain shrink-0">
+              <input type="file" name="logo" accept="image/*,.svg" class="text-[11px] w-full file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:text-[10.5px] file:font-semibold file:bg-brand-red/10 file:text-brand-red hover:file:bg-brand-red/20 text-ink/70 dark:text-white/70">
+            </div>
+          </fieldset>
+
+          <fieldset class="field-group">
+            <legend class="field-legend">Admin Avatar</legend>
+            <div class="flex items-center gap-2.5 pt-1">
+              <img src="{{ url_for('static', filename='img/' ~ (settings.admin_avatar or settings.logo)) }}" alt="Current avatar" class="h-9 w-9 rounded-full object-cover border border-black/10 dark:border-white/20 shrink-0">
+              <input type="file" name="admin_avatar" accept="image/*" class="text-[11px] w-full file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:text-[10.5px] file:font-semibold file:bg-brand-red/10 file:text-brand-red hover:file:bg-brand-red/20 text-ink/70 dark:text-white/70">
+            </div>
+          </fieldset>
+        </div>
+      </section>
+
+      <!-- Social Presence Card -->
+      <section class="card p-5 sm:p-6 space-y-4">
+        <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+          <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Social Presence</h2>
+          <p class="text-[11.5px] text-ink/60 dark:text-white/60">Social media handles linked in the website footer</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <fieldset class="field-group">
+            <legend class="field-legend">Facebook URL</legend>
+            <input class="field-input-clean" name="facebook" value="{{ settings.facebook }}">
+          </fieldset>
+          <fieldset class="field-group">
+            <legend class="field-legend">Instagram URL</legend>
+            <input class="field-input-clean" name="instagram" value="{{ settings.instagram }}">
+          </fieldset>
+        </div>
+      </section>
     </div>
-    <div>
-      <label class="field-label">Full group / institution name</label>
-      <input class="field-input" name="group_name" value="{{ settings.group_name }}">
-    </div>
-    <div>
-      <label class="field-label">Tagline</label>
-      <input class="field-input" name="tagline" value="{{ settings.tagline }}">
-    </div>
-    <div>
-      <label class="field-label">School Logo</label>
-      <div class="flex items-center gap-3">
-        <img src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="Current logo" class="h-10 w-10 object-contain border border-[#e5e0dd] dark:border-[#2c2622] p-1 bg-white dark:bg-black/30 shrink-0">
-        <input type="file" name="logo" accept="image/*,.svg" class="field-input">
+
+    <!-- Column 2: Contact, Campuses & Security Note -->
+    <div class="space-y-6">
+      <!-- Contact & Location Card -->
+      <section class="card p-5 sm:p-6 space-y-4">
+        <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+          <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Contact &amp; Location</h2>
+          <p class="text-[11.5px] text-ink/60 dark:text-white/60">Contact numbers and physical addresses shown to visitors</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <fieldset class="field-group">
+            <legend class="field-legend">Phone Number</legend>
+            <input class="field-input-clean" name="phone" value="{{ settings.phone }}">
+          </fieldset>
+          <fieldset class="field-group">
+            <legend class="field-legend">WhatsApp Number</legend>
+            <input class="field-input-clean" name="whatsapp" value="{{ settings.whatsapp }}">
+          </fieldset>
+        </div>
+        <fieldset class="field-group">
+          <legend class="field-legend">Official Email</legend>
+          <input type="email" class="field-input-clean" name="email" value="{{ settings.email }}">
+        </fieldset>
+        <fieldset class="field-group">
+          <legend class="field-legend">Physical Address</legend>
+          <input class="field-input-clean" name="address" value="{{ settings.address }}">
+        </fieldset>
+      </section>
+
+      <!-- Campuses Card -->
+      <section class="card p-5 sm:p-6 space-y-4">
+        <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+          <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Campuses</h2>
+          <p class="text-[11.5px] text-ink/60 dark:text-white/60">Active campus branches (one per line)</p>
+        </div>
+        <fieldset class="field-group">
+          <legend class="field-legend">Campus Locations</legend>
+          <textarea class="field-input-clean" name="campuses" rows="2">{{ settings.campuses|join('\n') }}</textarea>
+        </fieldset>
+      </section>
+
+      <!-- Security / Server Note -->
+      <div class="card p-4 text-[12px] text-ink/70 dark:text-white/70 leading-relaxed border border-black/[0.06] dark:border-white/[0.06]">
+        <div class="flex items-center gap-2 font-bold text-ink dark:text-white mb-1">
+          <svg class="w-3.5 h-3.5 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Security &amp; Credentials</span>
+        </div>
+        Email dispatch passwords and administrative credentials are secured via environment variables in <code class="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 font-mono text-[10.5px]">.env</code>.
       </div>
     </div>
-    <div>
-      <label class="field-label">Admin Profile Image / Avatar</label>
-      <div class="flex items-center gap-3">
-        <img src="{{ url_for('static', filename='img/' ~ (settings.admin_avatar or settings.logo)) }}" alt="Current avatar" class="h-10 w-10 rounded-full object-cover border border-[#e5e0dd] dark:border-[#2c2622] shrink-0">
-        <input type="file" name="admin_avatar" accept="image/*" class="field-input">
-      </div>
-    </div>
-  </section>
 
-  <section class="card p-4 space-y-3">
-    <h2 class="text-[13px] font-semibold">Contact details</h2>
-    <div class="grid grid-cols-2 gap-3">
-      <div><label class="field-label">Phone</label><input class="field-input" name="phone" value="{{ settings.phone }}"></div>
-      <div><label class="field-label">WhatsApp</label><input class="field-input" name="whatsapp" value="{{ settings.whatsapp }}"></div>
-    </div>
-    <div><label class="field-label">Email</label><input type="email" class="field-input" name="email" value="{{ settings.email }}"></div>
-    <div><label class="field-label">Address</label><input class="field-input" name="address" value="{{ settings.address }}"></div>
-  </section>
+  </div>
 
-  <section class="card p-4 space-y-3">
-    <h2 class="text-[13px] font-semibold">Social</h2>
-    <div><label class="field-label">Facebook URL</label><input class="field-input" name="facebook" value="{{ settings.facebook }}"></div>
-    <div><label class="field-label">Instagram URL</label><input class="field-input" name="instagram" value="{{ settings.instagram }}"></div>
-  </section>
-
-  <section class="card p-4 space-y-3">
-    <h2 class="text-[13px] font-semibold">Campuses</h2>
-    <label class="field-label">One per line</label>
-    <textarea class="field-input" name="campuses" rows="3">{{ settings.campuses|join('\n') }}</textarea>
-  </section>
-
-  <button class="btn primary" style="padding:10px 20px; font-size:12px;">Save settings</button>
+  <div class="pt-2">
+    <button class="btn primary px-7 py-3 text-[13px] rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all">
+      Save All Settings
+    </button>
+  </div>
 </form>
-
-<div class="mt-10 card p-4 max-w-xl text-[12px] opacity-70 leading-relaxed">
-  <strong class="opacity-100">Email &amp; admin password</strong> are configured via environment
-  variables in <code>.env</code> (SMTP_HOST, SMTP_USER, SMTP_PASSWORD, MAIL_TO, ADMIN_PASSWORD,
-  SECRET_KEY) rather than here, so credentials never sit in the content files. See
-  <code>.env.example</code> for the full list.
-</div>
 {% endblock %}

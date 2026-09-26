@@ -1,75 +1,216 @@
 {% extends "admin/base.html" %}
 {% set active_admin = 'curriculum' %}
 {% block title %}Curriculum{% endblock %}
-{% block heading %}Curriculum page{% endblock %}
+{% block heading %}Curriculum &amp; Academic Tracks{% endblock %}
 {% block admin_content %}
 {% set c = content.curriculum %}
 
-<section class="mb-10">
-  <h2 class="text-lg mb-1">Hero</h2>
-  <form method="POST" action="{{ url_for('admin_section_save', page='curriculum', section='hero') }}" class="card p-4 space-y-3">
-    <div><label class="field-label">Kicker</label><input class="field-input" name="kicker" value="{{ c.hero.kicker }}"></div>
-    <div><label class="field-label">Headline</label><input class="field-input" name="title" value="{{ c.hero.title }}"></div>
-    <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="3">{{ c.hero.body }}</textarea></div>
-    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save hero</button>
-  </form>
-</section>
+<div class="space-y-6">
 
-<section class="mb-10">
-  <h2 class="text-lg mb-1">Subjects</h2>
-  <p class="text-[12px] opacity-60 mb-3">The full subject grid.</p>
-  <div class="flex flex-wrap gap-2 mb-4">
-    {% for s in (c.subjects or subjects_fallback) %}
-    <form method="POST" action="{{ url_for('admin_section_delete', page='curriculum', section='subjects', idx=loop.index0) }}"
-          onsubmit="return confirm('Remove &quot;{{ s }}&quot;?');">
-      <button class="card px-3 py-1.5 text-[12px] flex items-center gap-2 hover:border-[#e10600]">
-        {{ s }} <span class="opacity-50">✕</span>
-      </button>
-    </form>
-    {% endfor %}
-  </div>
-  <form method="POST" action="{{ url_for('admin_section_add', page='curriculum', section='subjects') }}" class="card p-4 flex gap-2">
-    <input class="field-input" name="subject" placeholder="New subject name" required>
-    <button class="btn primary shrink-0" style="padding:9px 16px; font-size:11px;">Add subject</button>
-  </form>
-</section>
-
-<section class="mb-10">
-  <h2 class="text-lg mb-1">Computer Science &amp; HEXCO</h2>
-  <form method="POST" action="{{ url_for('admin_section_save', page='curriculum', section='cs_hexco') }}" class="card p-4 space-y-3">
-    <div><label class="field-label">Heading</label><input class="field-input" name="heading" value="{{ c.cs_hexco.heading }}"></div>
-    <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="3">{{ c.cs_hexco.body }}</textarea></div>
-    <div><label class="field-label">Chips (comma separated)</label><input class="field-input" name="chips" value="{{ c.cs_hexco.chips|join(', ') }}"></div>
-    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save</button>
-  </form>
-</section>
-
-<section>
-  <h2 class="text-lg mb-1">Lesson types &amp; timing</h2>
-  <div class="space-y-3 mb-4">
-    {% for lt in c.lesson_types %}
-    <form method="POST" action="{{ url_for('admin_section_edit', page='curriculum', section='lesson_types', idx=loop.index0) }}" class="card p-4 space-y-2">
-      <div class="grid grid-cols-2 gap-2">
-        <div><label class="field-label">Name</label><input class="field-input" name="name" value="{{ lt.name }}"></div>
-        <div><label class="field-label">When</label><input class="field-input" name="when" value="{{ lt.when }}"></div>
+  <!-- Simple Stats Cards for Curriculum -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="card p-4 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">Subjects Taught</span>
+        <div class="text-brand-red">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
       </div>
-      <div><label class="field-label">Description</label><textarea class="field-input" name="desc" rows="2">{{ lt.desc }}</textarea></div>
-      <div class="flex gap-2 pt-1">
-        <button class="btn primary" style="padding:7px 14px; font-size:10.5px;">Save</button>
-        <button formaction="{{ url_for('admin_section_delete', page='curriculum', section='lesson_types', idx=loop.index0) }}"
-                onclick="return confirm('Remove this lesson type?');" class="btn" style="padding:7px 14px; font-size:10.5px;">Remove</button>
+      <div>
+        <div class="text-xl sm:text-2xl font-bold font-heading text-ink dark:text-white">
+          {{ (c.subjects or subjects_fallback)|length }}
+        </div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">ZIMSEC &amp; Cambridge</div>
       </div>
-    </form>
-    {% endfor %}
-  </div>
-  <form method="POST" action="{{ url_for('admin_section_add', page='curriculum', section='lesson_types') }}" class="card p-4 space-y-2">
-    <strong class="text-[12px]">Add a lesson type</strong>
-    <div class="grid grid-cols-2 gap-2">
-      <input class="field-input" name="name" placeholder="Name" required>
-      <input class="field-input" name="when" placeholder="Timing, e.g. Term-time" required>
     </div>
-    <textarea class="field-input" name="desc" rows="2" placeholder="Description" required></textarea>
-    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add lesson type</button>
-  </form>
-</section>
+
+    <div class="card p-4 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">HEXCO Modules</span>
+        <div class="text-purple-600 dark:text-purple-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="text-xl sm:text-2xl font-bold font-heading text-ink dark:text-white">
+          {{ c.cs_hexco.chips|length if c.cs_hexco.chips else 0 }}
+        </div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">National certifications</div>
+      </div>
+    </div>
+
+    <div class="card p-4 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">Lesson Modes</span>
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="text-xl sm:text-2xl font-bold font-heading text-ink dark:text-white">
+          {{ c.lesson_types|length if c.lesson_types else 0 }}
+        </div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">Timetable structures</div>
+      </div>
+    </div>
+
+    <div class="card p-4 flex flex-col justify-between">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] font-semibold text-ink/60 dark:text-white/60 uppercase tracking-wider">Level Scope</span>
+        <div class="text-blue-600 dark:text-blue-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="text-xl sm:text-2xl font-bold font-heading text-ink dark:text-white">Form 1–6</div>
+        <div class="text-[11px] text-ink/50 dark:text-white/50 mt-0.5">O-Level &amp; A-Level</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Side-by-Side: Curriculum Header & CS / HEXCO Track -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+    <!-- Hero / Header Section -->
+    <section class="card p-5 sm:p-6 space-y-4">
+      <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+        <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Curriculum Header</h2>
+        <p class="text-[11.5px] text-ink/60 dark:text-white/60">Introduction statement and overview on the public curriculum page</p>
+      </div>
+      <form method="POST" action="{{ url_for('admin_section_save', page='curriculum', section='hero') }}" class="space-y-4">
+        <fieldset class="field-group">
+          <legend class="field-legend">Kicker</legend>
+          <input class="field-input-clean" name="kicker" value="{{ c.hero.kicker }}">
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Headline Title</legend>
+          <input class="field-input-clean" name="title" value="{{ c.hero.title }}">
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Overview Body</legend>
+          <textarea class="field-input-clean" name="body" rows="4">{{ c.hero.body }}</textarea>
+        </fieldset>
+
+        <button class="btn primary px-6 py-2.5 text-[12.5px] rounded-full">Save Curriculum Header</button>
+      </form>
+    </section>
+
+    <!-- Computer Science & HEXCO Track -->
+    <section class="card p-5 sm:p-6 space-y-4">
+      <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+        <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Computer Science &amp; HEXCO Track</h2>
+        <p class="text-[11.5px] text-ink/60 dark:text-white/60">Specialized technology training and professional national certifications</p>
+      </div>
+      <form method="POST" action="{{ url_for('admin_section_save', page='curriculum', section='cs_hexco') }}" class="space-y-4">
+        <fieldset class="field-group">
+          <legend class="field-legend">Heading</legend>
+          <input class="field-input-clean" name="heading" value="{{ c.cs_hexco.heading }}">
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Description Body</legend>
+          <textarea class="field-input-clean" name="body" rows="3">{{ c.cs_hexco.body }}</textarea>
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Course Chips (comma separated)</legend>
+          <input class="field-input-clean" name="chips" value="{{ c.cs_hexco.chips|join(', ') }}">
+        </fieldset>
+
+        <button class="btn primary px-6 py-2.5 text-[12.5px] rounded-full">Save Tech Track</button>
+      </form>
+    </section>
+
+  </div>
+
+  <!-- Side-by-Side: Subject Offerings & Lesson Types -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+    <!-- Subjects Section -->
+    <section class="card p-5 sm:p-6 space-y-4">
+      <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+        <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Subject Offerings</h2>
+        <p class="text-[11.5px] text-ink/60 dark:text-white/60">ZIMSEC &amp; Cambridge academic subjects taught at {{ settings.school_name }}</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        {% for s in (c.subjects or subjects_fallback) %}
+        <form method="POST" action="{{ url_for('admin_section_delete', page='curriculum', section='subjects', idx=loop.index0) }}"
+              onsubmit="return confirm('Remove &quot;{{ s }}&quot;?');">
+          <button class="card px-3 py-1.5 text-[12px] font-medium flex items-center gap-2 hover:border-brand-red transition-all group rounded-full">
+            <span>{{ s }}</span>
+            <span class="opacity-40 group-hover:opacity-100 group-hover:text-brand-red transition-opacity">✕</span>
+          </button>
+        </form>
+        {% endfor %}
+      </div>
+
+      <form method="POST" action="{{ url_for('admin_section_add', page='curriculum', section='subjects') }}" class="pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex gap-2.5">
+        <fieldset class="field-group flex-1">
+          <legend class="field-legend">New Subject Name</legend>
+          <input class="field-input-clean" name="subject" placeholder="e.g. Pure Mathematics" required>
+        </fieldset>
+        <button class="btn primary shrink-0 px-5 py-2 text-[12px] rounded-full self-center">Add Subject</button>
+      </form>
+    </section>
+
+    <!-- Lesson Types & Timings Section -->
+    <section class="card p-5 sm:p-6 space-y-4">
+      <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+        <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Lesson Types &amp; Timings</h2>
+        <p class="text-[11.5px] text-ink/60 dark:text-white/60">Flexible enrollment modes (Full-time, Extra lessons, Holiday school)</p>
+      </div>
+
+      <div class="space-y-3.5">
+        {% for lt in c.lesson_types %}
+        <form method="POST" action="{{ url_for('admin_section_edit', page='curriculum', section='lesson_types', idx=loop.index0) }}" class="card p-4 space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <fieldset class="field-group">
+              <legend class="field-legend">Lesson Mode Name</legend>
+              <input class="field-input-clean" name="name" value="{{ lt.name }}">
+            </fieldset>
+            <fieldset class="field-group">
+              <legend class="field-legend">Schedule / Timing</legend>
+              <input class="field-input-clean" name="when" value="{{ lt.when }}">
+            </fieldset>
+          </div>
+          <fieldset class="field-group">
+            <legend class="field-legend">Description</legend>
+            <textarea class="field-input-clean" name="desc" rows="2">{{ lt.desc }}</textarea>
+          </fieldset>
+          <div class="flex items-center gap-2.5 pt-1">
+            <button class="btn primary px-4 py-1.5 text-[11.5px] rounded-full">Save Changes</button>
+            <button formaction="{{ url_for('admin_section_delete', page='curriculum', section='lesson_types', idx=loop.index0) }}"
+                    onclick="return confirm('Remove this lesson type?');" class="btn px-4 py-1.5 text-[11.5px] text-brand-red border-brand-red/30 hover:bg-brand-red/10 rounded-full">Remove</button>
+          </div>
+        </form>
+        {% endfor %}
+      </div>
+
+      <!-- Add Lesson Type Form -->
+      <form method="POST" action="{{ url_for('admin_section_add', page='curriculum', section='lesson_types') }}" class="card p-4 space-y-3 border-dashed">
+        <div class="font-heading font-bold text-[13px] text-ink dark:text-white">Add a New Lesson Mode</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <fieldset class="field-group">
+            <legend class="field-legend">Name</legend>
+            <input class="field-input-clean" name="name" placeholder="e.g. Evening Masterclass" required>
+          </fieldset>
+          <fieldset class="field-group">
+            <legend class="field-legend">Timing</legend>
+            <input class="field-input-clean" name="when" placeholder="e.g. Mon - Fri 5:00 PM" required>
+          </fieldset>
+        </div>
+        <fieldset class="field-group">
+          <legend class="field-legend">Description</legend>
+          <textarea class="field-input-clean" name="desc" rows="2" placeholder="Description of target group" required></textarea>
+        </fieldset>
+        <button class="btn primary px-5 py-2 text-[12px] rounded-full">Add Lesson Mode</button>
+      </form>
+    </section>
+
+  </div>
+
+</div>
 {% endblock %}
