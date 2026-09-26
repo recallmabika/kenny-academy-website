@@ -5,17 +5,17 @@
 {% block content %}
 
 <!-- ABOUT HERO -->
-<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-150">
+<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-200">
   <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] w-full">
     <div class="flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-16 sm:py-20">
       <div class="flex items-center gap-2 text-[11px] font-mono tracking-widest text-brand-red uppercase mb-4">
-        <span class="w-6 h-[1px] bg-brand-red"></span>
+        <span class="w-6 h-[1.5px] bg-brand-red"></span>
         {{ content.hero.kicker }}
       </div>
-      <h1 class="font-serif text-[32px] sm:text-[42px] md:text-[48px] text-ink dark:text-white leading-[1.1] max-w-[15ch]">
+      <h1 class="font-heading font-bold text-[34px] sm:text-[44px] md:text-[50px] text-ink dark:text-white leading-[1.12] tracking-tight max-w-[15ch]">
         {{ content.hero.title }}
       </h1>
-      <p class="mt-5 max-w-[50ch] text-[13.5px] sm:text-[14px] text-ink-70 dark:text-white/70 font-mono leading-relaxed">
+      <p class="mt-5 max-w-[50ch] text-[14px] sm:text-[14.5px] text-ink/75 dark:text-white/75 font-sans leading-relaxed">
         {{ content.hero.body }}
       </p>
     </div>
@@ -28,22 +28,22 @@
 </section>
 
 <!-- STORY SECTION -->
-<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-200">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
     {% for block in content.story %}
     <div>
-      <h2 class="font-serif text-[24px] sm:text-[28px] text-ink dark:text-white mb-5 pb-2 border-b border-black/10 dark:border-white/10">{{ block.heading }}</h2>
-      <div class="space-y-4 font-mono text-[13.5px] text-ink-70 dark:text-white/75 leading-relaxed">
+      <h2 class="font-heading font-bold text-[24px] sm:text-[28px] text-ink dark:text-white mb-5 pb-2.5 border-b border-black/[0.08] dark:border-white/[0.08]">{{ block.heading }}</h2>
+      <div class="space-y-4 font-sans text-[13.5px] sm:text-[14px] text-ink/75 dark:text-white/75 leading-relaxed">
         {% for para in block.body.split('\n\n') %}
         <p>{{ para }}</p>
         {% endfor %}
       </div>
       {% if loop.first and settings.campuses %}
-      <ul class="mt-8 border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10 font-mono text-[12.5px]">
+      <ul class="mt-8 border-t border-black/[0.08] dark:border-white/[0.08] divide-y divide-black/[0.06] dark:divide-white/[0.06] font-sans text-[13px]">
         {% for c in settings.campuses %}
         <li class="py-3.5 flex justify-between items-center text-ink dark:text-white">
-          <span class="font-serif text-[15px] font-medium">{{ c }}</span>
-          <span class="text-ink-50 dark:text-white/50 text-[11px] uppercase tracking-wider">Chipinge</span>
+          <span class="font-semibold text-[14.5px]">{{ c }}</span>
+          <span class="text-ink/50 dark:text-white/50 text-[11px] uppercase tracking-wider font-mono">Chipinge</span>
         </li>
         {% endfor %}
       </ul>
@@ -57,9 +57,9 @@
 <section class="py-16 sm:py-20 bg-ink dark:bg-black text-white border-y border-white/10">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10 md:gap-14 items-center">
     <figure class="max-w-[220px] md:max-w-none mx-auto md:mx-0">
-      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Director" class="w-full grayscale-[15%] contrast-105 border border-white/20">
-      <figcaption class="pt-3 text-[11px] text-white/60 font-mono">
-        Director <b class="block font-serif text-[14px] text-white font-normal mt-0.5">{{ content.quote.attrib.split(',')[0] if content.quote.attrib else '' }}</b>
+      <img src="{{ url_for('static', filename='img/director.jpg') }}" alt="Director" class="w-full grayscale-[10%] contrast-105 rounded-2xl border border-white/15">
+      <figcaption class="pt-3.5 text-[11.5px] text-white/60 font-sans">
+        Director <b class="block font-heading font-semibold text-[15px] text-white mt-0.5">{{ content.quote.attrib.split(',')[0] if content.quote.attrib else '' }}</b>
       </figcaption>
     </figure>
     <div>
@@ -74,20 +74,20 @@
 </section>
 
 <!-- VALUES SECTION -->
-<section class="py-16 sm:py-24 bg-white dark:bg-[#141110] transition-colors duration-150">
+<section class="py-16 sm:py-24 bg-white dark:bg-[#141110] transition-colors duration-200">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
-    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
-      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">What we hold to</h2>
-      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">across both campuses</span>
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
+      <h2 class="font-heading font-bold text-[28px] sm:text-[32px] text-ink dark:text-white">What We Hold To</h2>
+      <span class="font-mono text-[11px] text-ink/50 dark:text-white/50 uppercase tracking-wider">Across both campuses</span>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {% for v in content['values'] %}
-      <div class="bg-[#faf8f6] dark:bg-[#1c1613] p-8 border-t-2 border-brand-red shadow-sm">
-        <div class="font-serif italic text-brand-red text-[28px] mb-3 leading-none">
-          {{ loop.index }}
+      <div class="card p-7 sm:p-8 border-t-4 border-t-brand-red">
+        <div class="font-heading font-extrabold text-brand-red text-[32px] mb-3 leading-none">
+          0{{ loop.index }}
         </div>
-        <h4 class="font-serif text-[18px] text-ink dark:text-white mb-2">{{ v.title }}</h4>
-        <p class="font-mono text-[12.5px] text-ink-70 dark:text-white/70 leading-relaxed">{{ v.body }}</p>
+        <h4 class="font-heading font-bold text-[18px] text-ink dark:text-white mb-2.5">{{ v.title }}</h4>
+        <p class="font-sans text-[13px] text-ink/70 dark:text-white/70 leading-relaxed">{{ v.body }}</p>
       </div>
       {% endfor %}
     </div>
@@ -95,22 +95,22 @@
 </section>
 
 <!-- FULL ROLL OF HONOUR -->
-<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+<section class="py-16 sm:py-24 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-200">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
-    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
-      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Full roll of honour</h2>
-      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">2023 – {{ current_year }}</span>
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
+      <h2 class="font-heading font-bold text-[28px] sm:text-[32px] text-ink dark:text-white">Full Roll of Honour</h2>
+      <span class="font-mono text-[11px] text-ink/50 dark:text-white/50 uppercase tracking-wider">2023 – {{ current_year }}</span>
     </div>
-    <div class="border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10">
+    <div class="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
       {% for a in achievements %}
-      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[100px_1fr_auto] gap-4 sm:gap-6 items-center hover:bg-brand-red/5 transition-colors duration-150">
-        <div class="font-serif text-[22px] text-brand-red font-semibold">{{ a.year }}</div>
+      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[100px_1fr_auto] gap-4 sm:gap-6 items-center hover:bg-brand-red/5 rounded-xl transition-colors duration-150">
+        <div class="font-heading font-bold text-[22px] text-brand-red">{{ a.year }}</div>
         <div>
-          <h4 class="font-serif text-[16px] sm:text-[17px] text-ink dark:text-white mb-1">{{ a.title }}</h4>
-          <p class="font-mono text-[12px] text-ink-70 dark:text-white/70">{{ a.detail }}</p>
+          <h4 class="font-heading font-semibold text-[16px] text-ink dark:text-white mb-1">{{ a.title }}</h4>
+          <p class="font-sans text-[12.5px] text-ink/70 dark:text-white/70">{{ a.detail }}</p>
         </div>
         <div class="sm:justify-self-end">
-          <span class="inline-block font-mono text-[10.5px] tracking-wide px-3 py-1 border {{ 'border-brand-red text-brand-red bg-brand-red/10' if a.win else 'border-ink/40 dark:border-white/40 text-ink dark:text-white' }}">
+          <span class="inline-block font-sans font-medium text-[11px] tracking-wide px-3 py-1 rounded-full border {{ 'border-brand-red text-brand-red bg-brand-red/10' if a.win else 'border-black/15 dark:border-white/20 text-ink/75 dark:text-white/75' }}">
             {{ a.badge }}
           </span>
         </div>
@@ -123,12 +123,12 @@
 <!-- CTA -->
 <section class="py-16 sm:py-20 bg-brand-red text-white">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-    <h3 class="font-serif text-[26px] sm:text-[32px] max-w-[22ch] leading-snug text-white">
+    <h3 class="font-heading font-bold text-[26px] sm:text-[32px] max-w-[22ch] leading-snug text-white">
       Sponsorships and partnerships welcome.
     </h3>
     <a href="{{ url_for('contact') }}" data-nav
-       class="px-8 py-4 bg-white text-brand-red hover:bg-ink hover:text-white text-[12px] font-bold tracking-widest uppercase transition-all duration-150 shadow-xl shrink-0">
-      Talk to the director's office
+       class="btn px-8 py-3.5 bg-white text-brand-red hover:bg-ink hover:text-white text-[12.5px] font-bold rounded-full transition-all duration-200 shrink-0">
+      Talk to the Director's Office
     </a>
   </div>
 </section>

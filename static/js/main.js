@@ -1,5 +1,5 @@
 /**
- * Kenny Academy — Single Page Application (SPA) Engine & UI Controller
+ * Keny Technologies College — Single Page Application (SPA) Engine & UI Controller
  */
 (function () {
   'use strict';
