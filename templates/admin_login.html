@@ -2,47 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin — {{ settings.school_name }}</title>
+<title>Admin Sign In — {{ settings.school_name }}</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="{{ url_for('static', filename='img/' ~ settings.logo) }}">
 <!-- Dedicated theme script loaded before paint to prevent FOUT -->
 <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="relative min-h-screen flex items-center justify-center p-4 bg-ink text-[#141110] dark:text-[#f5f0ee] font-mono overflow-hidden">
+<body class="relative min-h-screen flex items-center justify-center p-4 bg-ink text-ink dark:text-[#f5f0ee] font-sans antialiased overflow-hidden">
   <!-- Background Image with cinematic dark overlay -->
   <div class="absolute inset-0 bg-cover bg-center z-0 scale-105 filter blur-[1px] transition-transform duration-1000"
        style="background-image: url('{{ url_for('static', filename='img/admin-bg.jpg') }}');"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/75 z-0"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/80 z-0"></div>
 
   <!-- Sign In Card -->
-  <div class="relative z-10 w-full max-w-sm border border-white/20 bg-white/95 dark:bg-[#1c1613]/95 backdrop-blur-md p-8 shadow-2xl">
-    <div class="flex justify-between items-start mb-2">
-      <h1 class="text-[22px] font-serif font-semibold text-ink dark:text-white leading-snug">{{ settings.school_name }}</h1>
-      <a href="{{ url_for('home') }}" class="text-[11px] font-mono text-brand-red font-bold hover:underline">← Site</a>
+  <div class="relative z-10 w-full max-w-sm rounded-3xl border border-white/20 bg-white/95 dark:bg-[#1c1613]/95 backdrop-blur-xl p-8 space-y-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <img src="{{ url_for('static', filename='img/' ~ settings.logo) }}" alt="{{ settings.school_name }}" class="w-9 h-9 object-contain">
+        <div>
+          <h1 class="text-[17px] font-bold font-heading text-ink dark:text-white leading-tight">{{ settings.school_name }}</h1>
+          <span class="text-[11px] text-ink/50 dark:text-white/50">Staff Portal</span>
+        </div>
+      </div>
+      <a href="{{ url_for('home') }}" class="text-[12px] font-semibold text-brand-red hover:underline flex items-center gap-1">
+        <span>Site</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
     </div>
-    <p class="text-[12.5px] text-ink/70 dark:text-white/70 mb-6">Sign in to manage site content.</p>
+
+    <div>
+      <h2 class="text-xl font-bold font-heading text-ink dark:text-white">Sign In</h2>
+      <p class="text-[13px] text-ink/70 dark:text-white/70 mt-1">Authenticate to manage content, inquiries, and gallery.</p>
+    </div>
+
     {% if error %}
-    <div class="admin-error border border-brand-red bg-brand-red/10 text-brand-red px-3 py-2 text-[12px] mb-4 transition-opacity duration-300">{{ error }}</div>
+    <div class="admin-error rounded-xl border border-brand-red/30 bg-brand-red/10 text-brand-red px-3.5 py-2.5 text-[12.5px] font-medium transition-opacity duration-300">{{ error }}</div>
     {% endif %}
+
     <form method="POST" class="space-y-4">
       <div>
-        <label for="username" class="block text-[11px] uppercase tracking-wide opacity-60 mb-1">Username</label>
+        <label for="username" class="field-label">Username</label>
         <input id="username" name="username" type="text" required autofocus autocomplete="username"
-               class="w-full border border-black/15 dark:border-white/20 bg-white/70 dark:bg-black/30 px-3 py-2.5 text-[13px] text-ink dark:text-white focus:outline-none focus:border-brand-red transition-colors">
+               class="field-input" placeholder="Enter username">
       </div>
       <div>
-        <label for="password" class="block text-[11px] uppercase tracking-wide opacity-60 mb-1">Password</label>
+        <label for="password" class="field-label">Password</label>
         <input id="password" name="password" type="password" required autocomplete="current-password"
-               class="w-full border border-black/15 dark:border-white/20 bg-white/70 dark:bg-black/30 px-3 py-2.5 text-[13px] text-ink dark:text-white focus:outline-none focus:border-brand-red transition-colors">
+               class="field-input" placeholder="••••••••">
       </div>
       <button type="submit"
-              class="w-full bg-brand-red hover:bg-ink text-white dark:hover:bg-white dark:hover:text-ink py-3 text-[12px] font-bold tracking-widest uppercase transition-colors shadow-md">
-        Sign in
+              class="w-full btn primary py-3 text-[13px] tracking-wide">
+        Sign In to Portal
       </button>
     </form>
   </div>
   <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 </body>
 </html>
-

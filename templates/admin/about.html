@@ -1,74 +1,149 @@
 {% extends "admin/base.html" %}
 {% set active_admin = 'about' %}
 {% block title %}About{% endblock %}
-{% block heading %}About page{% endblock %}
+{% block heading %}About Page Content Editor{% endblock %}
 {% block admin_content %}
 {% set c = content.about %}
 
-<section class="mb-10">
-  <h2 class="text-lg mb-1">Hero</h2>
-  <form method="POST" action="{{ url_for('admin_section_save', page='about', section='hero') }}" class="card p-4 space-y-3">
-    <div><label class="field-label">Kicker</label><input class="field-input" name="kicker" value="{{ c.hero.kicker }}"></div>
-    <div><label class="field-label">Headline</label><input class="field-input" name="title" value="{{ c.hero.title }}"></div>
-    <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="3">{{ c.hero.body }}</textarea></div>
-    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save hero</button>
-  </form>
-</section>
+<div class="space-y-8">
 
-<section class="mb-10">
-  <h2 class="text-lg mb-1">Story blocks</h2>
-  <p class="text-[12px] opacity-60 mb-3">Two side-by-side columns of narrative text. Use a blank line to start a new paragraph.</p>
-  <div class="space-y-3 mb-4">
-    {% for block in c.story %}
-    <form method="POST" action="{{ url_for('admin_section_edit', page='about', section='story', idx=loop.index0) }}" class="card p-4 space-y-2">
-      <div><label class="field-label">Heading</label><input class="field-input" name="heading" value="{{ block.heading }}"></div>
-      <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="5">{{ block.body }}</textarea></div>
-      <div class="flex gap-2 pt-1">
-        <button class="btn primary" style="padding:7px 14px; font-size:10.5px;">Save</button>
-        <button formaction="{{ url_for('admin_section_delete', page='about', section='story', idx=loop.index0) }}"
-                onclick="return confirm('Remove this block?');" class="btn" style="padding:7px 14px; font-size:10.5px;">Remove</button>
+  <!-- Side-by-Side: Hero Header & Director's Message -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+    <!-- Hero Section -->
+    <section class="card p-5 sm:p-6 space-y-4">
+      <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+        <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Hero Header</h2>
+        <p class="text-[11.5px] text-ink/60 dark:text-white/60">Introduction statement and mission on the about page</p>
       </div>
-    </form>
-    {% endfor %}
-  </div>
-  <form method="POST" action="{{ url_for('admin_section_add', page='about', section='story') }}" class="card p-4 space-y-2">
-    <strong class="text-[12px]">Add a story block</strong>
-    <input class="field-input" name="heading" placeholder="Heading" required>
-    <textarea class="field-input" name="body" rows="4" placeholder="Body text" required></textarea>
-    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add block</button>
-  </form>
-</section>
+      <form method="POST" action="{{ url_for('admin_section_save', page='about', section='hero') }}" class="space-y-4">
+        <fieldset class="field-group">
+          <legend class="field-legend">Kicker</legend>
+          <input class="field-input-clean" name="kicker" value="{{ c.hero.kicker }}">
+        </fieldset>
 
-<section class="mb-10">
-  <h2 class="text-lg mb-1">Director quote</h2>
-  <form method="POST" action="{{ url_for('admin_section_save', page='about', section='quote') }}" class="card p-4 space-y-3">
-    <div><label class="field-label">Quote</label><textarea class="field-input" name="quote" rows="3">{{ c.quote.quote }}</textarea></div>
-    <div><label class="field-label">Attribution</label><input class="field-input" name="attrib" value="{{ c.quote.attrib }}"></div>
-    <button class="btn primary" style="padding:9px 16px; font-size:11px;">Save quote</button>
-  </form>
-</section>
+        <fieldset class="field-group">
+          <legend class="field-legend">Headline Title</legend>
+          <input class="field-input-clean" name="title" value="{{ c.hero.title }}">
+        </fieldset>
 
-<section>
-  <h2 class="text-lg mb-1">Values</h2>
-  <p class="text-[12px] opacity-60 mb-3">The "What we hold to" cards.</p>
-  <div class="space-y-3 mb-4">
-    {% for v in c['values'] %}
-    <form method="POST" action="{{ url_for('admin_section_edit', page='about', section='values', idx=loop.index0) }}" class="card p-4 space-y-2">
-      <div><label class="field-label">Title</label><input class="field-input" name="title" value="{{ v.title }}"></div>
-      <div><label class="field-label">Body</label><textarea class="field-input" name="body" rows="2">{{ v.body }}</textarea></div>
-      <div class="flex gap-2 pt-1">
-        <button class="btn primary" style="padding:7px 14px; font-size:10.5px;">Save</button>
-        <button formaction="{{ url_for('admin_section_delete', page='about', section='values', idx=loop.index0) }}"
-                onclick="return confirm('Remove this value?');" class="btn" style="padding:7px 14px; font-size:10.5px;">Remove</button>
+        <fieldset class="field-group">
+          <legend class="field-legend">Narrative Body</legend>
+          <textarea class="field-input-clean" name="body" rows="4">{{ c.hero.body }}</textarea>
+        </fieldset>
+
+        <button class="btn primary px-6 py-2.5 text-[12.5px] rounded-full">Save Hero Header</button>
+      </form>
+    </section>
+
+    <!-- Director's Message Section -->
+    <section class="card p-5 sm:p-6 space-y-4">
+      <div class="border-b border-black/[0.06] dark:border-white/[0.06] pb-2">
+        <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Director's Message</h2>
+        <p class="text-[11.5px] text-ink/60 dark:text-white/60">Personal note and commitment from school leadership</p>
       </div>
-    </form>
-    {% endfor %}
+      <form method="POST" action="{{ url_for('admin_section_save', page='about', section='quote') }}" class="space-y-4">
+        <fieldset class="field-group">
+          <legend class="field-legend">Quote Content</legend>
+          <textarea class="field-input-clean" name="quote" rows="4">{{ c.quote.quote }}</textarea>
+        </fieldset>
+
+        <fieldset class="field-group">
+          <legend class="field-legend">Attribution &amp; Title</legend>
+          <input class="field-input-clean" name="attrib" value="{{ c.quote.attrib }}">
+        </fieldset>
+
+        <button class="btn primary px-6 py-2.5 text-[12.5px] rounded-full">Save Message</button>
+      </form>
+    </section>
+
   </div>
-  <form method="POST" action="{{ url_for('admin_section_add', page='about', section='values') }}" class="card p-4 space-y-2">
-    <strong class="text-[12px]">Add a value</strong>
-    <input class="field-input" name="title" placeholder="Title" required>
-    <textarea class="field-input" name="body" rows="2" placeholder="Body text" required></textarea>
-    <button class="btn primary" style="padding:8px 16px; font-size:11px;">Add value</button>
-  </form>
-</section>
+
+  <!-- Story & Heritage Blocks -->
+  <section class="space-y-4">
+    <div>
+      <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Our Story &amp; Heritage Blocks</h2>
+      <p class="text-[11.5px] text-ink/60 dark:text-white/60">Narrative columns sharing {{ settings.school_name }}'s background and development</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+      {% for block in c.story %}
+      <form method="POST" action="{{ url_for('admin_section_edit', page='about', section='story', idx=loop.index0) }}" class="card p-5 space-y-3.5">
+        <fieldset class="field-group">
+          <legend class="field-legend">Block Heading</legend>
+          <input class="field-input-clean" name="heading" value="{{ block.heading }}">
+        </fieldset>
+        <fieldset class="field-group">
+          <legend class="field-legend">Body Content</legend>
+          <textarea class="field-input-clean" name="body" rows="4">{{ block.body }}</textarea>
+        </fieldset>
+        <div class="flex items-center gap-2.5 pt-1">
+          <button class="btn primary px-4 py-2 text-[12px] rounded-full">Save Changes</button>
+          <button formaction="{{ url_for('admin_section_delete', page='about', section='story', idx=loop.index0) }}"
+                  onclick="return confirm('Remove this story block?');" class="btn px-4 py-2 text-[12px] text-brand-red border-brand-red/30 hover:bg-brand-red/10 rounded-full">Remove</button>
+        </div>
+      </form>
+      {% endfor %}
+
+      <!-- Add Story Block Form -->
+      <form method="POST" action="{{ url_for('admin_section_add', page='about', section='story') }}" class="card p-5 space-y-3.5 border-dashed">
+        <div class="font-heading font-bold text-[13.5px] text-ink dark:text-white">Add a Story Block</div>
+        <fieldset class="field-group">
+          <legend class="field-legend">Heading</legend>
+          <input class="field-input-clean" name="heading" placeholder="e.g. The Expansion to Rimai" required>
+        </fieldset>
+        <fieldset class="field-group">
+          <legend class="field-legend">Body Text</legend>
+          <textarea class="field-input-clean" name="body" rows="4" placeholder="Paragraph body" required></textarea>
+        </fieldset>
+        <button class="btn primary px-5 py-2.5 text-[12px] rounded-full">Add Story Block</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Core Values -->
+  <section class="space-y-4">
+    <div>
+      <h2 class="text-sm sm:text-base font-bold font-heading text-ink dark:text-white">Core Values</h2>
+      <p class="text-[11.5px] text-ink/60 dark:text-white/60">Guiding institutional principles and student expectations</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+      {% for v in c['values'] %}
+      <form method="POST" action="{{ url_for('admin_section_edit', page='about', section='values', idx=loop.index0) }}" class="card p-5 space-y-3.5 flex flex-col justify-between">
+        <div class="space-y-3.5">
+          <fieldset class="field-group">
+            <legend class="field-legend">Value Title</legend>
+            <input class="field-input-clean" name="title" value="{{ v.title }}">
+          </fieldset>
+          <fieldset class="field-group">
+            <legend class="field-legend">Description</legend>
+            <textarea class="field-input-clean" name="body" rows="3">{{ v.body }}</textarea>
+          </fieldset>
+        </div>
+        <div class="flex items-center gap-2.5 pt-2 border-t border-black/[0.06] dark:border-white/[0.06]">
+          <button class="btn primary px-4 py-1.5 text-[11.5px] rounded-full">Save Changes</button>
+          <button formaction="{{ url_for('admin_section_delete', page='about', section='values', idx=loop.index0) }}"
+                  onclick="return confirm('Remove this value?');" class="btn px-4 py-1.5 text-[11.5px] text-brand-red border-brand-red/30 hover:bg-brand-red/10 rounded-full">Remove</button>
+        </div>
+      </form>
+      {% endfor %}
+
+      <!-- Add Value Form -->
+      <form method="POST" action="{{ url_for('admin_section_add', page='about', section='values') }}" class="card p-5 space-y-3.5 border-dashed">
+        <div class="font-heading font-bold text-[13.5px] text-ink dark:text-white">Add a Core Value</div>
+        <fieldset class="field-group">
+          <legend class="field-legend">Value Title</legend>
+          <input class="field-input-clean" name="title" placeholder="e.g. Discipline &amp; Integrity" required>
+        </fieldset>
+        <fieldset class="field-group">
+          <legend class="field-legend">Description</legend>
+          <textarea class="field-input-clean" name="body" rows="3" placeholder="Value explanation and standard" required></textarea>
+        </fieldset>
+        <button class="btn primary px-5 py-2.5 text-[12px] rounded-full">Add Value</button>
+      </form>
+    </div>
+  </section>
+
+</div>
 {% endblock %}

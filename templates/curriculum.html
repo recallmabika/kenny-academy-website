@@ -5,17 +5,17 @@
 {% block content %}
 
 <!-- CURRICULUM HERO -->
-<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-150">
+<section class="min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-82px)] flex items-stretch bg-white dark:bg-[#141110] transition-colors duration-200">
   <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] w-full">
     <div class="flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-16 sm:py-20">
       <div class="flex items-center gap-2 text-[11px] font-mono tracking-widest text-brand-red uppercase mb-4">
-        <span class="w-6 h-[1px] bg-brand-red"></span>
+        <span class="w-6 h-[1.5px] bg-brand-red"></span>
         {{ content.hero.kicker }}
       </div>
-      <h1 class="font-serif text-[32px] sm:text-[42px] md:text-[48px] text-ink dark:text-white leading-[1.1] max-w-[15ch]">
+      <h1 class="font-heading font-bold text-[34px] sm:text-[44px] md:text-[50px] text-ink dark:text-white leading-[1.12] tracking-tight max-w-[15ch]">
         {{ content.hero.title }}
       </h1>
-      <p class="mt-5 max-w-[50ch] text-[13.5px] sm:text-[14px] text-ink-70 dark:text-white/70 font-mono leading-relaxed">
+      <p class="mt-5 max-w-[50ch] text-[14px] sm:text-[14.5px] text-ink/75 dark:text-white/75 font-sans leading-relaxed">
         {{ content.hero.body }}
       </p>
     </div>
@@ -28,13 +28,13 @@
 </section>
 
 <!-- LEVELS TAUGHT STRIP -->
-<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-150">
+<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-200">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
-    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
-      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Levels taught</h2>
-      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">Form 1 – 6</span>
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
+      <h2 class="font-heading font-bold text-[28px] sm:text-[32px] text-ink dark:text-white">Levels Taught</h2>
+      <span class="font-sans text-[12px] text-ink/50 dark:text-white/50 uppercase tracking-wider font-semibold">Form 1 – 6</span>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {% set forms = [
         ('1', 'ZJC'),
         ('2', 'ZJC EXAM'),
@@ -44,8 +44,8 @@
         ('6', 'A-LEVEL EXAM')
       ] %}
       {% for f, label in forms %}
-      <div class="bg-ink dark:bg-[#1c1613] text-white p-6 sm:p-7 text-center hover:bg-brand-red transition-colors duration-200 cursor-default group border border-white/5">
-        <div class="font-serif text-[32px] sm:text-[36px] font-semibold leading-none group-hover:scale-105 transition-transform">{{ f }}</div>
+      <div class="bg-ink dark:bg-[#1c1613] text-white p-6 sm:p-7 text-center rounded-2xl hover:bg-brand-red transition-all duration-200 cursor-default group border border-white/5">
+        <div class="font-heading text-[32px] sm:text-[36px] font-bold leading-none group-hover:scale-105 transition-transform">{{ f }}</div>
         <div class="font-mono text-[10px] tracking-wider uppercase mt-2.5 text-white/75">{{ label }}</div>
       </div>
       {% endfor %}
@@ -54,17 +54,17 @@
 </section>
 
 <!-- SUBJECTS OFFERED -->
-<section class="py-16 sm:py-20 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-150">
+<section class="py-16 sm:py-20 bg-[#faf8f6] dark:bg-[#181412] transition-colors duration-200">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
-    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
-      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">All subjects offered</h2>
-      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">O-Level &amp; A-Level</span>
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
+      <h2 class="font-heading font-bold text-[28px] sm:text-[32px] text-ink dark:text-white">All Subjects Offered</h2>
+      <span class="font-sans text-[12px] text-ink/50 dark:text-white/50 uppercase tracking-wider font-semibold">O-Level &amp; A-Level</span>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {% for s in subjects %}
-      <div class="group bg-white dark:bg-[#1c1613] p-4 sm:p-5 flex items-center gap-3 border border-black/5 dark:border-white/5 hover:bg-brand-red hover:text-white transition-all duration-150 shadow-sm cursor-default">
-        <span class="w-2 h-2 bg-brand-red group-hover:bg-white shrink-0 transition-colors"></span>
-        <span class="font-mono text-[12.5px] text-ink dark:text-white/90 group-hover:text-white font-medium">{{ s }}</span>
+      <div class="group card p-4 sm:p-5 flex items-center gap-3 hover:border-brand-red hover:bg-brand-red/5 transition-all duration-150 cursor-default">
+        <span class="w-2 h-2 rounded-full bg-brand-red shrink-0"></span>
+        <span class="font-sans text-[13px] text-ink dark:text-white font-medium">{{ s }}</span>
       </div>
       {% endfor %}
     </div>
@@ -75,45 +75,45 @@
 <section class="py-16 sm:py-20 bg-ink dark:bg-black text-white border-y border-white/10">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
     <div>
-      <h2 class="font-serif text-[28px] sm:text-[34px] text-white mb-4 leading-tight">{{ content.cs_hexco.heading }}</h2>
-      <p class="font-mono text-[13.5px] text-white/75 leading-relaxed mb-6">{{ content.cs_hexco.body }}</p>
+      <h2 class="font-heading font-bold text-[28px] sm:text-[34px] text-white mb-4 leading-tight">{{ content.cs_hexco.heading }}</h2>
+      <p class="font-sans text-[14px] text-white/80 leading-relaxed mb-6">{{ content.cs_hexco.body }}</p>
       <div class="flex flex-wrap gap-2.5">
         {% for chip in content.cs_hexco.chips %}
-        <span class="border border-white/25 px-4 py-2 text-[11.5px] font-mono tracking-wide text-white/90 hover:border-brand-red hover:bg-brand-red/15 transition-all">
+        <span class="border border-white/20 rounded-full px-4 py-1.5 text-[12px] font-sans text-white/90 hover:border-brand-red hover:bg-brand-red/20 transition-all">
           {{ chip }}
         </span>
         {% endfor %}
       </div>
     </div>
-    <div class="border border-white/20 p-6 sm:p-8 bg-white/5">
-      <div class="flex justify-between items-center text-[10.5px] font-mono uppercase tracking-widest text-white/60 mb-4 pb-2 border-b border-white/10">
+    <div class="rounded-3xl border border-white/15 p-6 sm:p-8 bg-white/[0.04] backdrop-blur-sm">
+      <div class="flex justify-between items-center text-[11px] font-sans uppercase tracking-wider text-white/70 mb-4 pb-2.5 border-b border-white/10 font-semibold">
         <span>Programme</span>
         <span class="text-brand-red font-bold">HEXCO Certified</span>
       </div>
-      <h4 class="font-serif text-[20px] sm:text-[22px] text-white mb-4">All HEXCO Computer Courses</h4>
-      <ul class="space-y-3 font-mono text-[12.5px] text-white/80 divide-y divide-white/10">
-        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Nationally recognised HEXCO certification</li>
-        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Open to Form 1–6 students and adult learners</li>
-        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Practical, hands-on lab instruction</li>
-        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red">—</span>Runs alongside full-time academics or standalone</li>
+      <h4 class="font-heading font-bold text-[20px] sm:text-[22px] text-white mb-4">All HEXCO Computer Courses</h4>
+      <ul class="space-y-3 font-sans text-[13px] text-white/80 divide-y divide-white/10">
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red font-bold">•</span>Nationally recognised HEXCO certification</li>
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red font-bold">•</span>Open to Form 1–6 students and adult learners</li>
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red font-bold">•</span>Practical, hands-on computer lab instruction</li>
+        <li class="pt-2 flex items-start gap-2.5"><span class="text-brand-red font-bold">•</span>Runs alongside full-time academics or standalone</li>
       </ul>
     </div>
   </div>
 </section>
 
 <!-- LESSON TYPES & TIMING -->
-<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-150">
+<section class="py-16 sm:py-20 bg-white dark:bg-[#141110] transition-colors duration-200">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10">
-    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/10 dark:border-white/10">
-      <h2 class="font-serif text-[28px] sm:text-[32px] text-ink dark:text-white">Lesson types &amp; timing</h2>
-      <span class="font-mono text-[11px] text-ink-50 dark:text-white/50 uppercase tracking-wider">choose what fits</span>
+    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-10 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
+      <h2 class="font-heading font-bold text-[28px] sm:text-[32px] text-ink dark:text-white">Lesson Types &amp; Timing</h2>
+      <span class="font-sans text-[12px] text-ink/50 dark:text-white/50 uppercase tracking-wider font-semibold">Choose what fits</span>
     </div>
-    <div class="border-t border-black/10 dark:border-white/10 divide-y divide-black/10 dark:divide-white/10">
+    <div class="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
       {% for lt in content.lesson_types %}
-      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[180px_1fr_160px] gap-3 sm:gap-6 items-center hover:bg-brand-red/5 transition-colors">
-        <div class="font-serif text-[18px] text-ink dark:text-white font-medium">{{ lt.name }}</div>
-        <div class="font-mono text-[12.5px] text-ink-70 dark:text-white/70">{{ lt.desc }}</div>
-        <div class="sm:text-right font-mono text-[11.5px] font-bold text-brand-red">{{ lt.when }}</div>
+      <div class="py-5 px-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[180px_1fr_160px] gap-3 sm:gap-6 items-center hover:bg-brand-red/5 rounded-xl transition-colors">
+        <div class="font-heading font-semibold text-[17px] text-ink dark:text-white">{{ lt.name }}</div>
+        <div class="font-sans text-[13px] text-ink/75 dark:text-white/75">{{ lt.desc }}</div>
+        <div class="sm:text-right font-sans text-[12px] font-bold text-brand-red">{{ lt.when }}</div>
       </div>
       {% endfor %}
     </div>
@@ -123,12 +123,12 @@
 <!-- CTA BANNER -->
 <section class="py-16 sm:py-20 bg-brand-red text-white">
   <div class="max-w-[1180px] mx-auto px-5 sm:px-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-    <h3 class="font-serif text-[26px] sm:text-[32px] max-w-[24ch] leading-snug text-white">
+    <h3 class="font-heading font-bold text-[26px] sm:text-[32px] max-w-[24ch] leading-snug text-white">
       Find the right lesson type for your child, or for yourself.
     </h3>
     <a href="{{ url_for('contact') }}" data-nav
-       class="px-8 py-4 bg-white text-brand-red hover:bg-ink hover:text-white text-[12px] font-bold tracking-widest uppercase transition-all duration-150 shadow-xl shrink-0">
-      Ask about enrolment
+       class="btn px-8 py-3.5 bg-white text-brand-red hover:bg-ink hover:text-white text-[12.5px] font-bold rounded-full transition-all duration-200 shrink-0">
+      Ask About Enrolment
     </a>
   </div>
 </section>
