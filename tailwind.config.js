@@ -28,6 +28,8 @@ module.exports = {
         }
       },
       fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        heading: ['Raleway', 'Inter', 'sans-serif'],
         serif: ['Fraunces', 'Georgia', 'serif'],
         mono: ['Space Mono', 'ui-monospace', 'monospace']
       }

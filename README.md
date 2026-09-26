@@ -1,7 +1,7 @@
-# Kenny Academy — website
+# Keny Technologies College — website
 
-Flask site for Kenny Technologies Group of Colleges (Kenny Academy
-Rimbi & Rimai), with a full sidebar CMS for page content, site
+Flask site for Keny Technologies Group of Colleges (Keny Technologies
+College Rimbi & Rimai), with a full sidebar CMS for page content, site
 settings, a newsletter, and contact inquiries.
 
 ## Run it

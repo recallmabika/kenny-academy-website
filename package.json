@@ -1,7 +1,7 @@
 {
-  "name": "kenny",
+  "name": "keny",
   "version": "1.0.0",
-  "description": "Flask site for Kenny Technologies Group of Colleges (Kenny Academy Rimbi & Rimai), with a full sidebar CMS for page content, site settings, a newsletter, and contact inquiries.",
+  "description": "Flask site for Keny Technologies Group of Colleges (Keny Technologies College Rimbi & Rimai), with a full sidebar CMS for page content, site settings, a newsletter, and contact inquiries.",
   "main": "index.js",
   "scripts": {
     "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --minify",

@@ -1,5 +1,5 @@
 """
-Kenny Academy — Flask website with a file-based CMS.
+Keny Technologies College — Flask website with a file-based CMS.
 
 Editable content (hero text, programme cards, story blocks, values,
 lesson types, subjects, achievements, gallery photos, site settings)
@@ -59,11 +59,12 @@ SUBSCRIBERS_FILE = os.path.join(DATA_DIR, "subscribers.json")
 
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+ADMIN_NAME = os.environ.get("ADMIN_NAME", "").strip()
 ALLOWED_EXT = {"png", "jpg", "jpeg", "webp", "svg"}
 DEBUG = os.environ.get("FLASK_DEBUG", os.environ.get("DEBUG", "true")).strip().lower() in ("true", "1", "yes")
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "kenny-academy-dev-secret-change-me")
+app.secret_key = os.environ.get("SECRET_KEY", "keny-college-dev-secret-change-me")
 
 # Fallback subject list, only used if content.json has none yet.
 DEFAULT_SUBJECTS = [
@@ -77,11 +78,12 @@ DEFAULT_SUBJECTS = [
 ]
 
 DEFAULT_SETTINGS = {
-    "school_name": "Kenny Academy",
-    "group_name": "Kenny Technologies Group of Colleges",
+    "school_name": "Keny Technologies College",
+    "group_name": "Keny Technologies Group of Colleges",
     "tagline": "",
     "logo": "favicon.svg",
     "admin_avatar": "favicon.svg",
+    "admin_name": "Admin",
     "phone": "",
     "email": "",
     "whatsapp": "",
@@ -183,10 +185,12 @@ def stats_from(achievements):
 
 @app.context_processor
 def inject_globals():
+    st = get_settings()
+    name = ADMIN_NAME or st.get("admin_name") or session.get("admin_user") or ADMIN_USERNAME or "Administrator"
     return {
         "current_year": datetime.now().year,
-        "settings": get_settings(),
-        "admin_user": session.get("admin_user") or os.environ.get("ADMIN_USERNAME", "Administrator") or "Admin",
+        "settings": st,
+        "admin_user": name,
     }
 
 
@@ -220,7 +224,7 @@ def send_email(to_addr, subject, body, reply_to=None):
     port = int(os.environ.get("SMTP_PORT", "587") or 587)
     user = os.environ.get("SMTP_USER", "").strip()
     password = os.environ.get("SMTP_PASSWORD", "")
-    sender = os.environ.get("SMTP_FROM", "info@kennyacademy.edunow.co.zw").strip() or user or "info@kennyacademy.edunow.co.zw"
+    sender = os.environ.get("SMTP_FROM", "info@kenycollege.edunow.co.zw").strip() or user or "info@kenycollege.edunow.co.zw"
     use_tls = os.environ.get("SMTP_USE_TLS", "true").strip().lower() != "false"
 
     msg = EmailMessage()
@@ -360,7 +364,7 @@ def contact():
 
         notify_admin(
             f"New enquiry from {name or 'website visitor'}: {reason}",
-            f"A new inquiry was submitted on the Kenny Academy website:\n\n"
+            f"A new inquiry was submitted on the Keny Technologies College website:\n\n"
             f"Name: {name}\n"
             f"Phone/Email: {phone}\n"
             f"Reason: {reason}\n\n"
@@ -372,7 +376,7 @@ def contact():
         # If visitor provided a valid email address, send them an instant receipt confirmation
         if reply_to:
             settings = get_settings()
-            school = settings.get("school_name", "Kenny Academy")
+            school = settings.get("school_name", "Keny Technologies College")
             send_email(
                 reply_to,
                 f"Thank you for contacting {school}",
@@ -404,7 +408,7 @@ def subscribe():
     _save(SUBSCRIBERS_FILE, subs)
 
     settings = get_settings()
-    school = settings.get("school_name", "Kenny Academy")
+    school = settings.get("school_name", "Keny Technologies College")
     send_email(
         email_addr, f"Welcome to {school} updates",
         f"Thanks for subscribing to {school} news and updates.\n\n"
@@ -428,7 +432,7 @@ def login_required(f):
 @app.route("/admin", methods=["GET", "POST"])
 def admin_login():
     if session.get("admin"):
-        return redirect(url_for("admin_page", page="home"))
+        return redirect(url_for("admin_dashboard"))
     error = None
     if request.method == "POST":
         uname = request.form.get("username", "").strip()
@@ -436,7 +440,7 @@ def admin_login():
                 and request.form.get("password") == ADMIN_PASSWORD):
             session["admin"] = True
             session["admin_user"] = uname
-            return redirect(url_for("admin_page", page="home"))
+            return redirect(url_for("admin_dashboard"))
         error = "Incorrect username or password."
     return render_template("admin_login.html", error=error)
 
@@ -451,7 +455,32 @@ def admin_logout():
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
-    return redirect(url_for("admin_page", page="home"))
+    inquiries = get_inquiries()
+    subscribers = get_subscribers()
+    achievements = get_achievements()
+    gallery = get_gallery()
+    content = get_content()
+    settings = get_settings()
+
+    stats = {
+        "total_inquiries": len(inquiries),
+        "total_subscribers": len(subscribers),
+        "total_achievements": len(achievements),
+        "total_gallery": len(gallery),
+        "total_campuses": len(settings.get("campuses", [])),
+    }
+
+    recent_inquiries = sorted(inquiries, key=lambda x: x.get("when", ""), reverse=True)[:5]
+    recent_subscribers = sorted(subscribers, key=lambda x: x.get("when", ""), reverse=True)[:5]
+
+    return render_template(
+        "admin/dashboard.html",
+        stats=stats,
+        recent_inquiries=recent_inquiries,
+        recent_subscribers=recent_subscribers,
+        settings=settings,
+        message=request.args.get("message"),
+    )
 
 
 # ---- generic content editor: Home / About / Curriculum / Gallery ----
@@ -592,7 +621,7 @@ def admin_settings():
     settings = get_settings()
     if request.method == "POST":
         for field in ["school_name", "group_name", "tagline", "phone",
-                      "email", "whatsapp", "address", "facebook", "instagram"]:
+                      "email", "whatsapp", "address", "facebook", "instagram", "admin_name"]:
             settings[field] = request.form.get(field, "").strip()
         settings["campuses"] = [
             c.strip() for c in request.form.get("campuses", "").split("\n") if c.strip()
