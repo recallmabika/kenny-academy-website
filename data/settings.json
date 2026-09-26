@@ -1,6 +1,6 @@
 {
-  "school_name": "Kenny Academy",
-  "group_name": "Kenny Technologies Group of Colleges",
+  "school_name": "Keny Technologies College",
+  "group_name": "Keny Technologies Group of Colleges",
   "tagline": "Form 1 to 6, Computer Science & HEXCO courses, across the Rimbi and Rimai campuses in Chipinge.",
   "logo": "favicon.svg",
   "phone": "+263 78 393 8489",
@@ -10,7 +10,8 @@
   "facebook": "https://www.facebook.com/ndauambassadorzw",
   "instagram": "",
   "campuses": [
-    "Kenny Academy Rimbi",
-    "Kenny Academy Rimai"
-  ]
+    "Keny Technologies College Rimbi",
+    "Keny Technologies College Rimai"
+  ],
+  "admin_avatar": "logo.png"
 }
